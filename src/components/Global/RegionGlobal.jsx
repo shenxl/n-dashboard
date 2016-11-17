@@ -7,7 +7,7 @@ import styles from './regionGlobal.less';
 const RegionGlobal = React.createClass({
 
   getInitialState() {
-    console.log("getInitialState");
+    // console.log("getInitialState");
     return {
       value : this.props.value || [],
     };

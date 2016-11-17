@@ -6,7 +6,6 @@ const orders = {
   },
 
   createOrder: async (createAttributes) => {
-    console.log(createAttributes);
     const options = {
       method: "POST",
       headers: {
@@ -18,7 +17,6 @@ const orders = {
   },
 
    editOrder: async (id,updateAttributes) =>{
-     console.log(updateAttributes);
      const options = {
        method: "PUT",
        headers: {

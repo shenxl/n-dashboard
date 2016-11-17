@@ -68,7 +68,7 @@ export default {
 
   subscriptions: {
     setup({ dispatch, history }) {
-      console.log("company setup");
+      // console.log("company setup");
       history.listen(({ pathname }) => {
         const match = pathToRegexp(`/company/:catalog?`).exec(pathname);
         if (match) {
@@ -114,7 +114,7 @@ export default {
             type:"companyMonthly/query",
             payload : companyId
           });
-          
+
           yield put({
             type:"versionDaily/query",
             payload : companyId

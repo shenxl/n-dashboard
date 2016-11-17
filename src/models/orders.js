@@ -47,7 +47,7 @@ export default {
 
   subscriptions: {
     setup({ dispatch, history }) {
-      console.log("order setup");
+      // console.log("order setup");
     },
   },
 

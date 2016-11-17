@@ -46,7 +46,7 @@ const OrderTable = ({ orders , onEditOrder ,
   })
 
   const handleMouseEnter = () => {
-    console.log("On handleMouseEnter");
+    // console.log("On handleMouseEnter");
   }
 
   const columns = [

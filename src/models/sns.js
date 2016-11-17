@@ -17,7 +17,7 @@ export default {
 
   subscriptions: {
     setup({ dispatch, history }) {
-      console.log("sns setup");
+      // console.log("sns setup");
     },
   },
 
@@ -26,7 +26,6 @@ export default {
       const { companyId, sn } = payload ;
       try {
         const { jsonResult : multiplicity } = yield call( findOne , sn );
-        console.log("hello");
         if(multiplicity){
           message.error("添加失败，该SN已经在库中存在");
         }
@@ -61,7 +60,6 @@ export default {
       const { companyId, sn , id } = payload ;
       try {
         const { jsonResult : multiplicity } = yield call( findOne , sn );
-        console.log(multiplicity);
         if(multiplicity){
           message.error("添加失败，该SN已经在库中存在");
         }

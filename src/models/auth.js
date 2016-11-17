@@ -68,7 +68,7 @@ export default {
 
   subscriptions: {
     setup({ dispatch, history }) {
-      console.log("auth setup");
+      // console.log("auth setup");
       history.listen(({ pathname }) => {
         // 判断是否需要用户信息才可以展示
         const path = [ loginUrl, signupUrl , signSuccessUrl ,UserInfoUrl ];

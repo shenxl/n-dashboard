@@ -56,8 +56,8 @@ const LineChart = ({ title, report }) => {
     ],
 };
 const onChartClick = (param, echart) => {
-  console.log(param);
-  alert('chart click');
+  // console.log(param);
+  // alert('chart click');
 };
 // const onChartLegendselectchanged = (param, echart) =>{
 //     console.log(param, echart);

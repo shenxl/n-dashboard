@@ -32,7 +32,7 @@ function assignVersionFilter(companies , catalogType , query ){
   const optwhere =  { where: { and : _.concat([typeFilter , { server_id },{ year } , {month}] , and ) } };
 
   const filter = _.assign({}, optwhere );
-  console.log(filter);
+  // console.log(filter);
   return `filter=${JSON.stringify(filter)}&type=${type}`
 }
 

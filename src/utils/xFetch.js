@@ -35,7 +35,6 @@ function errorMessageParse(res) {
     error
   } = res.jsonResult;
   if (error) {
-    console.log(error);
     return Promise.reject(error);
   }
   return res;

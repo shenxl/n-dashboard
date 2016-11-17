@@ -81,7 +81,7 @@ const Enterprise = ({dispatch ,  companies , global , report }) => {
   }
 
   const onChartClick = (param, echart) => {
-       console.log(param, echart);
+      //  console.log(param, echart);
        const key = _.split(param.name, '-', 2);
        const query = _.assign({},converId(param.seriesName),{ year:key[0] , month:key[1]});
        const title = `${query.year}年${query.month}月${param.seriesName} 版本分布图`;

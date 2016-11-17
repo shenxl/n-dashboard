@@ -6,7 +6,7 @@ const sns = {
   },
   findOne : async (sn) =>{
     const filter = {"where" : {"sn" :`${sn}` }}
-    console.log(filter);
+    // console.log(filter);
     return xFetch(`${apiUrl}/companySns/findOne?filter=${JSON.stringify(filter)}`)
   },
   add: async (payload) =>{

@@ -3,7 +3,7 @@ var _ = require('lodash');
 
 function formatFilter( query ){
   const { server_id, type , year , month } = query;
-  console.log({ server_id, type , year , month });
+  // console.log({ server_id, type , year , month });
   const optwhere =  { where: { and : [ { server_id },{ year } , {month}] } };
   return `filter=${JSON.stringify(optwhere)}`
 }
@@ -18,7 +18,7 @@ export default {
 
   subscriptions: {
     setup({ dispatch, history }) {
-      console.log("versionMonthly setup");
+      // console.log("versionMonthly setup");
     },
   },
 
@@ -31,7 +31,7 @@ export default {
           const companyId = companies.currentItem.id;
           const filter = formatFilter(queryStr);
           const { type } = queryStr;
-          console.log(filter);
+          // console.log(filter);
           const { jsonResult : version } = yield call(query , companyId , filter);
           if(version){
             const result = _.chain(version).groupBy('version').map((keyItem) => {
@@ -55,7 +55,6 @@ export default {
           slice(0,8).
           filter((item) => { return item.value > 0 }).
           value();
-          console.log(result);
           yield put({ type:'report/setVersion',
             payload: {
               version : result

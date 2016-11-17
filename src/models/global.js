@@ -54,7 +54,7 @@ export default {
 
   subscriptions: {
     setup({ dispatch, history }) {
-      console.log("global setup");
+      // console.log("global setup");
       history.listen(({ pathname }) => {
         dispatch({
           type: 'getProvince',
@@ -64,7 +64,7 @@ export default {
           type: 'getCatalog',
         });
 
-        
+
       });
     },
   },
