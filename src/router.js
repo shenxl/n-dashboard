@@ -16,6 +16,7 @@ import Government from './routes/Company/Government';
 import Enterprise from './routes/Company/Enterprise';
 import Finance from './routes/Company/Finance';
 
+import Test from './routes/test/Test';
 export default function({ history }) {
   return (
     <Router history={history}>

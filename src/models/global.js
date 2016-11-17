@@ -1,6 +1,29 @@
-import { getRegion } from '../services/global';
+import { getRegion , getCatalog } from '../services/global';
 var pathToRegexp = require('path-to-regexp');
 var _ = require('lodash');
+
+const filterCatalog = (info , catalog) => {
+  return _.chain(info).
+    filter((item) => {
+      return item.catalog === catalog
+    }).
+    map((item) => {
+      return _.map(item.type, (type) => {
+        return {
+          value: type.name,
+          label: type.name,
+          children: _.chain(type.industry).map((industry) => {
+            if(industry){
+              return {
+                value: industry,
+                label: industry
+              }
+            }
+          }).filter((item) => {return item}).value()
+        }
+      });
+    }).head().value()
+}
 
 export default {
 
@@ -15,164 +38,33 @@ export default {
     countryItem:{},
     requesting : false,
     LoadedProvice : false,
+    LoadedCatalog : false,
     regionList : ["东北区","华北区","西北区","华南区","华东区","西南区"],
-    GtypeOptions:[{
-      value: '政府',
-      label: '政府',
-      children: [
-        {
-          value: '所有',
-          label: '所有',
-        }, {
-          value: '其他',
-          label: '其他',
-        },{
-          value: '审计',
-          label: '审计',
-        }]
-      },
-      {
-        value: '政府行业',
-        label: '政府行业',
-        children: [
-          {
-            value: '所有',
-            label: '所有',
-          }, {
-            value: '公安',
-            label: '公安',
-          },{
-            value: '审计',
-            label: '审计',
-          },{
-            value: '其他',
-            label: '其他',
-          },{
-            value: '检察院',
-            label: '检察院',
-          },{
-            value: '法院',
-            label: '法院',
-          },{
-            value: '税务',
-            label: '税务',
-          },
-        ]
-      },
-      {
-        value: '部委',
-        label: '部委',
-        children: [
-          {
-            value: '所有',
-            label: '所有',
-          },{
-            value: '公安',
-            label: '公安',
-          },{
-            value: '审计',
-            label: '审计',
-          },{
-            value: '检察院',
-            label: '检察院',
-          },{
-            value: '法院',
-            label: '法院',
-          },{
-            value: '税务',
-            label: '税务',
-          },
-        ]
-      },
-    ],
-    EtypeOptions:[{
-      value: '地方国企',
-      label: '地方国企',
-      children: [
-        {
-          value: '地方国企',
-          label: '地方国企',
-        }]
-      },
-      {
-        value: '企业',
-        label: '企业',
-        children: [
-          {
-            value: '所有',
-            label: '所有',
-          },
-          {
-            value: '其他',
-            label: '其他',
-          },
-          {
-            value: '商业',
-            label: '商业',
-          },]
-        },
-        {
-          value: '央企',
-          label: '央企',
-          children: [
-            {
-              value: '所有',
-              label: '所有',
-            },
-            {
-              value: '其他',
-              label: '其他',
-            },
-            {
-              value: '建筑设计',
-              label: '建筑设计',
-            },
-            {
-              value: '电力',
-              label: '电力',
-            },
-            {
-              value: '建筑设计',
-              label: '建筑设计',
-            },
-            {
-              value: '能源',
-              label: '能源',
-            },]
-          }
-    ],
-    FtypeOptions:[{
-      value: '金融',
-      label: '金融',
-      children: [
-        {
-          value: '所有',
-          label: '所有',
-        }, {
-          value: '保险',
-          label: '保险',
-        },{
-          value: '证券',
-          label: '证券',
-        },{
-          value: '银行',
-          label: '银行',
-        },{
-          value: '其他',
-          label: '其他',
-        }]
-      }
-    ],
-
+    catalog:{
+      GOVERNMENT : ["政府","政府行业","部委"],
+      ENTERPRISE : ["企业","地方国企","央企","港澳台企业"],
+      FINANCE : ["金融"],
+      NORMALIZATION  : ["常态化"]
+    },
+    GtypeOptions:[],
+    EtypeOptions:[],
+    FtypeOptions:[],
     addressOptions:[]
   },
 
   subscriptions: {
     setup({ dispatch, history }) {
+      console.log("global setup");
       history.listen(({ pathname }) => {
         dispatch({
           type: 'getProvince',
         });
+
+        dispatch({
+          type: 'getCatalog',
+        });
+
+        
       });
     },
   },
@@ -244,14 +136,38 @@ export default {
         });
       }
     },
+
+    *getCatalog({ payload }, {call, put, select }) {
+      yield put({ type: 'sendRequest' });
+      const global = yield select(state => state.global);
+      if (!global.LoadedCatalog) {
+        const { jsonResult: catalog } = yield call(getCatalog);
+        if(catalog){
+          yield put({
+            type : 'loadCatalog',
+            payload : catalog
+          });
+
+          yield put({
+            type : 'fristLoadCatalog'
+          });
+
+        }
+      }
+    },
   },
 
   reducers: {
     sendRequest(state) {
       return { ...state, requesting: true };
     },
+
     fristLoadedProvince(state) {
       return { ...state, LoadedProvice: true };
+    },
+
+    fristLoadCatalog(state) {
+      return { ...state, LoadedCatalog: true };
     },
     setProvince(state, action) {
       return { ...state, ...action.payload, requesting: false };
@@ -271,13 +187,50 @@ export default {
     setCountryItem(state, action) {
       return { ...state, countryItem : action.payload };
     },
+
+    loadCatalog(state,action){
+      const catalogEntity = action.payload;
+      const info = _.chain(catalogEntity).
+        groupBy('catalog').
+        map((item, ckey) => {
+          return {
+            catalog: ckey,
+            type: _.chain(item).groupBy('type').map(
+              (titem, tkey) => {
+                return {
+                  name: tkey,
+                  industry: _.map(titem, (item) => {
+                    return item.industry
+                  }),
+                }
+              }).value()
+          }
+        }).
+        value();
+
+      let catalog = _.reduce(info, (init, item) => {
+        return _.assign(init, {
+          [item.catalog]: _.map(item.type, (o) => {
+            return o.name
+          })
+        })
+      }, {});
+
+      let GtypeOptions = filterCatalog(info , 'GOVERNMENT');
+      let EtypeOptions = filterCatalog(info ,'ENTERPRISE');
+      let FtypeOptions = filterCatalog(info ,'FINANCE');
+
+      return {...state, catalog, GtypeOptions, EtypeOptions, FtypeOptions };
+
+    },
+
     setAddressOptions(state,action){
       let addressOptions = state.addressOptions || [];
       let childrenObj = {};
       let tmpObj = {};
       switch (action.payload.opt) {
         case "province":
-          addressOptions = _.map( _.concat(addressOptions , state.province), function(item){
+          addressOptions = _.map( _.concat(addressOptions , state.province), (item) => {
             return {
               value : item.ID,
               label : item.Name,
@@ -287,9 +240,9 @@ export default {
           break;
         case "city":
           const provinceId = action.payload.provinceId
-          const provinceObj = _.find(addressOptions, function(province) { return province.value === provinceId });
+          const provinceObj = _.find(addressOptions, (province) => { return province.value === provinceId });
           if(provinceObj && !provinceObj.children){
-            tmpObj = _.map(state.city, function(item){
+            tmpObj = _.map(state.city, (item) => {
               return {
                 value : item.ID,
                 label : item.Name,
@@ -303,12 +256,11 @@ export default {
           break;
         case "country":
           const cityId = action.payload.cityId
-
-          const cityObj = _.forEach(addressOptions, function(province){
+          const cityObj = _.forEach(addressOptions, (province) => {
             if(province && province.children){
-              const findObj = _.find(province.children, function(city) { return city.value === cityId });
+              const findObj = _.find(province.children, (city) => { return city.value === cityId });
               if(findObj && !findObj.children){
-                tmpObj =  _.map(state.country, function(item){
+                tmpObj =  _.map(state.country, (item) => {
                   return {
                     value : item.ID,
                     label : item.Name,

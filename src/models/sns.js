@@ -1,6 +1,5 @@
 import { query ,findOne , add , remove , edit } from '../services/sns';
 import { message } from 'antd';
-
 message.config({
   top: 50,
   duration: 2,
@@ -18,7 +17,7 @@ export default {
 
   subscriptions: {
     setup({ dispatch, history }) {
-
+      console.log("sns setup");
     },
   },
 
@@ -33,7 +32,7 @@ export default {
         }
         return false;
       } catch (error) {
-        if(error.res.url.indexOf("api/companySns/findOne") > 0 ){
+        if(error.res.url.indexOf("companySns/findOne") > 0 ){
           try {
             const { jsonResult : record } = yield call( add , payload );
             if(record){
@@ -68,7 +67,7 @@ export default {
         }
         return false;
       } catch (error) {
-        if(error.res.url.indexOf("api/companySns/findOne") > 0 ){
+        if(error.res.url.indexOf("companySns/findOne") > 0 ){
           try {
             const { jsonResult : record } = yield call( edit , payload );
             if(record){

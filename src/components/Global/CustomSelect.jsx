@@ -17,8 +17,8 @@ const CustomSelect = React.createClass({
       this.setState({ value });
     }
   },
-  handleChange(e) {
 
+  handleChange(e) {
     if (!('value' in this.props)) {
       this.setState({ value: e });
     }
@@ -30,7 +30,6 @@ const CustomSelect = React.createClass({
   },
 
   render() {
-
     const children = [];
     this.props.options.map((item,index) => {
       children.push(<Option key={`${item}`}>{item}</Option>);

@@ -33,9 +33,11 @@ app.model(require('./models/global'));
 
 // 公司信息处理
 app.model(require('./models/companies'));
+app.model(require('./models/report'));
 app.model(require('./models/orders'));
 app.model(require('./models/sns'));
-
+app.model(require('./models/companyMonthly'));
+app.model(require('./models/versionMonthly'));
 // 4. Router
 app.router(require('./router'));
 

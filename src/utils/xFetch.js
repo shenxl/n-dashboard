@@ -6,7 +6,7 @@ const errorMessages = res => `${res.status} ${res.statusText}`;
 
 function check401(res) {
   if (res.status === 401) {
-    localStorage.removeItem('token');
+    localStorage.removeItem('n-token');
     location.href = '/login';
     location.reload()
   }
@@ -45,7 +45,7 @@ function xFetch(url, options) {
   const opts = { ...options };
   opts.headers = {
     ...opts.headers,
-    authorization : localStorage.getItem('token') || '',
+    authorization : localStorage.getItem('n-token') || '',
   };
 
   return fetch(url, opts)

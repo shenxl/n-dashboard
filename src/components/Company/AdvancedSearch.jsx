@@ -12,7 +12,7 @@ import styles from './search.less';
 
 const usualShowedChildren = 2 * 5; // row * col
 
-const AdvancedSearch = ({ form , onRegionChange , onAddressChange ,onTypeChange , global , dispatch , setBasicSearch ,typeOptions}) => {
+const AdvancedSearch = ({ form , onRegionChange , onAddressChange ,onTypeChange , global , dispatch , hideSearch ,setBasicSearch ,typeOptions}) => {
   const { addressOptions , regionList , provinceItem , cityItem , countryItem} = global;
   const handleSearch = (e) => {
     e.preventDefault();
@@ -22,65 +22,52 @@ const AdvancedSearch = ({ form , onRegionChange , onAddressChange ,onTypeChange 
       }
       let and = [];
       let or = [];
-      let status = "";
+      let status = [];
       // make query
       if(values.address &&  values.address.length !== 0){
-        console.log(values.address);
-        status += " 地区 : [ "
         switch (values.address.length) {
           case 1:
             and.push({province:{like:`%25${provinceItem.label}%25`}})
-            status += provinceItem.label;
+            status.push({ key: "address" ,value : provinceItem.label});
             break;
           case 2:
             and.push({province:{like:`%25${provinceItem.label}%25`}});
             and.push({city:{like:`%25${cityItem.label}%25`}});
-            status += `${provinceItem.label} - ${cityItem.label}` ;
+            status.push({ key: "address" ,value : `${provinceItem.label} - ${cityItem.label}` });
             break;
           case 3:
             and.push({province:{like:`%25${provinceItem.label}%25`}});
             and.push({city:{like:`%25${cityItem.label}%25`}});
             and.push({county:{like:`%25${countryItem.label}%25`}});
-            status += `${provinceItem.label} - ${cityItem.label} - ${countryItem.label}` ;
+            status.push({ key: "address" ,value : `${provinceItem.label} - ${cityItem.label} - ${countryItem.label}` });
             break;
           default:
         }
-        status += " ]"
       } else if(values.region) {
-        status += " 区域 : [ "
-        values.region.forEach((item) => {
-          or.push({region:item});
-          status += item + ','
-        })
-        and.push({or:or});
-        status += " ]"
+        and.push({ region : { inq : values.region }})
+        status.push({ key: "address" ,value : _.join(values.region, '、') });
       }
 
       if(values.keyword){
-        status += `关键字: ${values.keyword}`
+        status.push({key: "keyword" ,value :values.keyword });
         and.push({name:{like:`%25${values.keyword}%25`}});
       }
 
-      if(values.type){
-        status += " 类型 : [ "
-        if(values.type.length === 1){
-          and.push({type:values.type[0]});
-          status += values.type[0] ;
-        } else if(values.type.length === 2 && values.type[1] === '所有'){
-          status += values.type[0] ;
-          and.push({type:values.type[0]});
-        } else {
+      if(values.type &&  values.type[0]){
+
+        if(values.type.length === 1 || (values.type.length === 2 && values.type[1] === '所有')){
+          and.push({type : values.type[0]});
+          status.push({ key: "type" ,value : values.type[0] });
+        }  else {
           and.push({type:values.type[0]});
           and.push({industry:values.type[1]});
-          status += values.type[0] + '/' + values.type[1];
+          status.push({ key: "type" ,value : values.type[0] + '/' + values.type[1]});
         }
-        status += " ]"
       }
 
       if(values.important){
-          console.log(values.important);
-          status += ' 重点用户 '
-          and.push({important:1});
+          and.push({ important:1 });
+          status.push({ key: "important" ,value : 1 });
       }
 
       dispatch({
@@ -100,11 +87,21 @@ const AdvancedSearch = ({ form , onRegionChange , onAddressChange ,onTypeChange 
         type: 'companies/query',
       });
 
-      console.log(status);
+      dispatch({
+        type: 'report/queryMonthly'
+      });
     });
   };
 
   const handleReset = () => {
+
+    dispatch({
+      type: 'companies/clearQuery',
+    });
+
+    dispatch({
+      type: 'companies/query',
+    });
     form.resetFields();
   };
 
@@ -114,6 +111,11 @@ const AdvancedSearch = ({ form , onRegionChange , onAddressChange ,onTypeChange 
     labelCol: { span: 6 },
     wrapperCol: { span: 18 },
   };
+
+  const RegionProps = {
+    global,
+    dispatch
+  }
 
   return (
     <Form
@@ -166,6 +168,7 @@ const AdvancedSearch = ({ form , onRegionChange , onAddressChange ,onTypeChange 
           >
             {getFieldDecorator(`address`)(
               <RegionGlobal
+                {...RegionProps}
                 changeOnSelect
                 placeholder="请选择省 / 市 / 区"
                 />
@@ -198,6 +201,7 @@ const AdvancedSearch = ({ form , onRegionChange , onAddressChange ,onTypeChange 
         <Col span={24} style={{ textAlign: 'right' }}>
           <Button type="primary" htmlType="submit">搜索</Button>
           <Button onClick={handleReset}>清空</Button>
+          <Button icon="up"  onClick={hideSearch}>精简模式</Button>
         </Col>
       </Row>
     </Form>
@@ -211,6 +215,7 @@ AdvancedSearchForm.propTypes = {
   setBasicSearch : PropTypes.func.isRequired ,
   global : PropTypes.object.isRequired,
   typeOptions : PropTypes.array.isRequired,
+  hideSearch :  PropTypes.func.isRequired ,
 };
 
 

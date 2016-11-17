@@ -15,6 +15,7 @@ export default {
 
   subscriptions: {
     setup({ dispatch, history }) {
+      console.log("authLayout setup");
       history.listen(({ pathname }) => {
         switch(pathname){
           case loginUrl:

@@ -2,10 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import { Table ,Icon , Tooltip} from 'antd';
 import styles from './table.less';
 
-const BasicTable= ({ companyList , onTableChange , onRowClick}) => {
-  const {companies , loading , filterOption } = companyList;
+const BasicTable= ({ companyList , onTableChange , onRowClick , rowSelection}) => {
+  const { companies , loading , filterOption } = companyList;
   const { list , total , current} = companies;
-  const { limit } = filterOption.basic;
+  const { limit } = filterOption;
 
   const renderImportant = (o, row, index) => {
       // console.log(o, row, index);
@@ -38,18 +38,17 @@ const BasicTable= ({ companyList , onTableChange , onRowClick}) => {
       render:renderText
     },
     {
+      title: '重点关注',
+      dataIndex: 'important',
+      key: 'important',
+      width:65,
+      render:renderImportant
+    },
+    {
       title: '采购量',
       dataIndex: 'buy',
       key: 'buy',
       sorter: true,
-    },
-    {
-      title: '重点用户',
-      dataIndex: 'important',
-      key: 'important',
-      className: styles.text_center,
-      width: 70,
-      render: renderImportant,
     },
     {
       title: '区域',
@@ -102,7 +101,14 @@ const BasicTable= ({ companyList , onTableChange , onRowClick}) => {
 
   return (
     <div>
+      <h4>
+        操作须知&nbsp;
+        <Tooltip title="点击或选中单选框，可以对该用户对应的合同、序列号等信息进行修改">
+          <Icon type="question-circle-o" />
+        </Tooltip>
+      </h4>
       <Table style={{cursor:"pointer"}}
+        rowSelection={ rowSelection }
         loading={ loading }
         onChange={ onTableChange }
         columns={ columns }

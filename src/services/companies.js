@@ -2,7 +2,7 @@ import xFetch from '../utils/xFetch';
 import { apiUrl , authUrl } from '../utils/constant'
 const companies = {
   query : async (query) =>{
-    return xFetch(`${apiUrl}/companies/catalog?${query}`)
+    return xFetch(`${apiUrl}/companyViewers/getRecord?${query}`)
   },
   queryActive :  async (query) =>{
     return xFetch(`${apiUrl}/companyActivities/catalog?${query}`)

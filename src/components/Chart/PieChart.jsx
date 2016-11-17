@@ -16,6 +16,10 @@ const PieChart = ({ chartData, title, name, style }) => {
       trigger: 'item',
       formatter: "{b}: {c} ({d}%)"
     },
+    grid: {
+        top: '5%',
+        bottom: '3%'
+    },
     series: [
       {
         name: seriesName,
@@ -27,6 +31,7 @@ const PieChart = ({ chartData, title, name, style }) => {
             position: 'center'
           },
         },
+        center: ['60%', '50%']
         labelLine: {
             normal: {
                 show: false

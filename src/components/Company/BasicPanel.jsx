@@ -192,25 +192,25 @@ const BasicPanel = ({ orders , sns , company ,dispatch  }) => {
   }
 
   const currentItem = () => {
-    if(Object.keys(company).length !== 0){
-      return (<CompanyInfo {...companyInfoProps}></CompanyInfo>)
-    }
+
+      return (
+        <Tabs tabPosition={"right"}>
+          <TabPane tab="基本信息" key="1">
+            <CompanyInfo {...companyInfoProps}></CompanyInfo>
+          </TabPane>
+          <TabPane tab="合同信息" key="2">
+            <OrderTable {...orderProps} />
+          </TabPane>
+          <TabPane tab="序列号信息" key="3">
+            <SnTable {...snProps} /></TabPane>
+        </Tabs>
+      );
   }
 
   return (
     <div>
       <h3 style={{"marginBottom" : "8px"}}>{company.name}</h3>
-
-      <Tabs tabPosition={"right"}>
-        <TabPane tab="基本信息" key="1">
-          {currentItem()}
-        </TabPane>
-        <TabPane tab="合同信息" key="2">
-          <OrderTable {...orderProps} />
-        </TabPane>
-        <TabPane tab="序列号信息" key="3">
-          <SnTable {...snProps} /></TabPane>
-      </Tabs>
+      { currentItem() }
     </div>
   );
 };

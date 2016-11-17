@@ -24,7 +24,7 @@ function* authorize ({ email, password } , {call, put, take}) {
     return false
   } catch (error) {
     message.error(AuthError[error.code]);
-    localStorage.removeItem('token');
+    localStorage.removeItem('n-token');
     return false
   } finally {
     // When done, we tell Redux we're not in the middle of a request any more
@@ -68,6 +68,7 @@ export default {
 
   subscriptions: {
     setup({ dispatch, history }) {
+      console.log("auth setup");
       history.listen(({ pathname }) => {
         // 判断是否需要用户信息才可以展示
         const path = [ loginUrl, signupUrl , signSuccessUrl ,UserInfoUrl ];
@@ -85,7 +86,7 @@ export default {
         const request = yield take('auth/logout')
         yield call(logout , { } ,  {call, put, take})
         yield put({ type: 'logoutSuccess', sending: false })
-        localStorage.removeItem('token');
+        localStorage.removeItem('n-token');
         yield put(routerRedux.push(loginUrl));
       }
     }, {
@@ -110,7 +111,7 @@ export default {
        })
 
        if (winner.auth) {
-         localStorage.setItem('token', winner.auth.id);
+         localStorage.setItem('n-token', winner.auth.id);
          yield put({"type":"getCurrentUser"});
          const redirectUrl = redirect.next || '/'
          yield put(routerRedux.push(redirectUrl));
@@ -151,7 +152,7 @@ export default {
         }
       } catch (error) {
         // 如果getUser 失败，则清除 token， 跳转到登录页面
-        localStorage.removeItem('token');
+        localStorage.removeItem('n-token');
         yield put(routerRedux.push(`${loginUrl}?next=${nextPath}`));
         // console.log(error);
       }

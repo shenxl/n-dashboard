@@ -28,7 +28,7 @@ const OrderTable = ({ orders , onEditOrder ,
   const renderAction = (o, row, index) => {
     return (
       <div>
-        <Button type="primary" size="small" onClick={onEditOrder.bind(this, row)}>编辑</Button>
+        <Button type="primary" icon='edit' size="small" onClick={onEditOrder.bind(this, row)}></Button>
       </div>
     );
   };

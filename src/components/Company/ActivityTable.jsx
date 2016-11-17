@@ -2,19 +2,19 @@ import React, { Component, PropTypes } from 'react';
 import { Table ,Icon , Tooltip} from 'antd';
 import styles from './table.less';
 
-const ActivityTable= ({ companyList , onTableChange}) => {
-
-  const {activeCompanies , loading , filterOption } = companyList;
-  const { list , total , current} = activeCompanies;
-  const { limit } = filterOption.active
+const BasicTable= ({ companyList , onTableChange , onRowClick , rowSelection}) => {
+  const { companies , loading , filterOption } = companyList;
+  const { list , total , current} = companies;
+  const { limit } = filterOption;
 
   const renderImportant = (o, row, index) => {
       // console.log(o, row, index);
-    if (row.important) {
+    if (row.important === "1") {
       return (<Icon type="check-circle" style={{ color: '#60BE29' }} />)
     }
     return undefined;
   }
+
 
   const renderText = (o, row, index) => {
     let companyName = '';
@@ -30,6 +30,12 @@ const ActivityTable= ({ companyList , onTableChange}) => {
     return companyName
   }
 
+  const renderItem = (o, row, index) => {
+    if(!o){
+      return "暂无记录"
+    }
+    return o
+  }
 
   const columns = [
     {
@@ -45,36 +51,30 @@ const ActivityTable= ({ companyList , onTableChange}) => {
       sorter: true,
     },
     {
-      title: '重点用户',
-      dataIndex: 'important',
-      key: 'important',
-      className: styles.text_center,
-      width: 70,
-      render: renderImportant,
-    },
-    {
-      title: '月报活',
+      title: '本月报活',
       dataIndex: 'activity_sum',
       key: 'activity_sum',
+      render:renderItem,
       sorter: true,
     },
     {
       title: '日活均值',
       dataIndex: 'activity_avg',
       key: 'activity_avg',
+      render:renderItem,
       sorter: true,
     },
     {
-      title: '当月安装量',
+      title: '本月安装量',
       dataIndex: 'install_sum',
       key: 'install_sum',
+      render:renderItem,
       sorter: true,
     },
     {
       title: '安装总量',
-      dataIndex: 'install_total',
-      key: 'install_total',
-      sorter: true,
+      dataIndex: 'total',
+      key: 'total'
     }
   ];
   const showTotal = () => {
@@ -82,7 +82,7 @@ const ActivityTable= ({ companyList , onTableChange}) => {
   }
 
   const pagination = () => {
-    if (limit >total) {
+    if (limit > total) {
       return false
     }
     return {
@@ -97,20 +97,23 @@ const ActivityTable= ({ companyList , onTableChange}) => {
 
   return (
     <div>
-      <Table
+      <Table style={{cursor:"pointer"}}
         loading={ loading }
         onChange={ onTableChange }
-        columns={columns}
-        dataSource={list}
-        pagination={pagination()}
+        columns={ columns }
+        dataSource={ list }
+        rowSelection = { rowSelection }
+        pagination={ pagination() }
+        onRowClick={ onRowClick }
       />
     </div>
   );
 };
 
-ActivityTable.propTypes = {
+BasicTable.propTypes = {
   companyList : PropTypes.object.isRequired,
-  onTableChange : PropTypes.func.isRequired
+  onTableChange : PropTypes.func.isRequired,
+  onRowClick : PropTypes.func.isRequired
 };
 
-export default ActivityTable;
+export default BasicTable;

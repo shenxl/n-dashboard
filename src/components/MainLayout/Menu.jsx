@@ -41,23 +41,6 @@ function MenuBar({ location,mainLayout,onCollapseChange}) {
         mode={mainLayout.menuMode}
         theme="dark"
         selectedKeys={[getMenuKeyFromUrl(location.pathname)]}>
-        <Menu.Item key="/">
-          <Link to="/overview"><Icon type="laptop" />
-            <span className={styles.nav_text}>概览</span>
-          </Link>
-        </Menu.Item>
-        <SubMenu title={analyticalTitle}>
-          <Menu.Item key="/analytical">
-            <Link to="/company">
-              <span className={styles.nav_text}>按企业维度</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="/group">
-            <Link to="/group">
-              <span className={styles.nav_text}>按集团维度</span>
-            </Link>
-          </Menu.Item>
-        </SubMenu>
         <SubMenu title={settingTitle}>
           <Menu.Item key="/company/government">
             <Link to="/company/government">
@@ -75,11 +58,6 @@ function MenuBar({ location,mainLayout,onCollapseChange}) {
             </Link>
           </Menu.Item>
         </SubMenu>
-        <Menu.Item key="/testing">
-          <Link to="/testing"><Icon type="code" />
-            <span className={styles.nav_text}>测试</span>
-          </Link>
-        </Menu.Item>
       </Menu>)
     }
   }
@@ -103,3 +81,28 @@ MenuBar.propTypes = {
 };
 
 export default MenuBar;
+
+
+// <Menu.Item key="/">
+//   <Link to="/overview"><Icon type="laptop" />
+//     <span className={styles.nav_text}>概览</span>
+//   </Link>
+// </Menu.Item>
+// <SubMenu title={analyticalTitle}>
+//   <Menu.Item key="/analytical">
+//     <Link to="/company">
+//       <span className={styles.nav_text}>按企业维度</span>
+//     </Link>
+//   </Menu.Item>
+//   <Menu.Item key="/group">
+//     <Link to="/group">
+//       <span className={styles.nav_text}>按集团维度</span>
+//     </Link>
+//   </Menu.Item>
+// </SubMenu>
+
+// <Menu.Item key="/testing">
+//   <Link to="/testing"><Icon type="code" />
+//     <span className={styles.nav_text}>测试</span>
+//   </Link>
+// </Menu.Item>

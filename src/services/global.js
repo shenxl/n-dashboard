@@ -4,5 +4,9 @@ const global = {
   getRegion : async (parentId) =>{
     return xFetch(`${apiUrl}/globalRegions/${parentId}/region`)
   },
+  getCatalog : async () =>{
+    return xFetch(`${apiUrl}/companyCatalogs`)
+  },
+
 }
 export default global;

@@ -7,6 +7,7 @@ import styles from './regionGlobal.less';
 const RegionGlobal = React.createClass({
 
   getInitialState() {
+    console.log("getInitialState");
     return {
       value : this.props.value || [],
     };
@@ -15,9 +16,8 @@ const RegionGlobal = React.createClass({
   componentWillReceiveProps(nextProps) {
     // Should be a controlled component.
     if ('value' in nextProps) {
-      const value = nextProps.value;
-      this.setState({ value });
-    }
+        this.setState({ value: nextProps.value || [] });
+      }
   },
 
   handleChange(value, selectedOptions) {
@@ -59,13 +59,12 @@ const RegionGlobal = React.createClass({
         break;
       default:
     }
-    // console.log(value ,selectedOptions);
+
     if (!('value' in this.props)) {
       this.setState({ value : value});
     }
     // Should provide an event to pass value to Form.
     const onChange = this.props.onChange;
-
     if (onChange) {
       onChange(value, selectedOptions);
     }
@@ -74,7 +73,9 @@ const RegionGlobal = React.createClass({
   render() {
 
     return (
-      <Cascader options= { this.props.global.addressOptions }
+      <Cascader
+        value = {this.props.value}
+        options= { this.props.global.addressOptions }
         changeOnSelect= { this.props.changeOnSelect }
         placeholder= { this.props.placeholder }
         onChange={ this.handleChange } />
@@ -87,7 +88,5 @@ RegionGlobal.propTypes = {
   global : PropTypes.object.isRequired
 };
 
-const mapStateToProps = ({ global }) => {
-  return { global }
-}
-export default connect(mapStateToProps)(RegionGlobal);
+
+export default RegionGlobal;

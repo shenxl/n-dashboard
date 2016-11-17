@@ -1,6 +1,6 @@
 
 const getUser = () => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('n-token');
   if (token !== null) {
     return token;
   }

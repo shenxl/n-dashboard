@@ -12,17 +12,22 @@ import ActivityTable from '../../components/Company/ActivityTable';
 import OverviewPanel from '../../components/Company/OverviewPanel';
 import ActivityPanel from '../../components/Company/ActivityPanel';
 import BasicPanel from '../../components/Company/BasicPanel';
+import SearchTags from '../../components/Company/SearchTags';
 
+import ReportLine from '../../components/Chart/ReportLine';
+import VersionPie from '../../components/Chart/VersionPie';
+
+import { converId, converServer, conver } from '../../utils/reportCommon';
 import styles from './company.less';
 
 const TabPane = Tabs.TabPane;
 const MonthPicker = DatePicker.MonthPicker;
 
-const Enterprise = ({dispatch ,  companies , global }) => {
+const Enterprise = ({dispatch ,  companies , global , report }) => {
 
   // 地区变化的 dispatch
-  const { isBasic , isActivity } = companies;
-
+  const { hideSearchPanel , tabState , searchInfo ,selectedRowKeys , subSelect } = companies;
+  const {versionLoading , version } = report;
   const onTypeChange = (value, selectedOptions) => {
     // console.log(selectedOptions);
   }
@@ -51,36 +56,15 @@ const Enterprise = ({dispatch ,  companies , global }) => {
       payload
     });
 
-
     dispatch({
-      type: 'companies/query',
-    });
-  }
-
-  const onActivityChange = (pagination, filters, sorter) => {
-    let order = ''
-    // 点击分页、筛选、排序时触发
-    if(sorter.order === "descend"){
-      order = sorter.field + " DESC"
-    }
-    else {
-      order = sorter.field
-    }
-    let payload = {
-      limit : pagination.pageSize,
-      current : pagination.current,
-      order : order
-    };
-
-
-    dispatch({
-      type: 'companies/activityPage',
-      payload
+      type: 'companies/setSelectedRowKeys',
+      payload : { selectedRowKeys : [0] }
     });
 
     dispatch({
       type: 'companies/query',
     });
+
   }
 
   const onDateChange = (date, dateString) => {
@@ -91,38 +75,69 @@ const Enterprise = ({dispatch ,  companies , global }) => {
         month : date.month() + 1
       }
     });
-
     dispatch({
       type: 'companies/query',
     });
   }
 
-  const operations = !isActivity
-  ? (<div></div>)
-  : (<div>报活月份:&nbsp;&nbsp;
-      <MonthPicker defaultValue={moment(new Date(), 'YYYY-MM-DD')} placeholder="请选择报活月份" onChange={onDateChange}/>
-    </div>);
+  const onChartClick = (param, echart) => {
+       console.log(param, echart);
+       const key = _.split(param.name, '-', 2);
+       const query = _.assign({},converId(param.seriesName),{ year:key[0] , month:key[1]});
+       const title = `${query.year}年${query.month}月${param.seriesName} 版本分布图`;
+       dispatch({
+         type: 'companies/setSubSelect',
+         payload : { subSelect : "subVersion" }
+       });
 
+       dispatch({
+         type: 'report/setVersionTitle',
+         payload : { versionTitle : title }
+       });
+
+       dispatch({
+         type: 'report/getVersion',
+         payload : query
+       });
+  };
+
+  const operations = () => {
+      switch (tabState) {
+        case 'basic':
+          return (<div></div>)
+        case 'activity':
+          return (<div>报活月份:&nbsp;&nbsp;
+              <MonthPicker defaultValue={moment(new Date(), 'YYYY-MM-DD')} placeholder="请选择报活月份" onChange={onDateChange}/>
+            </div>)
+      }
+  }
 
   const onChangeTab = (key) => {
-    if(key == 1){
-      dispatch({
-        type: 'companies/activity',
-        payload : false
-      });
+    dispatch({
+      type: 'companies/activity',
+      payload : key
+    });
+  }
 
-    }else{
-      dispatch({
-        type: 'companies/activity',
-        payload : true
-      });
-    }
+  const onSubChangeTab = (key) =>{
+    dispatch({
+      type: 'companies/setSubSelect',
+      payload : { subSelect : key }
+    });
+
   }
 
   const setAdvancedSearch = (basicSearch) => {
     dispatch({
-      type: 'companies/setBasicSearch',
+      type: 'companies/hideSearchPanel',
       payload : false
+    });
+  }
+
+  const hideSearch = () => {
+    dispatch({
+      type: 'companies/hideSearchPanel',
+      payload : true
     });
   }
 
@@ -134,33 +149,73 @@ const Enterprise = ({dispatch ,  companies , global }) => {
   }
 
   const onRowClick = (record, index) => {
+
     dispatch({
       type: 'companies/getCurrentItem',
       payload : record.id
     });
+
+    dispatch({
+      type: 'companies/setSelectedRowKeys',
+      payload : { selectedRowKeys : [index] }
+    });
+
+    dispatch({
+      type: 'companies/setSubSelect',
+      payload : { subSelect : `sub-${tabState}` }
+    });
+
+
   }
 
 
   const searchShow = () =>{
-    if(!isBasic){
+    if(!hideSearchPanel){
       return (<AdvancedSearchForm {...AdvanceSearchProps} />)
     }
     else{
       return (
-        <div className={styles.basicSearch}>
-          <span className={styles.text}>检索关键字:</span>
-          <BasicSearch style={{width : '200px'}} />
-          <span className={styles.text}><a onClick={setAdvancedSearch}> 高级检索 </a></span>
+        <div>
+          <Row>
+            <Col span={24} style={{ textAlign: 'right' }}>
+              <Button icon="down" onClick={setAdvancedSearch}> 高级检索 </Button>
+            </Col>
+          </Row>
+          <SearchTags searchInfo = {searchInfo} />
         </div>)
     }
 
   };
+
+  const rowSelection = {
+    type: 'radio',
+    selectedRowKeys,
+    onChange: (selectedRowKeys, selectedRows) => {
+      dispatch({
+        type: 'companies/getCurrentItem',
+        payload : selectedRows[0].id
+      });
+
+      dispatch({
+        type: 'companies/setSelectedRowKeys',
+        payload : { selectedRowKeys }
+      });
+
+      dispatch({
+        type: 'companies/setSubSelect',
+        payload : { subSelect : `sub-${tabState}` }
+      });
+      // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    },
+  };
+
 
   const AdvanceSearchProps = {
     global,
     onRegionChange,
     onTypeChange,
     dispatch,
+    hideSearch,
     setBasicSearch,
     typeOptions: global.EtypeOptions
   }
@@ -168,13 +223,20 @@ const Enterprise = ({dispatch ,  companies , global }) => {
   const BasicTableProps = {
     companyList : companies,
     onTableChange,
-    onRowClick
+    onRowClick,
+    rowSelection
   }
 
   const ActivityTableProps = {
     companyList : companies,
-    onTableChange: onActivityChange,
-    onRowClick
+    onTableChange,
+    onRowClick,
+    rowSelection
+  }
+
+  const ReportLineProps ={
+    report : report,
+    onChartClick
   }
 
   const overviewPanelProps = {
@@ -185,21 +247,32 @@ const Enterprise = ({dispatch ,  companies , global }) => {
     company : companies.currentItem
   }
 
+  const ActivityPanelProps = {
+    company : companies.currentItem
+  }
+
+  const versionPiePanelProps = {
+    report
+  }
+
   return (
     <div>
-      国有企业继往开来
+      <h2>国有企业继往开来</h2>
       <Row gutter={40}>
 
           <Col span={14} key={"data-area"}>
-            <div style={{"overflowY" : "scroll" , "overflowX" : "hidden" , height:"680px"}}>
+            <div>
               {searchShow ()}
               <div className={styles.datapane}>
-                <Tabs defaultActiveKey="1" tabBarExtraContent={operations}  onChange={onChangeTab}>
-                  <TabPane tab={<span><Icon type="solution" />企业情况</span>} key="1">
+                <Tabs defaultActiveKey="basic" tabBarExtraContent={ operations() }  onChange={onChangeTab}>
+                  <TabPane tab={<span><Icon type="solution" />企业明细</span>} key="basic">
                     <BasicTable {...BasicTableProps} />
                   </TabPane>
-                  <TabPane tab={<span><Icon type="line-chart" />报活情况</span>} key="2">
+                  <TabPane tab={<span><Icon type="line-chart" />报活明细</span>} key="activity">
                     <ActivityTable {...ActivityTableProps} />
+                  </TabPane>
+                  <TabPane tab={<span><Icon type="code" />数据展示</span>} key="analysis">
+                    <ReportLine {...ReportLineProps} />
                   </TabPane>
                 </Tabs>
               </div>
@@ -208,12 +281,15 @@ const Enterprise = ({dispatch ,  companies , global }) => {
 
           <Col span={10} key={"info-area"}>
             <OverviewPanel {...overviewPanelProps} />
-            <Tabs activeKey={isActivity? "2":"1"}>
-              <TabPane tab={<span><Icon type="solution" />基本信息维护</span>} key="1" disabled>
+            <Tabs onChange={onSubChangeTab} activeKey={ subSelect }>
+              <TabPane tab={<span><Icon type="solution" />基本信息面板</span>} key="sub-basic">
                 <BasicPanel {...BasicPanelProps}/>
               </TabPane>
-              <TabPane tab={<span><Icon type="line-chart" />报活数据分析</span>} key="2" disabled>
-                <ActivityPanel />
+              <TabPane tab={<span><Icon type="line-chart" />报活面板</span>} key="sub-activity">
+                <ActivityPanel {...ActivityPanelProps}/>
+              </TabPane>
+              <TabPane tab={<span><Icon type="pie-chart" />版本面板</span>} key="subVersion">
+                <VersionPie {...versionPiePanelProps} />
               </TabPane>
             </Tabs>
           </Col>
@@ -226,7 +302,7 @@ Enterprise.propTypes = {
 
 };
 
-const mapStateToProps = ({ companies , global }) => {
-  return { companies , global }
+const mapStateToProps = ({ companies , global , report }) => {
+  return { companies , global , report }
 }
 export default connect(mapStateToProps)(Enterprise);
