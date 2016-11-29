@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReportLine from '../Chart/ReportLine';
-import { Tabs , Modal } from 'antd';
+import MonthlyModal from '../CompanyMonthly/MonthlyModal';
+import { Tabs , Modal ,Row ,Col,Button } from 'antd';
 import { connect } from 'dva';
 
 import { converId, converServer, conver } from '../../utils/reportCommon';
@@ -40,12 +41,35 @@ const ActivityPanel = ({ company , report , dispatch}) => {
     report,
     company,
     onChartClick
+  };
+
+  const MonthlyModalProps = {
+    company , 
+    width : 920
+  }
+
+  const showInnerDataInput = () =>{
+    dispatch({
+      type : "companyMonthly/getInnerData",
+      payload : company.id
+    });
+
+    dispatch({
+      type: 'companyMonthly/showModal',
+      payload : { modalVisibel : true }
+    });
   }
 
   return (
     <div>
-      <h3 style={{"marginBottom" : "8px"}}>{company.name} 报活情况</h3>
-      <ReportLine {...ReportLineProps} />
+        <Row>
+          <h3 style={{"marginBottom" : "8px"}}>{company.name} 报活情况</h3>
+          <Col span={24} style={{ textAlign: 'right' }}>
+            <Button type="primary" onClick={ showInnerDataInput }>内网信息录入</Button>
+          </Col>
+        </Row>
+      <ReportLine { ...ReportLineProps } />
+      <MonthlyModal { ...MonthlyModalProps } />
     </div>
   );
 };
@@ -59,7 +83,8 @@ function mapStateToProps({ companyMonthly }) {
      report : {
        loading : companyMonthly.loading ,
        monthly  : companyMonthly.list
-     }
+     },
+
    }
 }
 

@@ -22,43 +22,11 @@ const RegionGlobal = React.createClass({
 
   handleChange(value, selectedOptions) {
     const dispatch = this.props.dispatch;
-    switch (value.length) {
-      case 1:
-        if(value[0] !== 0){
-          dispatch({
-            type: 'global/getCity',
-            payload:{
-              provinceId: value[0]
-            }
-          });
-        }
-        dispatch({
-          type: 'global/setProvinceItem',
-          payload: selectedOptions[0]
-        });
-        break;
-      case 2:
-          if(value[1] !== 0){
-            dispatch({
-              type: 'global/getCountry',
-              payload:{
-                cityId: value[1]
-              }
-            });
-          }
-          dispatch({
-            type: 'global/setCityItem',
-            payload: selectedOptions[1]
-          });
-          break;
-      case 3:
-          dispatch({
-              type: 'global/setCountryItem',
-              payload: selectedOptions[2]
-            });
-        break;
-      default:
-    }
+
+    dispatch({
+      type: 'global/setAddressItem',
+      payload: { selectValue : value }
+    });
 
     if (!('value' in this.props)) {
       this.setState({ value : value});
@@ -78,7 +46,8 @@ const RegionGlobal = React.createClass({
         options= { this.props.global.addressOptions }
         changeOnSelect= { this.props.changeOnSelect }
         placeholder= { this.props.placeholder }
-        onChange={ this.handleChange } />
+        onChange={ this.handleChange }
+        showSearch />
     );
   },
 });

@@ -1,4 +1,4 @@
-import { query , queryActive ,getCompany } from '../services/companies';
+import { query , queryActive ,getCompany , updateCompany } from '../services/companies';
 var pathToRegexp = require('path-to-regexp');
 var u = require('updeep');
 var _ = require('lodash');
@@ -64,6 +64,8 @@ export default {
      current: 0, // 当前分页信息
      currentItem: {}, // 当前操作的用户对象
 
+     currentType:[], // 当前操作用户对象的类型集合
+     currentIndustry:[], // 当前操作用户对象的行业集合
   },
 
   subscriptions: {
@@ -71,13 +73,22 @@ export default {
       // console.log("company setup");
       history.listen(({ pathname }) => {
         const match = pathToRegexp(`/company/:catalog?`).exec(pathname);
+
         if (match) {
+          dispatch({
+            type: 'global/setCurrentType',
+            payload: { catalogName : match[1] }
+          });
           dispatch({
             type: 'setCatalog',
             payload: match[1]
           });
           dispatch({
             type: 'clearQuery',
+          });
+          dispatch({
+            type: 'getCurrentType',
+            payload: match[1]
           });
           dispatch({
             type: 'report/queryMonthly'
@@ -94,31 +105,64 @@ export default {
     *getCurrentItem({ payload : companyId } , {call, put }){
       const { jsonResult : companyItem } = yield call(getCompany, companyId);
       if(companyItem){
-
           yield put({
             type:"setCurrentItem",
             payload : companyItem
           });
-
+          yield put({
+            type:"setTypeAndIndustry",
+            payload : { company : companyItem }
+          });
           yield put({
             type:"orders/query",
             payload : companyId
           });
-
           yield put({
             type:"sns/query",
             payload : companyId
           });
-
           yield put({
             type:"companyMonthly/query",
             payload : companyId
           });
-
           yield put({
             type:"versionDaily/query",
             payload : companyId
           });
+
+      }
+    },
+    *setTypeAndIndustry({ payload } , { call , put , select }){
+      const { company } = payload ;
+      const catalogData  = yield select(state => state.global.catalogData);
+      const catalogName =  yield select(state => state.companies.catalog);;
+      const currentType = _.chain(catalogData)
+        .filter((item) => { return _.toLower(item.catalog) === _.toLower(catalogName) })
+        .map((item) => {return item.type}).uniq().value();
+      yield put({
+        type : 'setCrrentType',
+        payload : { currentType }
+      })
+
+      const currentIndustry = _.chain(catalogData)
+        .filter((item) => { return _.toLower(item.catalog) === _.toLower(catalogName) && item.type === company.type })
+        .map((item) => {return item.industry}).uniq().value();
+      yield put({
+          type : 'setCurrentIndustry',
+          payload : { currentIndustry }
+      })
+    },
+    *updateCompany({ payload } , {call , put , select }){
+      try {
+        const currentItem = yield select(state => state.companies.currentItem);
+        const { jsonResult : company } =
+          yield call(updateCompany , currentItem);
+        if( company ){
+            yield put({ type: 'getCurrentItem' , payload : company.id });
+        }
+        return false
+      } catch (error) {
+        return false
       }
     },
 
@@ -224,8 +268,22 @@ export default {
     changeFilterDate(state,action){
       return {...state , activityDate: action.payload };
     },
+    
+    updateCurrentItem(state,action){
+      const field = action.payload;
+      const result = {};
+      _.forOwn(field, function(item, key) {
+       result[key] = item.value;
+      });
+      const currentItem = state.currentItem;
+      return {...state , currentItem: _.merge(currentItem,result) } ;
+    },
 
-
-
+    setCrrentType(state,action){
+      return {...state,...action.payload }
+    },
+    setCurrentIndustry(state,action){
+      return {...state,...action.payload }
+    }
   },
 }

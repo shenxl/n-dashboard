@@ -16,7 +16,6 @@ const Header = ({ auth , logOut }) => {
       <div className={styles.Inner}>
         <div className={styles.Title}>
           <div className={styles.PopoverAvtar}>
-            <img className={styles.thumb60} src="http://avatar.qwps.cn/avatar/%E6%B2%88%E9%9C%84%E9%9B%B7" />
           </div>
           <div className={styles.PopoverContact}>{currentUser.email}</div>
         </div>

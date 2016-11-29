@@ -3,7 +3,7 @@ import { Form, Input, Button, Checkbox , Icon} from 'antd';
 import { Link } from 'react-router';
 import { connect } from 'dva';
 import styles from './Singup.less';
-import { loginUrl , signupUrl } from '../../utils/constant';
+import { loginUrl , signupUrl , emailAddonAfter } from '../../utils/constant';
 
 const FormItem = Form.Item;
 
@@ -22,7 +22,7 @@ const SignupClass = ({ form, location, dispatch , data}) => {
       dispatch({
         type: 'auth/signup',
         data: {
-          email:`${email}@kingsoft.com`,
+          email:`${email}@${emailAddonAfter}`,
           password
         }
       })
@@ -62,12 +62,9 @@ const SignupClass = ({ form, location, dispatch , data}) => {
         hasFeedback
         >
         {getFieldDecorator('email', {
-            validateFirst: true,
-            rules: [
-              { required: true, min: 5, message: '用户名至少需要5个字符' }
-            ],
+            validateFirst: true
           })(
-          <Input addonBefore={<Icon type="user" />} placeholder="请输入公司邮箱" addonAfter="@kingsoft.com"  placeholder="您的名字" />
+          <Input addonBefore={<Icon type="user" />} placeholder="请输入公司邮箱" addonAfter={`@${emailAddonAfter}`} placeholder="您的名字" />
         )}
         </FormItem>
 
@@ -102,7 +99,7 @@ const SignupClass = ({ form, location, dispatch , data}) => {
               validator: checkPass2,
             }],
           })(
-            <Input type="password" autoComplete="off" placeholder="两次输入的密码要一致"
+            <Input type="password" autoComplete="off" placeholder="两次输入的密码要一致" addonBefore={<Icon type="lock" />}
               onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
             />
           )}

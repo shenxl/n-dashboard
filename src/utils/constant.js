@@ -10,5 +10,6 @@ const Constant = {
   signupUrl :'/pass/signup',
   signSuccessUrl: '/pass/signsuccess',
   UserInfoUrl :  '/user/info',
+  emailAddonAfter:'kingsoft.com',
 }
 export default Constant;//

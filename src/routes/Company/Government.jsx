@@ -26,8 +26,10 @@ const MonthPicker = DatePicker.MonthPicker;
 const Government = ({dispatch ,  companies , global , report }) => {
 
   // 地区变化的 dispatch
-  const { hideSearchPanel , tabState , searchInfo ,selectedRowKeys , subSelect } = companies;
+  const { hideSearchPanel , tabState , searchInfo ,selectedRowKeys ,
+      subSelect , currentType, currentIndustry } = companies;
   const {versionLoading , version } = report;
+  const { currentTypeOptions } = global;
   const onTypeChange = (value, selectedOptions) => {
     // console.log(selectedOptions);
   }
@@ -81,7 +83,6 @@ const Government = ({dispatch ,  companies , global , report }) => {
   }
 
   const onChartClick = (param, echart) => {
-       console.log(param, echart);
        const key = _.split(param.name, '-', 2);
        const query = _.assign({},converId(param.seriesName),{ year:key[0] , month:key[1]});
        const title = `${query.year}年${query.month}月${param.seriesName} 版本分布图`;
@@ -217,7 +218,7 @@ const Government = ({dispatch ,  companies , global , report }) => {
     dispatch,
     hideSearch,
     setBasicSearch,
-    typeOptions: global.GtypeOptions
+    typeOptions: currentTypeOptions
   }
 
   const BasicTableProps = {
@@ -244,7 +245,6 @@ const Government = ({dispatch ,  companies , global , report }) => {
   }
 
   const BasicPanelProps = {
-    company : companies.currentItem
   }
 
   const ActivityPanelProps = {

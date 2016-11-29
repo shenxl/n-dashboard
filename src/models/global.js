@@ -1,9 +1,10 @@
-import { getRegion , getCatalog } from '../services/global';
+import { getAllRegion , getRegion , getCatalog  } from '../services/global';
 var pathToRegexp = require('path-to-regexp');
+import { getRegionData , setRegionData } from '../utils/globalUtils'
 var _ = require('lodash');
 
 const filterCatalog = (info , catalog) => {
-  return _.chain(info).
+  const result =  _.chain(info).
     filter((item) => {
       return item.catalog === catalog
     }).
@@ -23,6 +24,7 @@ const filterCatalog = (info , catalog) => {
         }
       });
     }).head().value()
+   return result || [];
 }
 
 export default {
@@ -30,9 +32,8 @@ export default {
   namespace: 'global',
 
   state: {
-    province:[],
-    city:[],
-    country:[],
+    data:[],
+    catalogName : 'GOVERNMENT',
     provinceItem:{},
     cityItem:{},
     countryItem:{},
@@ -46,9 +47,8 @@ export default {
       FINANCE : ["金融"],
       NORMALIZATION  : ["常态化"]
     },
-    GtypeOptions:[],
-    EtypeOptions:[],
-    FtypeOptions:[],
+    catalogData:[],
+    currentTypeOptions:[],
     addressOptions:[]
   },
 
@@ -56,85 +56,115 @@ export default {
     setup({ dispatch, history }) {
       // console.log("global setup");
       history.listen(({ pathname }) => {
+
         dispatch({
-          type: 'getProvince',
+          type: 'getAllRegion',
         });
 
         dispatch({
           type: 'getCatalog',
         });
-
-
       });
     },
   },
 
   effects: {
-    *getProvince({ payload }, {call, put, select }) {
+    *getAllRegion({ payload } , {call , put , select }){
       yield put({ type: 'sendRequest' });
-      const global = yield select(state => state.global);
-      if (!global.LoadedProvice) {
-        const chinaId = 100000
-        const { jsonResult: province } = yield call(getRegion, chinaId);
-        if (province) {
-          yield put({
-            type: 'fristLoadedProvince',
-          });
-          yield put({
-            type: 'setProvince',
-            payload: {
-              province
-            },
-          });
-          yield put({
-            type: 'setAddressOptions',
-            payload:{
-              opt: "province"
-            },
-          });
+      let cacheData = getRegionData();
+      if(!cacheData) {
+          const { jsonResult : data } = yield call(getAllRegion);
+          if(data) {
+            cacheData = data;
+            setRegionData(cacheData);
+          }
         }
-      }
-    },
-
-    *getCity({ payload }, {call, put, select }) {
-      yield put({ type: 'sendRequest' });
-      const { jsonResult: city } = yield call(getRegion, payload.provinceId);
-      if (city) {
         yield put({
-          type: 'setCity',
+          type: 'setGlobalData',
           payload: {
-            city
-          },
+            data : cacheData
+          }
+        })
+        const province = _.filter(cacheData, (item) => {
+          return item.LevelType === 1
+        });
+        let addressOptions = _.map(_.concat([], province), (item) => {
+          return {
+            value: item.ID,
+            label: item.Name,
+            pinyin: item.Pinyin
+          }
+        });
+        addressOptions = _.map(addressOptions, (province) => {
+          const city = _.filter(cacheData, (item) => {
+            return item.ParentId === province.value
+          });
+          let cityObj = _.map(city, (item) => {
+            return {
+              value: item.ID,
+              label: item.Name,
+              pinyin: item.Pinyin
+            }
+          });
+          cityObj = _.map(cityObj, (city) => {
+            const country = _.filter(cacheData, (item) => {
+              return item.ParentId === city.value
+            });
+            let countryObj = _.map(country, (item) => {
+              return {
+                value: item.ID,
+                label: item.Name,
+                pinyin: item.Pinyin
+              }
+            });
+            const countryExtend = _.concat([{
+              value: -100,
+              label: "市直",
+              pinyin: "shizhi"
+            }], countryObj);
+            return _.assign(city, {
+              children: countryExtend
+            });
+          })
+          const cityExtend = _.concat([{
+            value: -10,
+            label: "省直",
+            pinyin: "shengzhi"
+          }], cityObj);
+          return _.assign(province, {
+            children: cityExtend
+          });
         });
         yield put({
           type: 'setAddressOptions',
-          payload:{
-            opt: "city",
-            provinceId : payload.provinceId
-          },
-        });
-      }
+          payload: {
+            addressOptions
+          }
+        })
     },
 
-    *getCountry({ payload }, {call, put, select }) {
-      yield put({ type: 'sendRequest' });
-      const { jsonResult: country } = yield call(getRegion, payload.cityId);
-      if (country) {
-        yield put({
-          type: 'setCountry',
-          payload: {
-            country
-          },
-        });
-
-        yield put({
-          type: 'setAddressOptions',
-          payload:{
-            opt: "country",
-            cityId : payload.cityId
-          },
-        });
-      }
+    *setAddressItem({ payload } , { call , put , select }){
+      const data = yield select((state) => state.global.data);
+      const { selectValue } = payload;
+      const selectProps = {provinceItem : {} , cityItem: {} , countryItem : {}};
+      _.forEach(selectValue,(item) => {
+        const selectItem = _.head(_.filter(data , (select) => { return select.ID === item}));
+        if(selectItem && selectItem.LevelType){
+          switch (selectItem.LevelType) {
+            case 1:
+              _.assign(selectProps , { provinceItem : selectItem } , { cityItem : {} } ,  { countryItem : {} }) ;
+              break;
+            case 2:
+              _.assign(selectProps , { cityItem : selectItem } , { countryItem : {} }) ;
+              break;
+            case 3:
+              _.assign(selectProps , { countryItem : selectItem }) ;
+              break;
+            default:
+          }
+        }
+      })
+      yield put({ type: 'updateAddressItem', payload : selectProps  });
     },
 
     *getCatalog({ payload }, {call, put, select }) {
@@ -143,6 +173,11 @@ export default {
       if (!global.LoadedCatalog) {
         const { jsonResult: catalog } = yield call(getCatalog);
         if(catalog){
+          yield put({
+            type : 'setCatalogData',
+            payload : { catalogData : catalog }
+          });
+
           yield put({
             type : 'loadCatalog',
             payload : catalog
@@ -158,38 +193,34 @@ export default {
   },
 
   reducers: {
+
     sendRequest(state) {
       return { ...state, requesting: true };
     },
-
-    fristLoadedProvince(state) {
-      return { ...state, LoadedProvice: true };
+    setCatalogData(state,action){
+      return { ...state, ...action.payload };
+    },
+    setAddressOptions(state,action){
+      return { ...state, ...action.payload };
+    },
+    updateAddressItem(state, action) {
+      return { ...state, ...action.payload };
+    },
+    setGlobalData(state , action) {
+      return { ...state , ...action.payload}
+    },
+    setCatalogName(state , action){
+      return {...state , ...action.payload  }
     },
 
     fristLoadCatalog(state) {
       return { ...state, LoadedCatalog: true };
     },
-    setProvince(state, action) {
-      return { ...state, ...action.payload, requesting: false };
-    },
-    setProvinceItem(state, action) {
-      return { ...state, provinceItem : action.payload };
-    },
-    setCity(state, action) {
-      return { ...state, ...action.payload, requesting: false };
-    },
-    setCityItem(state, action) {
-      return { ...state, cityItem : action.payload };
-    },
-    setCountry(state, action) {
-      return { ...state, ...action.payload, requesting: false };
-    },
-    setCountryItem(state, action) {
-      return { ...state, countryItem : action.payload };
-    },
 
     loadCatalog(state,action){
       const catalogEntity = action.payload;
+      const catalogName = state.catalogName;
+
       const info = _.chain(catalogEntity).
         groupBy('catalog').
         map((item, ckey) => {
@@ -216,67 +247,16 @@ export default {
         })
       }, {});
 
-      let GtypeOptions = filterCatalog(info , 'GOVERNMENT');
-      let EtypeOptions = filterCatalog(info ,'ENTERPRISE');
-      let FtypeOptions = filterCatalog(info ,'FINANCE');
-
-      return {...state, catalog, GtypeOptions, EtypeOptions, FtypeOptions };
-
+      const currentTypeOptions = filterCatalog(info , _.toUpper(catalogName)) ;
+      return {...state, catalog, catalogInfo : info , currentTypeOptions };
     },
 
-    setAddressOptions(state,action){
-      let addressOptions = state.addressOptions || [];
-      let childrenObj = {};
-      let tmpObj = {};
-      switch (action.payload.opt) {
-        case "province":
-          addressOptions = _.map( _.concat(addressOptions , state.province), (item) => {
-            return {
-              value : item.ID,
-              label : item.Name,
-              pinyin : item.Pinyin
-            }
-          })
-          break;
-        case "city":
-          const provinceId = action.payload.provinceId
-          const provinceObj = _.find(addressOptions, (province) => { return province.value === provinceId });
-          if(provinceObj && !provinceObj.children){
-            tmpObj = _.map(state.city, (item) => {
-              return {
-                value : item.ID,
-                label : item.Name,
-                pinyin : item.Pinyin
-              }
-            });
-            tmpObj = _.concat([{value : 0 , label : "省直"}], tmpObj);
-            childrenObj = { children : tmpObj }
-            _.assign(provinceObj, childrenObj);
-          }
-          break;
-        case "country":
-          const cityId = action.payload.cityId
-          const cityObj = _.forEach(addressOptions, (province) => {
-            if(province && province.children){
-              const findObj = _.find(province.children, (city) => { return city.value === cityId });
-              if(findObj && !findObj.children){
-                tmpObj =  _.map(state.country, (item) => {
-                  return {
-                    value : item.ID,
-                    label : item.Name,
-                    pinyin : item.Pinyin
-                  }
-                });
-                tmpObj = _.concat([{value : 0 , label : "市直"}], tmpObj);
-                childrenObj = { children : tmpObj }
-                _.assign(findObj, childrenObj);
-              }
-            }
-          })
-          break;
-        default:
-      }
-      return { ...state , addressOptions : addressOptions}
+    setCurrentType(state , action ){
+      const { catalogName } = action.payload;
+      const info = state.catalogInfo;
+      const currentTypeOptions = filterCatalog(info , _.toUpper(catalogName));
+      return {...state, currentTypeOptions };
     }
+
   },
 }

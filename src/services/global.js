@@ -7,6 +7,18 @@ const global = {
   getCatalog : async () =>{
     return xFetch(`${apiUrl}/companyCatalogs`)
   },
+  getAllRegion : async () => {
+    const fields =  {
+      fields: {
+        ID: true,
+        Name: true,
+        ParentId: true,
+        LevelType: true,
+        Pinyin: true
+      }
+    }
+    return xFetch(`${apiUrl}/globalRegions?filter=${JSON.stringify(fields)}`)
+  }
 
 }
 export default global;

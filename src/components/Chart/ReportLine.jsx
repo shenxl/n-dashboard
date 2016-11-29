@@ -16,9 +16,6 @@ const ReportLine = ({ company , report  , onChartClick }) => {
 
   const init = () => {
     if(!loading){
-      echarts.registerTheme('my_theme', {
-        backgroundColor: '#f4cccc'
-      });
       // echarts_instance.clear();
       let serverInfo = [];
       let tokenInfo = [];
@@ -157,7 +154,6 @@ const ReportLine = ({ company , report  , onChartClick }) => {
             height: 400,
           }}
           notMerge
-          theme='my_theme'
           onEvents={ onEvents }
         />
 

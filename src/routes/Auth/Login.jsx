@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Form, Input, Button, Checkbox , Icon} from 'antd';
 import { Link } from 'react-router';
 import { connect } from 'dva';
+import { emailAddonAfter } from '../../utils/constant';
 
 import { loginUrl , signupUrl } from '../../utils/constant';
 import styles from './Login.less';
@@ -22,7 +23,7 @@ const LoginClass = ({ form, location, dispatch}) => {
       dispatch({
         type: 'auth/login',
         data: {
-          email:`${email}@kingsoft.com`,
+          email:`${email}@${emailAddonAfter}`,
           password,
           redirect: location.query
         }
@@ -50,7 +51,7 @@ const LoginClass = ({ form, location, dispatch}) => {
               { required: true,message:'请输入公司邮箱'},
             ],
           })(
-          <Input addonBefore={<Icon type="user" />} placeholder="请输入公司邮箱" addonAfter="@kingsoft.com" />
+          <Input addonBefore={<Icon type="user" />} placeholder="请输入公司邮箱" addonAfter={`@${emailAddonAfter}`} />
         )}
         </FormItem>
 

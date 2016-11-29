@@ -27,19 +27,19 @@ const AdvancedSearch = ({ form , onRegionChange , onAddressChange ,onTypeChange 
       if(values.address &&  values.address.length !== 0){
         switch (values.address.length) {
           case 1:
-            and.push({province:{like:`%25${provinceItem.label}%25`}})
-            status.push({ key: "address" ,value : provinceItem.label});
+            and.push({province:{like:`%25${provinceItem.Name}%25`}})
+            status.push({ key: "address" ,value : provinceItem.Name});
             break;
           case 2:
-            and.push({province:{like:`%25${provinceItem.label}%25`}});
-            and.push({city:{like:`%25${cityItem.label}%25`}});
-            status.push({ key: "address" ,value : `${provinceItem.label} - ${cityItem.label}` });
+            and.push({province:{like:`%25${provinceItem.Name}%25`}});
+            and.push({city:{like:`%25${cityItem.Name}%25`}});
+            status.push({ key: "address" ,value : `${provinceItem.Name} - ${cityItem.Name}` });
             break;
           case 3:
-            and.push({province:{like:`%25${provinceItem.label}%25`}});
-            and.push({city:{like:`%25${cityItem.label}%25`}});
-            and.push({county:{like:`%25${countryItem.label}%25`}});
-            status.push({ key: "address" ,value : `${provinceItem.label} - ${cityItem.label} - ${countryItem.label}` });
+            and.push({province:{like:`%25${provinceItem.Name}%25`}});
+            and.push({city:{like:`%25${cityItem.Name}%25`}});
+            and.push({county:{like:`%25${countryItem.Name}%25`}});
+            status.push({ key: "address" ,value : `${provinceItem.Name} - ${cityItem.Name} - ${countryItem.Name}` });
             break;
           default:
         }
@@ -102,6 +102,12 @@ const AdvancedSearch = ({ form , onRegionChange , onAddressChange ,onTypeChange 
     dispatch({
       type: 'companies/query',
     });
+
+    dispatch({
+      type: 'companies/setSelectedRowKeys',
+      payload : { selectedRowKeys : [0] }
+    });
+
     form.resetFields();
   };
 

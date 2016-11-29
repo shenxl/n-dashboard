@@ -10,6 +10,17 @@ const companies = {
   getCompany :  async (companyId) =>{
     return xFetch(`${apiUrl}/companies/${companyId}`)
   },
+  updateCompany: async (updateAttributes) =>{
+    const options = {
+      method: "PUT",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body : JSON.stringify(updateAttributes),
+    };
+    return xFetch(`${apiUrl}/companies/`,options);
+
+ },
 
 }
 export default companies;

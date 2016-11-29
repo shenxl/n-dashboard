@@ -2,7 +2,6 @@ import { query , createOrder , editOrder} from '../services/orders';
 var _ = require('lodash');
 
 const dealWithCurrent = (current , company_id) => {
-
   const dealItem = {};
    _.forIn(current , ( value , key ) => {
     if(value.name){

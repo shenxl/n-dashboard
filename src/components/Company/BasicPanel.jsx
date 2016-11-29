@@ -1,19 +1,21 @@
 import React, { Component, PropTypes } from 'react';
 import { Tabs , Modal } from 'antd';
 import { connect } from 'dva';
+var _ = require('lodash');
 
 import CompanyInfo from './CompanyInfo';
 import OrderTable from '../Order/OrderTable';
 import SnTable from '../Sns/SnTable';
 import styles from './panel.less';
-
+import { prossessRegionData ,prossessRegionName } from '../../utils/globalUtils';
 const TabPane = Tabs.TabPane;
 const confirm = Modal.confirm;
 
 
-const BasicPanel = ({ orders , sns , company ,dispatch  }) => {
+const BasicPanel = ({ dispatch ,  orders , sns , global ,  currentType , currentIndustry , company }) => {
 
   const {  modalMode } = orders;
+  const { province , city } = global;
   const showEditConfirm = (record , value) => {
     const content = `
       请确认是否要将序列号 ${record.sn},
@@ -170,6 +172,64 @@ const BasicPanel = ({ orders , sns , company ,dispatch  }) => {
     });
   }
 
+  const showUpdateCompanyConfirm = () =>{
+    const content = `
+        请确认是否对修改内容进行保存?
+      `;
+    confirm({
+      title: `请确认是否对修改内容进行保存`,
+      content: content,
+      onOk() {
+        dispatch({
+          type: 'companies/updateCompany'
+        });
+      },
+      onCancel() {
+      },
+    });
+  }
+  const saveCompany = () => {
+    const isSave  = showUpdateCompanyConfirm();
+    // if (isSave) {
+    //   Modal.success({
+    //   title: '保存成功',
+    //   content: '保存成功',
+    //   });
+    // }
+  }
+
+  const onCompanyFiledsChange = (fields) =>{
+    // console.log("fields" , fields);
+    if(fields.regionData){
+      const result = prossessRegionName(fields.regionData.value );
+      dispatch({
+        type: 'companies/updateCurrentItem',
+        payload : result
+      });
+    }
+    else if(fields.typeData){
+      const length = fields.typeData.value.length;
+      let result = {};
+      if(length === 2){
+        _.assign(result , { type : { value : fields.typeData.value[0] } }) ;
+        _.assign(result , { industry : { value : fields.typeData.value[1] } }) ;
+      } else if (length === 1){
+        _.assign(result , { type : { value : fields.typeData.value[0] } }) ;
+        _.assign(result , { industry : { value : "" } }) ;
+      }
+      dispatch({
+        type: 'companies/updateCurrentItem',
+        payload : result
+      });
+    } else {
+      dispatch({
+        type: 'companies/updateCurrentItem',
+        payload : fields
+      });
+    }
+
+  }
+
   const orderProps = {
     orders,
     onEditOrder,
@@ -188,7 +248,13 @@ const BasicPanel = ({ orders , sns , company ,dispatch  }) => {
   }
 
   const companyInfoProps = {
-    company
+    currentItem:company,
+    currentType ,
+    currentIndustry,
+    onCompanyFiledsChange,
+    saveCompany,
+    global,
+    dispatch
   }
 
   const currentItem = () => {
@@ -219,8 +285,9 @@ BasicPanel.propTypes = {
 
 };
 
-function mapStateToProps({ orders , sns }) {
-  return { orders , sns  }
+function mapStateToProps({ orders , sns , global ,companies }) {
+  const { currentItem : company , currentType , currentIndustry } = companies;
+  return { orders , sns , global ,  currentType , currentIndustry , company }
 }
 
 export default connect(mapStateToProps)(BasicPanel);

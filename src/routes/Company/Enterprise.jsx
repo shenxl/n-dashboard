@@ -27,7 +27,8 @@ const Enterprise = ({dispatch ,  companies , global , report }) => {
 
   // 地区变化的 dispatch
   const { hideSearchPanel , tabState , searchInfo ,selectedRowKeys , subSelect } = companies;
-  const {versionLoading , version } = report;
+  const { versionLoading , version } = report;
+  const { currentTypeOptions } = global;
   const onTypeChange = (value, selectedOptions) => {
     // console.log(selectedOptions);
   }
@@ -217,7 +218,7 @@ const Enterprise = ({dispatch ,  companies , global , report }) => {
     dispatch,
     hideSearch,
     setBasicSearch,
-    typeOptions: global.EtypeOptions
+    typeOptions : currentTypeOptions
   }
 
   const BasicTableProps = {
