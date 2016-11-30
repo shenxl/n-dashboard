@@ -38,7 +38,6 @@ app.model(require('./models/orders'));
 app.model(require('./models/sns'));
 app.model(require('./models/companyMonthly'));
 app.model(require('./models/versionMonthly'));
-app.model(require('./models/demo'));
 // 4. Router
 app.router(require('./router'));
 

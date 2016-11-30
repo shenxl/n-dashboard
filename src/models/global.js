@@ -139,7 +139,7 @@ export default {
     },
 
     *setAddressItem({ payload } , { call , put , select }){
-      const data = yield select((state) => state.global.data);
+      const data = getRegionData();
       const { selectValue } = payload;
       const selectProps = {provinceItem : {} , cityItem: {} , countryItem : {}};
       _.forEach(selectValue,(item) => {
