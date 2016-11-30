@@ -11,7 +11,13 @@ const MonthlyModal = ({ companyMonthly , dispatch , company , width  }) => {
  const { id: company_id , name } = company;
  const server_id = 99;
 
-  const monthlyModalHide = () => {
+  const monthlyModalCancle = () => {
+    dispatch({
+      type: 'companyMonthly/clearModalState'
+    });
+  }
+
+  const monthlyModalOK = () => {
     dispatch({
       type: 'companyMonthly/clearModalState'
     });
@@ -25,11 +31,12 @@ const MonthlyModal = ({ companyMonthly , dispatch , company , width  }) => {
     });
   }
 
+
   const modalProps = {
     title :  "内网数据录入" ,
     visible : modalVisibel,
-    onOk: monthlyModalHide,
-    onCancel: monthlyModalHide,
+    onOk: monthlyModalOK,
+    onCancel: monthlyModalCancle,
     cancelText:"取消",
     width
   }

@@ -43,7 +43,7 @@ const EditSelectControl = React.createClass({
   renderControl(){
     if(this.state.isEdit){
       const children = this.props.options.map((item) => {
-        return (<Option value={item}>{item}</Option>)
+        return (<Option value={item} key={ item }>{item}</Option>)
       })
       return (
         <Select defaultValue={this.state.value} style={{ width: 200 }} onBlur={this.handleBlur} onChange={this.handleChange}>

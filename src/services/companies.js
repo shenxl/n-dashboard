@@ -11,6 +11,7 @@ const companies = {
     return xFetch(`${apiUrl}/companies/${companyId}`)
   },
   updateCompany: async (updateAttributes) =>{
+    const { id } = updateAttributes
     const options = {
       method: "PUT",
       headers: {
@@ -18,7 +19,7 @@ const companies = {
       },
       body : JSON.stringify(updateAttributes),
     };
-    return xFetch(`${apiUrl}/companies/`,options);
+    return xFetch(`${apiUrl}/companies/${id}`,options);
 
  },
 

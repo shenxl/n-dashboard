@@ -38,7 +38,7 @@ const OrderFromCreate = ({ currentItem  ,form , modalMode , onOrderFieldsChange 
             </span>}
           >
           {getFieldDecorator('order_name', {
-            initialValue:  order_name.value || ""
+            initialValue:  order_name || ""
           })(
             <Input style={{ width: 280 }} />
           )}
@@ -54,7 +54,7 @@ const OrderFromCreate = ({ currentItem  ,form , modalMode , onOrderFieldsChange 
             </span>}
           >
           {getFieldDecorator('order_area', {
-            initialValue:  order_area.value || ""
+            initialValue:  order_area || ""
           })(
             <Input type="textarea" autosize={{ minRows: 2, maxRows: 4 }} style={{ width: 280 }} />
           )}
@@ -68,7 +68,7 @@ const OrderFromCreate = ({ currentItem  ,form , modalMode , onOrderFieldsChange 
             </span>}
           >
           {getFieldDecorator('order_type', {
-            initialValue:  order_type.value || "场地授权"
+            initialValue:  order_type || "场地授权"
           })(
             <Select style={{ width: 100 }}>
               <Option value="数量授权">数量授权</Option>
@@ -87,7 +87,7 @@ const OrderFromCreate = ({ currentItem  ,form , modalMode , onOrderFieldsChange 
             </span>}
           >
           {getFieldDecorator('order_number', {
-            initialValue : order_number.value || 0
+            initialValue : order_number || 0
           })(
             <InputNumber min={0} max={100000} style={{ width: 100 }} />
           )}
@@ -101,7 +101,7 @@ const OrderFromCreate = ({ currentItem  ,form , modalMode , onOrderFieldsChange 
             </span>}
           >
           {getFieldDecorator('after_authorization', {
-            initialValue: after_authorization.value || 0,
+            initialValue: after_authorization || 0,
           })(
             <InputNumber min={0} max={100000} style={{ width: 100 }} />
           )}
@@ -115,7 +115,7 @@ const OrderFromCreate = ({ currentItem  ,form , modalMode , onOrderFieldsChange 
             </span>}
           >
           {getFieldDecorator('prediction', {
-            initialValue:  prediction.value || 0,
+            initialValue:  prediction || 0,
           })(
             <InputNumber min={0} max={100000} style={{ width: 100 }} />
           )}
@@ -130,7 +130,7 @@ const OrderFromCreate = ({ currentItem  ,form , modalMode , onOrderFieldsChange 
             </span>}
           >
           {getFieldDecorator('authorization_years', {
-            initialValue: authorization_years.value || 0,
+            initialValue: authorization_years || 0,
           })(
             <InputNumber min={0} max={100000} style={{ width: 60 }} />
           )}
@@ -145,8 +145,8 @@ const OrderFromCreate = ({ currentItem  ,form , modalMode , onOrderFieldsChange 
             </span>}
           >
           {getFieldDecorator('authorization_date', {
-            initialValue: (authorization_date.value ?
-            moment(authorization_date.value, 'YYYY-MM-DD') :
+            initialValue: (authorization_date ?
+            moment(authorization_date, 'YYYY-MM-DD') :
             moment(new Date(), 'YYYY-MM-DD')),
           })(
             <DatePicker style={{ width: 100 }}/>
@@ -162,7 +162,7 @@ const OrderFromCreate = ({ currentItem  ,form , modalMode , onOrderFieldsChange 
             </span>}
           >
           {getFieldDecorator('length_of_service', {
-            initialValue:  length_of_service.value || 0,
+            initialValue:  length_of_service || 0,
           })(
             <InputNumber min={0} max={100000} style={{ width: 60 }} />
           )}
@@ -177,8 +177,8 @@ const OrderFromCreate = ({ currentItem  ,form , modalMode , onOrderFieldsChange 
             </span>}
           >
           {getFieldDecorator('service_date', {
-            initialValue:(service_date.value ?
-            moment(service_date.value, 'YYYY-MM-DD') :
+            initialValue:(service_date ?
+            moment(service_date, 'YYYY-MM-DD') :
             moment(new Date(), 'YYYY-MM-DD')),
           })(
             <DatePicker style={{ width: 100 }}/>

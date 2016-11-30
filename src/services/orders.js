@@ -6,6 +6,7 @@ const orders = {
   },
 
   createOrder: async (createAttributes) => {
+    console.log(createAttributes);
     const options = {
       method: "POST",
       headers: {

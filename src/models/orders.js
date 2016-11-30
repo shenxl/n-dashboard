@@ -1,16 +1,6 @@
 import { query , createOrder , editOrder} from '../services/orders';
 var _ = require('lodash');
 
-const dealWithCurrent = (current , company_id) => {
-  const dealItem = {};
-   _.forIn(current , ( value , key ) => {
-    if(value.name){
-      dealItem[key] = value.value
-    }
-  });
-  _.assign(dealItem, {company_id : company_id})
-  return dealItem;
-}
 
 export default {
 
@@ -24,16 +14,16 @@ export default {
       company_id: undefined,
       group_id: undefined,
       sns: undefined,
-      order_number: undefined,
-      order_type:undefined,
+      order_number: 0,
+      order_type:'场地授权',
       order_area: undefined,
       order_name: undefined,
-      authorization_years: undefined,
-      authorization_date: undefined,
-      length_of_service: undefined,
-      service_date: undefined,
-      after_authorization: undefined,
-      prediction: undefined,
+      authorization_years: 0,
+      authorization_date: new Date(),
+      length_of_service: 0,
+      service_date: new Date(),
+      after_authorization: 0,
+      prediction: 0,
       created_at: undefined,
       updated_at: undefined,
       deleted_at: undefined
@@ -65,13 +55,14 @@ export default {
         return false
       }
     },
-    *create({ payload : companyid } , {call , put , select }){
+    *create({ payload : company_id } , {call , put , select }){
       try {
         const currentItem = yield select(state => state.orders.currentItem);
+        console.log(currentItem);
         const { jsonResult : orders } =
-          yield call(createOrder , dealWithCurrent(currentItem, companyid));
+          yield call(createOrder ,  _.assign(currentItem, { company_id }) );
         if(orders){
-          yield put({ type: 'query' , payload : companyid });
+          yield put({ type: 'query' , payload : company_id });
         }
         yield put({ type: 'clearModalState'});
         return false
@@ -79,14 +70,13 @@ export default {
         return false
       }
     },
-    *edit({ payload : companyid } , {call , put , select }){
+    *edit({ payload : company_id } , {call , put , select }){
       try {
         const currentItem = yield select(state => state.orders.currentItem);
-
         const { jsonResult : orders } =
-          yield call(editOrder ,currentItem.id.value, dealWithCurrent(currentItem , companyid));
+          yield call(editOrder ,currentItem.id, _.assign(currentItem, { company_id }) );
         if(orders){
-            yield put({ type: 'query' , payload : companyid });
+            yield put({ type: 'query' , payload : company_id });
         }
         yield put({ type: 'clearModalState'});
         return false
@@ -108,32 +98,26 @@ export default {
       const orderid = action.payload;
       const current = _.assign({} ,
         _.find(state.list , (item) => {return item.id ===  orderid}) || state.emptyItem);
-
-      const currentItem = _.forIn(current , ( value , key ) => {
-        return current[key] = {
-              "value" : value
-            }
-      });
-
-      return { ...state, currentItem : currentItem }
+      return { ...state, currentItem : current }
     },
     setModalState(state, action){
       return { ...state,  ...action.payload }
     },
     updateCurrentItem(state, action){
-      return { ...state , currentItem : { ...state.currentItem , ...action.payload}  }
+      const field = action.payload;
+      const result = {};
+      _.forOwn(field, function(item, key) {
+        result[key] = item.value;
+      });
+      const currentItem = state.currentItem;
+      return {...state , currentItem: _.merge(currentItem,result) } ;
     },
     clearModalState(state) {
-      const currentItem = _.forIn(state.currentItem , ( value , key ) => {
-        return state.currentItem[key] = {
-              "value" : undefined
-            }
-      });
 
       return { ...state,
         modalVisibel: false ,
         modalMode:"" ,
-        currentItem : currentItem }
+        currentItem : state.emptyItem }
     }
   },
 

@@ -79,12 +79,7 @@ export default {
             setRegionData(cacheData);
           }
         }
-        yield put({
-          type: 'setGlobalData',
-          payload: {
-            data : cacheData
-          }
-        })
+
         const province = _.filter(cacheData, (item) => {
           return item.LevelType === 1
         });
@@ -205,9 +200,6 @@ export default {
     },
     updateAddressItem(state, action) {
       return { ...state, ...action.payload };
-    },
-    setGlobalData(state , action) {
-      return { ...state , ...action.payload}
     },
     setCatalogName(state , action){
       return {...state , ...action.payload  }

@@ -20,8 +20,9 @@ const OrderTable = ({ orders , onEditOrder ,
       info = <span><Icon type="info-circle" style={{color : "#00A0E9", "marginRight" : '4px'}}/>授权到期后数量:{item.after_authorization}</span>
     } else if(item.prediction){
       info = <span><Icon type="question-circle" style={{color : "#01BAD2", "marginRight" : '4px'}}/>预估值:{item.prediction}</span>
+    } else {
+      info = <span><Icon type="frown-o" style={{ "marginRight" : '4px'}}/>暂无数据</span>
     }
-
     return info;
   }
 

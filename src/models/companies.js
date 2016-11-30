@@ -63,9 +63,6 @@ export default {
      },
      current: 0, // 当前分页信息
      currentItem: {}, // 当前操作的用户对象
-
-     currentType:[], // 当前操作用户对象的类型集合
-     currentIndustry:[], // 当前操作用户对象的行业集合
   },
 
   subscriptions: {
@@ -135,22 +132,13 @@ export default {
     *setTypeAndIndustry({ payload } , { call , put , select }){
       const { company } = payload ;
       const catalogData  = yield select(state => state.global.catalogData);
-      const catalogName =  yield select(state => state.companies.catalog);;
-      const currentType = _.chain(catalogData)
-        .filter((item) => { return _.toLower(item.catalog) === _.toLower(catalogName) })
-        .map((item) => {return item.type}).uniq().value();
+      const catalogName =  yield select(state => state.companies.catalog);
       yield put({
-        type : 'setCrrentType',
-        payload : { currentType }
+        type : 'global/setCurrentType',
+        payload : { catalogName }
       })
 
-      const currentIndustry = _.chain(catalogData)
-        .filter((item) => { return _.toLower(item.catalog) === _.toLower(catalogName) && item.type === company.type })
-        .map((item) => {return item.industry}).uniq().value();
-      yield put({
-          type : 'setCurrentIndustry',
-          payload : { currentIndustry }
-      })
+
     },
     *updateCompany({ payload } , {call , put , select }){
       try {
@@ -268,7 +256,7 @@ export default {
     changeFilterDate(state,action){
       return {...state , activityDate: action.payload };
     },
-    
+
     updateCurrentItem(state,action){
       const field = action.payload;
       const result = {};
