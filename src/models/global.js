@@ -141,7 +141,8 @@ export default {
     *setAddressItem({ payload } , { call , put , select }){
       const data = getRegionData();
       const { selectValue } = payload;
-      const selectProps = {provinceItem : {} , cityItem: {} , countryItem : {}};
+      const selectProps = { provinceItem : {} , cityItem: {} , countryItem : {}};
+      const appendProps ={ cityItem: {} , countryItem : {}};
       _.forEach(selectValue,(item) => {
         const selectItem = _.head(_.filter(data , (select) => { return select.ID === item}));
         if(selectItem && selectItem.LevelType){
@@ -158,8 +159,21 @@ export default {
             default:
           }
         }
+        if(item === -10){
+            _.assign(appendProps ,   { cityItem : {
+              ID: -10,
+              Name: "省直",
+              pinyin: "shengzhi"
+            } }) ;
+        } else if (item === -100){
+          _.assign(appendProps ,   { countryItem : {
+              ID: -100,
+              Name: "市直",
+              pinyin: "shizhi"
+          } }) ;
+        }
       })
-      yield put({ type: 'updateAddressItem', payload : selectProps  });
+      yield put({ type: 'updateAddressItem', payload :   _.assign(selectProps  , appendProps) });
     },
 
     *getCatalog({ payload }, {call, put, select }) {

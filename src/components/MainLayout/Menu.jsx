@@ -58,12 +58,6 @@ function MenuBar({ location,mainLayout,onCollapseChange}) {
             </Link>
           </Menu.Item>
         </SubMenu>
-
-        <Menu.Item key="/testing">
-          <Link to="/testing"><Icon type="code" />
-            <span className={styles.nav_text}>测试</span>
-          </Link>
-        </Menu.Item>
       </Menu>)
     }
   }
