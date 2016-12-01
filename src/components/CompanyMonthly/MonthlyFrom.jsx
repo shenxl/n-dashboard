@@ -83,7 +83,7 @@ const MonthlyFromCreate = ({ currentItem ,form , modalMode , onMonthlyFieldsChan
           <FormItem
             {...formItemLayout}
               label={<span>
-              当月安装值&nbsp;
+              当月安装量&nbsp;
             </span>}
           >
           {getFieldDecorator('install_sum', {
