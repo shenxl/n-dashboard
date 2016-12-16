@@ -1,32 +1,31 @@
 import React, { Component, PropTypes } from 'react';
-import { Select , Icon , Input } from 'antd';
-const Option = Select.Option;
-
+import { Select, Icon, Input } from 'antd';
 import styles from './control.less';
 
-const EditSelectControl = React.createClass({
-
-  getInitialState() {
-    return {
-      value: this.props.value || "",
-      isEdit : this.props.mode || false
+const Option = Select.Option;
+class EditSelectControl extends React.Component {
+  constructor(...args) {
+    super(...args);
+    this.state = {
+      value: this.props.value || '',
+      isEdit: this.props.mode || false,
     };
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
       const value = nextProps.value;
       this.setState({ value });
     }
-  },
+  }
 
-  handleBlur(e){
-    this.setState({ isEdit : false });
-  },
+  handleBlur(e) {
+    this.setState({ isEdit: false });
+  }
 
   handleChange(e) {
     if (!('value' in this.props)) {
-      this.setState({ value : e });
+      this.setState({ value: e });
     }
     // Should provide an event to pass value to Form.
     const onChange = this.props.onChange;
@@ -34,29 +33,37 @@ const EditSelectControl = React.createClass({
     if (onChange) {
       onChange(e);
     }
-  },
+  }
 
-  handleEditClick(){
-    this.setState({ isEdit : true });
-  },
+  handleEditClick() {
+    this.setState({ isEdit: true });
+  }
 
-  renderControl(){
-    if(this.state.isEdit){
+  renderControl() {
+    const props = {
+      onClick: this.handleEditClick,
+    }
+    if (this.state.isEdit) {
       const children = this.props.options.map((item) => {
-        return (<Option value={item} key={ item }>{item}</Option>)
+        return (<Option value={item} key={item}>{item}</Option>)
       })
       return (
-        <Select defaultValue={this.state.value} style={{ width: 200 }} onBlur={this.handleBlur} onChange={this.handleChange}>
+        <Select
+          defaultValue={this.state.value}
+          style={{ width: 200 }}
+          onBlur={this.handleBlur}
+          onChange={this.handleChange}
+        >
           { children }
-       </Select>
+        </Select>
       )
-    } else {
-      return (<div>
-          <span className={styles.content}> {this.state.value} </span>
-          <a className={styles.editIcon} onClick={ this.handleEditClick }><Icon type="edit" /></a>
-        </div>)
     }
-  },
+    return (
+      <div>
+        <span className={styles.content}> {this.state.value} </span>
+        <a className={styles.editIcon} {...props}><Icon type="edit" /></a>
+      </div>)
+  }
 
   render() {
     const resultDom = this.renderControl();
@@ -65,9 +72,8 @@ const EditSelectControl = React.createClass({
         { resultDom }
       </div>
     );
-  },
-});
-
+  }
+}
 
 EditSelectControl.propTypes = {
 

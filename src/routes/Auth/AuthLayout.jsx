@@ -3,7 +3,7 @@ import { connect } from 'dva';
 
 import styles from './AuthLayout.less';
 
-const AuthLayout = ({ children , authLayout }) => {
+const AuthLayout = ({ children, authLayout }) => {
   return (
     <div className={styles.normal}>
 

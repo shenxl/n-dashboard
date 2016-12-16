@@ -1,17 +1,21 @@
-const u = require('updeep');
+/*eslint func-names: ["error", "never"]*/
+/*global localStorage*/
+
 import { routerRedux } from 'dva/router';
-import { login , signup ,getCurrentUser, logoutSer } from '../services/auth';
-import { user } from '../utils/auth';
-import { loginUrl , signupUrl , signSuccessUrl , UserInfoUrl } from '../utils/constant';
-import { AuthError } from '../utils/ErrorMessage';
 import { message } from 'antd';
+import { login, signup, getCurrentUser, logoutSer } from '../services/auth';
+import { user } from '../utils/auth';
+import { loginUrl, signupUrl, signSuccessUrl, UserInfoUrl } from '../utils/constant';
+import { AuthError } from '../utils/ErrorMessage';
+
+const u = require('updeep');
 
 message.config({
   top: 50,
   duration: 2,
 });
 
-function* authorize ({ email, password } , {call, put, take}) {
+function* authorize({ email, password }, { call, put, take }) {
   yield put({ type: 'sendingRequest', sending: true })
   try {
     // todo : hash pwd with bcryptjs
@@ -32,10 +36,10 @@ function* authorize ({ email, password } , {call, put, take}) {
   }
 }
 
-function* logout({ payload } , { call , put }){
+function* logout({ payload }, { call, put }) {
   yield put({ type: 'sendingRequest', sending: true })
   try {
-    let response = yield call(logoutSer)
+    const response = yield call(logoutSer)
     yield put({ type: 'sendingRequest', sending: false })
     // return response
   } catch (error) {
@@ -51,19 +55,19 @@ export default {
   state: {
     currentlySending: false,
     isAuthenticating: false,
-    isLogin:false,
-    currentUser:{
-      "realm": null,
-      "username": null,
-      "credentials": null,
-      "challenges": null,
-      "email": null,
-      "emailVerified": null,
-      "status": null,
-      "created": null,
-      "lastUpdated": null,
-      "id": null,
-    }
+    isLogin: false,
+    currentUser: {
+      realm: null,
+      username: null,
+      credentials: null,
+      challenges: null,
+      email: null,
+      emailVerified: null,
+      status: null,
+      created: null,
+      lastUpdated: null,
+      id: null,
+    },
   },
 
   subscriptions: {
@@ -71,82 +75,82 @@ export default {
       // console.log("auth setup");
       history.listen(({ pathname }) => {
         // 判断是否需要用户信息才可以展示
-        const path = [ loginUrl, signupUrl , signSuccessUrl ,UserInfoUrl ];
-        if (path.indexOf(pathname) == -1) {
-          dispatch({"type":"getCurrentUser" , "nextPath" : pathname});
+        const path = [loginUrl, signupUrl, signSuccessUrl, UserInfoUrl];
+        if (path.indexOf(pathname) === -1) {
+          dispatch({ type: 'getCurrentUser', nextPath: pathname });
         }
-     });
+      });
     },
   },
 
   effects: {
-    logoutFlow: [function*({ call, put, take } ) {
+    logoutFlow: [function* ({ call, put, take }) {
       //  let = effect;
       while (true) {
         const request = yield take('auth/logout')
-        yield call(logout , { } ,  {call, put, take})
+        yield call(logout, { }, { call, put, take })
         yield put({ type: 'logoutSuccess', sending: false })
         localStorage.removeItem('n-token');
         yield put(routerRedux.push(loginUrl));
       }
     }, {
-      type: 'watcher'
+      type: 'watcher',
     }],
 
-   loginFlow: [function*({ call, put, take, race } ) {
-     while (true) {
-       const request = yield take('auth/login');
-       const {
+    loginFlow: [function* ({ call, put, take, race }) {
+      while (true) {
+        const request = yield take('auth/login');
+        const {
          email,
          password,
-         redirect
+         redirect,
        } = request.data;
 
-       const winner = yield race({
-         auth: call(authorize, {
-           email,
-           password
-         }, {call, put, take}),
-         logout: take('auth/logout'),
-       })
+        const winner = yield race({
+          auth: call(authorize, {
+            email,
+            password,
+          }, { call, put, take }),
+          logout: take('auth/logout'),
+        })
 
-       if (winner.auth) {
-         localStorage.setItem('n-token', winner.auth.id);
-         yield put({"type":"getCurrentUser"});
-         const redirectUrl = redirect.next || '/'
-         yield put(routerRedux.push(redirectUrl));
-       } else if (winner.logout) {
-         yield put(routerRedux.push(loginUrl));
-       }
-     }
-   }, {
-     type: 'watcher'
-   }],
+        if (winner.auth) {
+          localStorage.setItem('n-token', winner.auth.id);
+          yield put({ type: 'getCurrentUser' });
+          const redirectUrl = redirect.next || '/'
+          yield put(routerRedux.push(redirectUrl));
+        } else if (winner.logout) {
+          yield put(routerRedux.push(loginUrl));
+        }
+      }
+    }, {
+      type: 'watcher',
+    }],
 
-   *signup ({ data : userinfo }, { put, call }) {
-     try {
+    * signup({ data: userinfo }, { put, call }) {
+      try {
        //let response = yield call(auth.logout)
-       const { jsonResult } = yield call(signup, userinfo);
-       if( jsonResult.success ){
+        const { jsonResult } = yield call(signup, userinfo);
+        if (jsonResult.success) {
           yield put(routerRedux.push(signSuccessUrl));
-       }
-     } catch (error) {
-       const { status } = error;
-       if(status === 422){
-         message.error(AuthError["EMAIL_EXISTS"]);
-       }
-     }
+        }
+      } catch (error) {
+        const { status } = error;
+        if (status === 422) {
+          message.error(AuthError.EMAIL_EXISTS);
+        }
+      }
     },
 
-    *getCurrentUser({ nextPath }, { call, put , select}) {
+    * getCurrentUser({ nextPath }, { call, put, select }) {
       try {
         const user = yield select(state => state.auth);
-        if(!user.isLogin){
+        if (!user.isLogin) {
           const { jsonResult } = yield call(getCurrentUser);
-          if(jsonResult.success){
+          if (jsonResult.success) {
             yield put({ type: 'setCurrentUser', payload: jsonResult.user })
-            if(jsonResult.username === null){
-              yield put(routerRedux.push(`${UserInfo}?next=${nextPath}`));
+            if (jsonResult.username === null) {
+              yield put(routerRedux.push(`${UserInfoUrl}?next=${nextPath}`));
             }
           }
         }
@@ -162,19 +166,19 @@ export default {
   reducers: {
     login(state, action) {
       return u({
-        isAuthenticating: true
+        isAuthenticating: true,
       }, state)
     },
-    loginSuccess(state,payload){
+    loginSuccess(state, payload) {
       return u({
         isAuthenticating: false,
         isLogin: true,
       }, state)
     },
-    loginFailure(state,payload){
+    loginFailure(state, payload) {
       return u({
         isAuthenticating: false,
-        isLogin: false
+        isLogin: false,
       }, state)
     },
     sendingRequest(state, payload) {
@@ -182,24 +186,24 @@ export default {
         currentlySending: payload.sending,
       }, state)
     },
-    setCurrentUser( state , action ){
-        return { ...state , currentUser : action.payload , isLogin:true } ;
+    setCurrentUser(state, action) {
+      return { ...state, currentUser: action.payload, isLogin: true };
     },
     logoutSuccess(state) {
       return u({
         isLogin: false,
-        currentUser:{
-          "realm": null,
-          "username": null,
-          "credentials": null,
-          "challenges": null,
-          "email": null,
-          "emailVerified": null,
-          "status": null,
-          "created": null,
-          "lastUpdated": null,
-          "id": null,
-        }
+        currentUser: {
+          realm: null,
+          username: null,
+          credentials: null,
+          challenges: null,
+          email: null,
+          emailVerified: null,
+          status: null,
+          created: null,
+          lastUpdated: null,
+          id: null,
+        },
       }, state)
     },
 

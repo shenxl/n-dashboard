@@ -1,32 +1,31 @@
 import xFetch from '../utils/xFetch';
-import { apiUrl , authUrl } from '../utils/constant'
+import { apiUrl, authUrl } from '../utils/constant'
+
 const orders = {
-  query : async (companyid) =>{
+  query: async (companyid) => {
     return xFetch(`${apiUrl}/companies/${companyid}/order`)
   },
 
   createOrder: async (createAttributes) => {
-    console.log(createAttributes);
     const options = {
-      method: "POST",
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body : JSON.stringify(createAttributes),
+      body: JSON.stringify(createAttributes),
     };
-    return xFetch(`${apiUrl}/companyOrders`, options );
+    return xFetch(`${apiUrl}/companyOrders`, options);
   },
 
-   editOrder: async (id,updateAttributes) =>{
-     const options = {
-       method: "PUT",
-       headers: {
-         'Content-Type': 'application/json',
-       },
-       body : JSON.stringify(updateAttributes),
-     };
-     return xFetch(`${apiUrl}/companyOrders/${id}`,options);
-
+  editOrder: async (id, updateAttributes) => {
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updateAttributes),
+    };
+    return xFetch(`${apiUrl}/companyOrders/${id}`, options);
   },
 }
 export default orders;

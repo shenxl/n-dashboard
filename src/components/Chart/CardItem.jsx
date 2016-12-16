@@ -6,8 +6,7 @@ import classnames from 'classnames';
 
 import styles from './Card.less';
 
-const CardItem = ({ UIModel}) => {
-
+const CardItem = ({ UIModel }) => {
   return (
     <div className={styles.card_box} >
       <div className={styles.title}>
@@ -15,7 +14,7 @@ const CardItem = ({ UIModel}) => {
         <span>{UIModel.title}</span>
       </div>
       <div className={styles.number}>
-         <span><CountUp start={0} end={UIModel.number} duration={2} /></span>
+        <span><CountUp start={0} end={UIModel.number} duration={2} /></span>
       </div>
     </div>
   );

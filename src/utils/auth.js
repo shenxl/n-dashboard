@@ -1,3 +1,4 @@
+/*global localStorage*/
 
 const getUser = () => {
   const token = localStorage.getItem('n-token');
@@ -8,6 +9,6 @@ const getUser = () => {
 }
 
 const Auth = {
-  user : getUser,
+  user: getUser,
 }
 export default Auth;//

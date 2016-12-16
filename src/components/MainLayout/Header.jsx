@@ -1,33 +1,31 @@
 
 import React, { PropTypes } from 'react';
-import { Menu, Icon, Popover} from 'antd';
+import { Menu, Icon, Popover } from 'antd';
 import { Link } from 'dva/router';
 import classnames from 'classnames';
 import styles from './Header.less';
 
-const Header = ({ auth , logOut }) => {
-
+const Header = ({ auth, logOut }) => {
   const logoutShow = classnames({
     [styles.logout_hide]: !auth.isLogin,
   })
   const { currentUser } = auth;
 
   const content = (
-      <div className={styles.Inner}>
-        <div className={styles.Title}>
-          <div className={styles.PopoverAvtar}>
-          </div>
-          <div className={styles.PopoverContact}>{currentUser.email}</div>
-        </div>
-          <div className={styles.InnerContent}>
-              <li><Link to="/user/info">个人中心</Link></li>
-              <li><a href="#" onClick={logOut}>退出</a></li>
-          </div>
+    <div className={styles.Inner}>
+      <div className={styles.Title}>
+        <div className={styles.PopoverAvtar} />
+        <div className={styles.PopoverContact}>{currentUser.email}</div>
       </div>
+      <div className={styles.InnerContent}>
+        <li><Link to="/user/info">个人中心</Link></li>
+        <li><a href="/" onClick={logOut}>退出</a></li>
+      </div>
+    </div>
   );
 
   const loginPanel = () => {
-    if(auth.isLogin){
+    if (auth.isLogin) {
       return (
         <li>
           <Popover placement="bottomRight" content={content} trigger="click">
@@ -39,6 +37,7 @@ const Header = ({ auth , logOut }) => {
         </li>
       );
     }
+    return undefined
   }
 
   return (
@@ -60,8 +59,8 @@ const Header = ({ auth , logOut }) => {
 };
 
 Header.propTypes = {
-  auth : PropTypes.object.isRequired,
-  logOut : PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  logOut: PropTypes.func.isRequired,
 };
 
 export default Header;

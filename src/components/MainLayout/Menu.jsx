@@ -1,12 +1,11 @@
 import React, { PropTypes } from 'react';
 import { Menu, Icon } from 'antd';
 import { Link } from 'dva/router';
-import styles from './Menu.less';
 import classnames from 'classnames';
+import styles from './Menu.less';
 
 const SubMenu = Menu.SubMenu;
-
-const getMenuKeyFromUrl = ({pathname , onCollapseChange}) => {
+const getMenuKeyFromUrl = ({ pathname, onCollapseChange }) => {
   let key = '';
   try {
     key = pathname.match(/\/([^\/]*)/i)[1];
@@ -15,14 +14,14 @@ const getMenuKeyFromUrl = ({pathname , onCollapseChange}) => {
   return key;
 }
 
-let collapse = false;
+const collapse = false;
 
-function MenuBar({ location,mainLayout,onCollapseChange}) {
+function MenuBar({ location, mainLayout, onCollapseChange }) {
   const { collapse } = mainLayout;
 
   const collapseSytle = classnames({
-    [styles.sider]:  true,
-    [styles.sider_collapse]:collapse,
+    [styles.sider]: true,
+    [styles.sider_collapse]: collapse,
   });
 
   const analyticalTitle =
@@ -35,12 +34,13 @@ function MenuBar({ location,mainLayout,onCollapseChange}) {
       <span className={styles.nav_text}>管理</span>
     </span>)
 
-  const GetMenu = () => {
+  const getMenu = () => {
     if (mainLayout.showMenu) {
       return (<Menu
         mode={mainLayout.menuMode}
         theme="dark"
-        selectedKeys={[getMenuKeyFromUrl(location.pathname)]}>
+        selectedKeys={[getMenuKeyFromUrl(location.pathname)]}
+      >
         <SubMenu title={settingTitle}>
           <Menu.Item key="/company/government">
             <Link to="/company/government">
@@ -60,14 +60,16 @@ function MenuBar({ location,mainLayout,onCollapseChange}) {
         </SubMenu>
       </Menu>)
     }
+    return undefined;
   }
-
+  const divprops = {
+    onClick: onCollapseChange,
+  }
   return (
     <aside className={collapseSytle}>
-      <div className={styles.logo}>
-      </div>
-      { GetMenu() }
-      <div className={styles.action} onClick={onCollapseChange}>
+      <div className={styles.logo} />
+      { getMenu() }
+      <div className={styles.action} {...divprops}>
         {collapse ? <Icon type="right" /> : <Icon type="left" />}
       </div>
     </aside>
@@ -76,8 +78,8 @@ function MenuBar({ location,mainLayout,onCollapseChange}) {
 
 MenuBar.propTypes = {
   location: PropTypes.object,
-  onCollapseChange:PropTypes.func,
-  mainLayout:PropTypes.object,
+  onCollapseChange: PropTypes.func,
+  mainLayout: PropTypes.object,
 };
 
 export default MenuBar;

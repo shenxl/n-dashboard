@@ -4,9 +4,9 @@ import { connect } from 'dva';
 import { Link } from 'dva/router';
 import styles from './IndexPage.less';
 
-function IndexPage( { dispatch , example }) {
+function IndexPage({ dispatch, example }) {
   const click = () => {
-      dispatch({  type: 'example/fetchRemote' })
+    dispatch({ type: 'example/fetchRemote' })
   }
   return (
     <div className={styles.normal}>
@@ -27,4 +27,4 @@ function mapStateToProps({ example }) {
   return { example }
 }
 
-export default  connect(mapStateToProps)(IndexPage);
+export default connect(mapStateToProps)(IndexPage);

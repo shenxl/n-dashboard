@@ -1,15 +1,15 @@
 import React, { Component, PropTypes } from 'react';
-import { Table ,Icon , Tooltip} from 'antd';
+import { Table, Icon, Tooltip } from 'antd';
 import styles from './table.less';
 
-const BasicTable= ({ companyList , onTableChange , onRowClick , rowSelection}) => {
-  const { companies , loading , filterOption } = companyList;
-  const { list , total , current} = companies;
+const BasicTable = ({ companyList, onTableChange, onRowClick, rowSelection }) => {
+  const { companies, loading, filterOption } = companyList;
+  const { list, total, current } = companies;
   const { limit } = filterOption;
 
   const renderImportant = (o, row, index) => {
       // console.log(o, row, index);
-    if (row.important === "1") {
+    if (row.important === '1') {
       return (<Icon type="check-circle" style={{ color: '#60BE29' }} />)
     }
     return undefined;
@@ -35,14 +35,14 @@ const BasicTable= ({ companyList , onTableChange , onRowClick , rowSelection}) =
       title: '企业名称',
       dataIndex: 'name',
       key: 'name',
-      render:renderText
+      render: renderText,
     },
     {
       title: '重点关注',
       dataIndex: 'important',
       key: 'important',
-      width:65,
-      render:renderImportant
+      width: 65,
+      render: renderImportant,
     },
     {
       title: '采购量',
@@ -53,33 +53,33 @@ const BasicTable= ({ companyList , onTableChange , onRowClick , rowSelection}) =
     {
       title: '区域',
       dataIndex: 'region',
-      key: 'region'
+      key: 'region',
     },
     {
       title: '省',
       dataIndex: 'province',
-      key: 'province'
+      key: 'province',
     },
     {
       title: '市',
       dataIndex: 'city',
-      key: 'city'
+      key: 'city',
     },
     {
       title: '区/县',
       dataIndex: 'county',
-      key: 'county'
+      key: 'county',
     },
     {
       title: '类型',
       dataIndex: 'type',
-      key: 'type'
+      key: 'type',
     },
     {
       title: '行业',
       dataIndex: 'industry',
-      key: 'industry'
-    }
+      key: 'industry',
+    },
   ];
   const showTotal = () => {
     return `共 ${total} 条`;
@@ -90,9 +90,9 @@ const BasicTable= ({ companyList , onTableChange , onRowClick , rowSelection}) =
       return false
     }
     return {
-      total: total,
+      total,
       defaultCurrent: 1,
-      current: current / limit + 1 ,
+      current: (current / limit) + 1,
       pageSize: limit,
       showTotal,
       showSizeChanger: true,
@@ -107,23 +107,24 @@ const BasicTable= ({ companyList , onTableChange , onRowClick , rowSelection}) =
           <Icon type="question-circle-o" />
         </Tooltip>
       </h4>
-      <Table style={{cursor:"pointer"}}
-        rowSelection={ rowSelection }
-        loading={ loading }
-        onChange={ onTableChange }
-        columns={ columns }
-        dataSource={ list }
-        pagination={ pagination() }
-        onRowClick={ onRowClick }
+      <Table
+        style={{ cursor: 'pointer' }}
+        rowSelection={rowSelection}
+        loading={loading}
+        onChange={onTableChange}
+        columns={columns}
+        dataSource={list}
+        pagination={pagination()}
+        onRowClick={onRowClick}
       />
     </div>
   );
 };
 
 BasicTable.propTypes = {
-  companyList : PropTypes.object.isRequired,
-  onTableChange : PropTypes.func.isRequired,
-  onRowClick : PropTypes.func.isRequired
+  companyList: PropTypes.object.isRequired,
+  onTableChange: PropTypes.func.isRequired,
+  onRowClick: PropTypes.func.isRequired,
 };
 
 export default BasicTable;

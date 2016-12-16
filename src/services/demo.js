@@ -1,7 +1,8 @@
 import xFetch from '../utils/xFetch';
-import { apiUrl , authUrl } from '../utils/constant'
+import { apiUrl, authUrl } from '../utils/constant'
+
 const demo = {
-  query : async (query) =>{
+  query: async (query) => {
     return xFetch(`${apiUrl}/demos/`)
   },
 }

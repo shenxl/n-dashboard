@@ -1,33 +1,34 @@
-import { query , queryInnerData ,queryItem ,
-  deleteItem ,replaceOrCreate ,addInstallSum , queryInstallSum } from '../services/monthly';
-var _ = require('lodash');
+import { query, queryInnerData, queryItem,
+  deleteItem, replaceOrCreate, addInstallSum, queryInstallSum } from '../services/monthly';
+
+const _ = require('lodash');
 
 export default {
   namespace: 'companyMonthly',
 
   state: {
-    list : [],
-    innerList :[],
+    list: [],
+    innerList: [],
     emptyItem:
     {
-      id : undefined,
+      id: undefined,
       company_id: undefined,
       server_id: undefined,
       year: undefined,
       month: undefined,
-      activity_sum:undefined,
+      activity_sum: undefined,
       activity_max: undefined,
       activity_avg: undefined,
-      install_sum:undefined,
+      install_sum: undefined,
       install_max: undefined,
-      install_avg:undefined
+      install_avg: undefined,
     },
-    selectedRowKeys:[0],
-    currentItem : {},
-    loading : false,
-    modalVisibel : false ,
-    modalMode : "",
-    installSum:0
+    selectedRowKeys: [0],
+    currentItem: {},
+    loading: false,
+    modalVisibel: false,
+    modalMode: '',
+    installSum: 0,
   },
 
   subscriptions: {
@@ -37,50 +38,53 @@ export default {
   },
 
   effects: {
-    *query({ payload : companyid }, { call, put }) {
+    * query({ payload: companyid }, { call, put }) {
       yield put({ type: 'showLoading' });
       try {
-        const { jsonResult : monthly } = yield call(query , companyid );
-        if(monthly){
-          yield put({ type: 'getSuccess'  , payload :{
-            list : monthly
-          }});
+        const { jsonResult: monthly } = yield call(query, companyid);
+        if (monthly) {
+          yield put({
+            type: 'getSuccess',
+            payload: {
+              list: monthly,
+            },
+          });
         }
         return false
       } catch (error) {
         return false
       }
     },
-    *addInstallSum({ payload : current }, { call, put }) {
-        try {
-        const { jsonResult } = yield call(addInstallSum , current );
-        if( jsonResult ){
+    * addInstallSum({ payload: current }, { call, put }) {
+      try {
+        const { jsonResult } = yield call(addInstallSum, current);
+        if (jsonResult) {
           yield put({
             type: 'getInstallSum',
-            payload :current.company_id
+            payload: current.company_id,
           });
-
         }
+        return false
       } catch (error) {
         return false
       }
     },
-    *getCurrentItem({ payload : query }, { call, put }) {
+    * getCurrentItem({ payload: query }, { call, put }) {
       try {
-        const { jsonResult : current } = yield call(queryItem , query );
-        if(current){
+        const { jsonResult: current } = yield call(queryItem, query);
+        if (current) {
           yield put({
             type: 'setCurrentItem',
-            payload :{
-              currentItem : current[0]
-            }
+            payload: {
+              currentItem: current[0],
+            },
           });
 
           yield put({
             type: 'setModalMode',
-            payload :{
-              modalMode : 'edit'
-            }
+            payload: {
+              modalMode: 'edit',
+            },
           });
         }
         return false
@@ -88,14 +92,13 @@ export default {
         return false
       }
     },
-    *removeCurrentItem({ payload : query }, { call, put }) {
+    * removeCurrentItem({ payload: query }, { call, put }) {
       try {
-        const { jsonResult } = yield call(deleteItem , query );
-        console.log("jsonResult" , jsonResult);
-        if(jsonResult){
+        const { jsonResult } = yield call(deleteItem, query);
+        if (jsonResult) {
           yield put({
             type: 'getInnerData',
-            payload : query.company_id
+            payload: query.company_id,
           });
         }
         return false
@@ -104,32 +107,34 @@ export default {
       }
     },
 
-    *replaceOrCreate({ payload } , { call , put, select}){
+    * replaceOrCreate({ payload }, { call, put, select }) {
       try {
         const currentItem = yield select(state => state.companyMonthly.currentItem);
-        const { jsonResult } = yield call(replaceOrCreate , currentItem );
-        if(jsonResult){
+        const { jsonResult } = yield call(replaceOrCreate, currentItem);
+        if (jsonResult) {
           yield put({
             type: 'getInnerData',
-            payload : jsonResult.company_id
+            payload: jsonResult.company_id,
           });
-          return false
         }
+        return false
       } catch (error) {
         return false
       }
     },
 
-    *getInnerData({ payload : companyid }, { call, put }) {
+    * getInnerData({ payload: companyid }, { call, put }) {
       yield put({ type: 'showLoading' });
       try {
-        const { jsonResult : innerData } = yield call(queryInnerData , companyid );
-        if(innerData){
-          yield put({ type: 'getInnerSuccess'  , payload :{
-            innerList : innerData
-          }});
-
-          yield put({ type: 'getInstallSum'  , payload : companyid});
+        const { jsonResult: innerData } = yield call(queryInnerData, companyid);
+        if (innerData) {
+          yield put({
+            type: 'getInnerSuccess',
+            payload: {
+              innerList: innerData,
+            },
+          });
+          yield put({ type: 'getInstallSum', payload: companyid });
         }
         return false
       } catch (error) {
@@ -137,13 +142,16 @@ export default {
       }
     },
 
-    *getInstallSum({ payload : companyid }, { call, put }) {
+    * getInstallSum({ payload: companyid }, { call, put }) {
       try {
-        const { jsonResult : installData } = yield call(queryInstallSum , companyid );
-        if(installData){
-          yield put({ type: 'getInstallSumSuccess'  , payload :{
-            installSum : installData[0].sum
-          }});
+        const { jsonResult: installData } = yield call(queryInstallSum, companyid);
+        if (installData) {
+          yield put({
+            type: 'getInstallSumSuccess',
+            payload: {
+              installSum: installData[0].sum,
+            },
+          });
         }
         return false
       } catch (error) {
@@ -154,7 +162,7 @@ export default {
 
   reducers: {
     showLoading(state, action) {
-      return { ...state, loading:true };
+      return { ...state, loading: true };
     },
     getSuccess(state, action) {
       return { ...state, ...action.payload, loading: false };
@@ -163,38 +171,38 @@ export default {
       return { ...state, ...action.payload, loading: false };
     },
     getInstallSumSuccess(state, action) {
-      return { ...state, ...action.payload};
-    },
-    showModal(state,action){
       return { ...state, ...action.payload };
     },
-    setCurrentItem(state,action){
+    showModal(state, action) {
       return { ...state, ...action.payload };
     },
-    setSelectedRowKeys(state,action){
+    setCurrentItem(state, action) {
       return { ...state, ...action.payload };
     },
-    setModalMode(state,action){
+    setSelectedRowKeys(state, action) {
+      return { ...state, ...action.payload };
+    },
+    setModalMode(state, action) {
       return { ...state, ...action.payload };
     },
     clearModalState(state) {
-      return { ...state, modalVisibel: false  }
+      return { ...state, modalVisibel: false }
     },
-    updateCurrentItem(state,action){
+    updateCurrentItem(state, action) {
       const field = action.payload;
       const result = {};
-      _.forOwn(field, function(item, key) {
-        if(key === 'active_date'){
-          result["year"] = item.value.year();
-          result["month"] = item.value.month() + 1;
+      _.forOwn(field, (item, key) => {
+        if (key === 'active_date') {
+          result.year = item.value.year();
+          result.month = item.value.month() + 1;
         } else {
           result[key] = item.value;
         }
       });
       const currentItem = state.currentItem;
-      return {...state , currentItem: _.merge(currentItem,result) } ;
-    }
+      return { ...state, currentItem: _.merge(currentItem, result) };
+    },
 
-  }
+  },
 
 }

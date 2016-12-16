@@ -10,15 +10,15 @@ const PieChart = ({ chartData, title, name, style }) => {
       data: dataName,
     },
     title: {
-       text: title,
-   },
+      text: title,
+    },
     tooltip: {
       trigger: 'item',
-      formatter: "{b}: {c} ({d}%)"
+      formatter: '{b}: {c} ({d}%)',
     },
     grid: {
-        top: '5%',
-        bottom: '3%'
+      top: '5%',
+      bottom: '3%',
     },
     series: [
       {
@@ -28,14 +28,14 @@ const PieChart = ({ chartData, title, name, style }) => {
         label: {
           normal: {
             show: false,
-            position: 'center'
+            position: 'center',
           },
         },
-        center: ['60%', '50%']
+        center: ['60%', '50%'],
         labelLine: {
-            normal: {
-                show: false
-            }
+          normal: {
+            show: false,
+          },
         },
       },
     ],

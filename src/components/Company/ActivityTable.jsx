@@ -1,15 +1,15 @@
 import React, { Component, PropTypes } from 'react';
-import { Table ,Icon , Tooltip} from 'antd';
+import { Table, Icon, Tooltip } from 'antd';
 import styles from './table.less';
 
-const BasicTable= ({ companyList , onTableChange , onRowClick , rowSelection}) => {
-  const { companies , loading , filterOption } = companyList;
-  const { list , total , current} = companies;
+const BasicTable = ({ companyList, onTableChange, onRowClick, rowSelection }) => {
+  const { companies, loading, filterOption } = companyList;
+  const { list, total, current } = companies;
   const { limit } = filterOption;
 
   const renderImportant = (o, row, index) => {
       // console.log(o, row, index);
-    if (row.important === "1") {
+    if (row.important === '1') {
       return (<Icon type="check-circle" style={{ color: '#60BE29' }} />)
     }
     return undefined;
@@ -31,8 +31,8 @@ const BasicTable= ({ companyList , onTableChange , onRowClick , rowSelection}) =
   }
 
   const renderItem = (o, row, index) => {
-    if(!o){
-      return "暂无记录"
+    if (!o) {
+      return '暂无记录'
     }
     return o
   }
@@ -42,7 +42,7 @@ const BasicTable= ({ companyList , onTableChange , onRowClick , rowSelection}) =
       title: '企业名称',
       dataIndex: 'name',
       key: 'name',
-      render:renderText
+      render: renderText,
     },
     {
       title: '采购量',
@@ -54,28 +54,28 @@ const BasicTable= ({ companyList , onTableChange , onRowClick , rowSelection}) =
       title: '本月报活',
       dataIndex: 'activity_sum',
       key: 'activity_sum',
-      render:renderItem,
+      render: renderItem,
       sorter: true,
     },
     {
       title: '日活均值',
       dataIndex: 'activity_avg',
       key: 'activity_avg',
-      render:renderItem,
+      render: renderItem,
       sorter: true,
     },
     {
       title: '本月安装量',
       dataIndex: 'install_sum',
       key: 'install_sum',
-      render:renderItem,
+      render: renderItem,
       sorter: true,
     },
     {
       title: '安装总量',
       dataIndex: 'total',
-      key: 'total'
-    }
+      key: 'total',
+    },
   ];
   const showTotal = () => {
     return `共 ${total} 条`;
@@ -86,9 +86,9 @@ const BasicTable= ({ companyList , onTableChange , onRowClick , rowSelection}) =
       return false
     }
     return {
-      total: total,
+      total,
       defaultCurrent: 1,
-      current: current / limit + 1 ,
+      current: (current / limit) + 1,
       pageSize: limit,
       showTotal,
       showSizeChanger: true,
@@ -97,23 +97,24 @@ const BasicTable= ({ companyList , onTableChange , onRowClick , rowSelection}) =
 
   return (
     <div>
-      <Table style={{cursor:"pointer"}}
-        loading={ loading }
-        onChange={ onTableChange }
-        columns={ columns }
-        dataSource={ list }
-        rowSelection = { rowSelection }
-        pagination={ pagination() }
-        onRowClick={ onRowClick }
+      <Table
+        style={{ cursor: 'pointer' }}
+        loading={loading}
+        onChange={onTableChange}
+        columns={columns}
+        dataSource={list}
+        rowSelection={rowSelection}
+        pagination={pagination()}
+        onRowClick={onRowClick}
       />
     </div>
   );
 };
 
 BasicTable.propTypes = {
-  companyList : PropTypes.object.isRequired,
-  onTableChange : PropTypes.func.isRequired,
-  onRowClick : PropTypes.func.isRequired
+  companyList: PropTypes.object.isRequired,
+  onTableChange: PropTypes.func.isRequired,
+  onRowClick: PropTypes.func.isRequired,
 };
 
 export default BasicTable;

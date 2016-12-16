@@ -12,7 +12,7 @@ export default {
   },
 
   effects: {
-    *fetchRemote({ payload }, { call, put }) {
+    * fetchRemote({ payload }, { call, put }) {
       // console.log("In ti" );
       try {
         const { jsonResult } = yield call(query);

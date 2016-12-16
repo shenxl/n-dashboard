@@ -1,27 +1,29 @@
 const fs = require('fs');
 const path = require('path');
 
-module.exports = function(webpackConfig, env) {
-  webpackConfig.babel.plugins.push('transform-runtime');
-  webpackConfig.babel.plugins.push(['import', {
-      libraryName: 'antd',
-      style: 'css',
+module.exports = (webpackConfig, env) => {
+  const myWebpackConfig = webpackConfig;
+  myWebpackConfig.babel.plugins.push('transform-runtime');
+  myWebpackConfig.babel.plugins.push(['import', {
+    libraryName: 'antd',
+    style: 'css',
   }]);
   // Support hmr
   if (env === 'development') {
-    webpackConfig.devtool = '#eval';
-    webpackConfig.babel.plugins.push(['dva-hmr', {
+    myWebpackConfig.devtool = '#eval';
+    myWebpackConfig.babel.plugins.push(['dva-hmr', {
       entries: [
-        './src/index.js'
+        './src/index.js',
       ],
     }]);
   } else {
-    webpackConfig.babel.plugins.push('dev-expression');
+    myWebpackConfig.babel.plugins.push('dev-expression');
   }
 
   // Support CSS Modules
   // Parse all less files as css module.
-  webpackConfig.module.loaders.forEach(function(loader, index) {
+  myWebpackConfig.module.loaders.forEach((sourceLoader, index) => {
+    const loader = sourceLoader;
     if (typeof loader.test === 'function' && loader.test.toString().indexOf('\\.less$') > -1) {
       loader.include = /node_modules/;
       loader.test = /\.less$/;
@@ -40,5 +42,5 @@ module.exports = function(webpackConfig, env) {
     }
   });
 
-  return webpackConfig;
+  return myWebpackConfig;
 };

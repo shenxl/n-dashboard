@@ -1,14 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { Select } from 'antd';
+
 const Option = Select.Option;
-
-const CustomSelect = React.createClass({
-
-  getInitialState() {
-    return {
+class CustomSelect extends React.Component {
+  constructor(...args) {
+    super(...args);
+    this.state = {
       value: this.props.value || [],
     };
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     // Should be a controlled component.
@@ -16,7 +16,7 @@ const CustomSelect = React.createClass({
       const value = nextProps.value;
       this.setState({ value });
     }
-  },
+  }
 
   handleChange(e) {
     if (!('value' in this.props)) {
@@ -27,12 +27,13 @@ const CustomSelect = React.createClass({
     if (onChange) {
       onChange(e);
     }
-  },
+  }
 
   render() {
     const children = [];
-    this.props.options.map((item,index) => {
+    this.props.options.map((item, index) => {
       children.push(<Option key={`${item}`}>{item}</Option>);
+      return undefined;
     })
 
     return (
@@ -41,18 +42,17 @@ const CustomSelect = React.createClass({
         placeholder="请选择区域"
         defaultValue={[]}
         value={this.state.value}
-        onChange={this.handleChange}
+        onChange={this.handleChange.bind(this)}
       >
         {children}
       </Select>
     );
-  },
-});
+  }
+}
 
 
 CustomSelect.propTypes = {
-  options : PropTypes.array.isRequired,
-  handleChange : PropTypes.func.isRequired
+  options: PropTypes.array.isRequired,
 };
 
 export default CustomSelect;

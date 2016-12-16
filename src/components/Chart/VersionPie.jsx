@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import ReactEcharts from 'echarts-for-react';
 
+const _ = require('lodash');
+
 const VersionPie = ({ report }) => {
-  const {versionLoading , version , versionTitle} = report;
-  const data = _.map(version, (item) => { return { name : item.version , value : item.value }});
+  const { versionLoading, version, versionTitle } = report;
+  const data = _.map(version, (item) => { return { name: item.version, value: item.value } });
   const option = {
     legend: {
       orient: 'vertical',
@@ -11,11 +13,11 @@ const VersionPie = ({ report }) => {
       data: _.map(version, (item) => { return item.version }),
     },
     title: {
-       text: versionTitle,
-   },
+      text: versionTitle,
+    },
     tooltip: {
       trigger: 'item',
-      formatter: "{b}: {c} ({d}%)"
+      formatter: '{b}: {c} ({d}%)',
     },
     series: [
       {

@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'dva';
-
 import styles from './company.less';
 
 const Company = ({ children }) => {

@@ -43,7 +43,8 @@
   },
   "scripts": {
     "start": "dora --plugins \"browser-history,webpack,webpack-hmr\"",
-    "build": "atool-build",
-    "test": "atool-test-mocha ./src/**/*-test.js"
+    "build": "npm run lint && atool-build",
+    "test": "atool-test-mocha ./src/**/*-test.js",
+    "lint": "eslint ./src/**/*.js"
   }
 }

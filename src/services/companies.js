@@ -1,27 +1,27 @@
 import xFetch from '../utils/xFetch';
-import { apiUrl , authUrl } from '../utils/constant'
+import { apiUrl, authUrl } from '../utils/constant'
+
 const companies = {
-  query : async (query) =>{
+  query: async (query) => {
     return xFetch(`${apiUrl}/companyViewers/getRecord?${query}`)
   },
-  queryActive :  async (query) =>{
+  queryActive: async (query) => {
     return xFetch(`${apiUrl}/companyActivities/catalog?${query}`)
   },
-  getCompany :  async (companyId) =>{
+  getCompany: async (companyId) => {
     return xFetch(`${apiUrl}/companies/${companyId}`)
   },
-  updateCompany: async (updateAttributes) =>{
+  updateCompany: async (updateAttributes) => {
     const { id } = updateAttributes
     const options = {
-      method: "PUT",
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body : JSON.stringify(updateAttributes),
+      body: JSON.stringify(updateAttributes),
     };
-    return xFetch(`${apiUrl}/companies/${id}`,options);
-
- },
+    return xFetch(`${apiUrl}/companies/${id}`, options);
+  },
 
 }
 export default companies;

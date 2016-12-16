@@ -1,20 +1,20 @@
+/*eslint camelcase: ["error", {"properties": "never"}]*/
 import React, { Component, PropTypes } from 'react';
 import { Form, Row, Col, Input, Button,
-    Icon , Tooltip , Cascader , Select,
-    Switch , InputNumber  , DatePicker} from 'antd';
+    Icon, Tooltip, Cascader, Select,
+    Switch, InputNumber, DatePicker } from 'antd';
 import moment from 'moment';
-var _ = require('lodash');
-
 import styles from './order.less';
+
+const _ = require('lodash');
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-const OrderFromCreate = ({ currentItem  ,form , modalMode , onOrderFieldsChange }) => {
-
-  const { id , company_id ,order_type ,  order_name , order_area , order_number  ,
-        after_authorization, prediction ,authorization_years , authorization_date,
-        length_of_service , service_date } = currentItem;
+const OrderFromCreate = ({ currentItem, form, modalMode, onOrderFieldsChange }) => {
+  const { id, company_id, order_type, order_name, order_area, order_number,
+        after_authorization, prediction, authorization_years, authorization_date,
+        length_of_service, service_date } = currentItem;
 
   const formItemLayout = {
     labelCol: { span: 12 },
@@ -27,162 +27,162 @@ const OrderFromCreate = ({ currentItem  ,form , modalMode , onOrderFieldsChange 
       horizontal
       className={styles.orderFrom}
     >
-      <Row gutter={40}  style={{ "marginTop" : "10px" }}>
+      <Row gutter={40} style={{ marginTop: '10px' }}>
 
-        <Col span={24} key={"order_name"}>
+        <Col span={24} key={'order_name'}>
           <FormItem
-            labelCol = {{ span: 6 }}
-            wrapperCol = {{ span: 18 }}
-              label={<span>
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 18 }}
+            label={<span>
               订方名称&nbsp;
             </span>}
           >
-          {getFieldDecorator('order_name', {
-            initialValue:  order_name || ""
-          })(
-            <Input style={{ width: 280 }} />
-          )}
+            {getFieldDecorator('order_name', {
+              initialValue: order_name || '',
+            })(
+              <Input style={{ width: 280 }} />
+            )}
           </FormItem>
         </Col>
 
-        <Col span={24} key={"order_area"}>
+        <Col span={24} key={'order_area'}>
           <FormItem
-            labelCol = {{ span: 6 }}
-            wrapperCol = {{ span: 18 }}
-              label={<span>
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 18 }}
+            label={<span>
               授权范围&nbsp;
             </span>}
           >
-          {getFieldDecorator('order_area', {
-            initialValue:  order_area || ""
-          })(
-            <Input type="textarea" autosize={{ minRows: 2, maxRows: 4 }} style={{ width: 280 }} />
-          )}
+            {getFieldDecorator('order_area', {
+              initialValue: order_area || '',
+            })(
+              <Input type="textarea" autosize={{ minRows: 2, maxRows: 4 }} style={{ width: 280 }} />
+            )}
           </FormItem>
         </Col>
-        <Col span={12} key={"order_type"}>
+        <Col span={12} key={'order_type'}>
           <FormItem
             {...formItemLayout}
-              label={<span>
+            label={<span>
               授权类型&nbsp;
             </span>}
           >
-          {getFieldDecorator('order_type', {
-            initialValue:  order_type || "场地授权"
-          })(
-            <Select style={{ width: 100 }}>
-              <Option value="数量授权">数量授权</Option>
-              <Option value="场地授权">场地授权</Option>
-              <Option value="随机数量授权">随机数量授权</Option>
-              <Option value="年场地授权">年场地授权</Option>
-            </Select>
-          )}
+            {getFieldDecorator('order_type', {
+              initialValue: order_type || '场地授权',
+            })(
+              <Select style={{ width: 100 }}>
+                <Option value="数量授权">数量授权</Option>
+                <Option value="场地授权">场地授权</Option>
+                <Option value="随机数量授权">随机数量授权</Option>
+                <Option value="年场地授权">年场地授权</Option>
+              </Select>
+            )}
           </FormItem>
         </Col>
-        <Col span={12} key={"order_number"}>
+        <Col span={12} key={'order_number'}>
           <FormItem
             {...formItemLayout}
-              label={<span>
+            label={<span>
               订单数量&nbsp;
             </span>}
           >
-          {getFieldDecorator('order_number', {
-            initialValue : order_number || 0
-          })(
-            <InputNumber min={0} max={100000} style={{ width: 100 }} />
-          )}
+            {getFieldDecorator('order_number', {
+              initialValue: order_number || 0,
+            })(
+              <InputNumber min={0} max={100000} style={{ width: 100 }} />
+            )}
           </FormItem>
         </Col>
-        <Col span={12} key={"after_authorization"}>
+        <Col span={12} key={'after_authorization'}>
           <FormItem
             {...formItemLayout}
-              label={<span>
+            label={<span>
               到期后授权数量&nbsp;
             </span>}
           >
-          {getFieldDecorator('after_authorization', {
-            initialValue: after_authorization || 0,
-          })(
-            <InputNumber min={0} max={100000} style={{ width: 100 }} />
-          )}
+            {getFieldDecorator('after_authorization', {
+              initialValue: after_authorization || 0,
+            })(
+              <InputNumber min={0} max={100000} style={{ width: 100 }} />
+            )}
           </FormItem>
         </Col>
-        <Col span={12} key={"prediction"}>
+        <Col span={12} key={'prediction'}>
           <FormItem
             {...formItemLayout}
-              label={<span>
+            label={<span>
               预估值&nbsp;
             </span>}
           >
-          {getFieldDecorator('prediction', {
-            initialValue:  prediction || 0,
-          })(
-            <InputNumber min={0} max={100000} style={{ width: 100 }} />
-          )}
+            {getFieldDecorator('prediction', {
+              initialValue: prediction || 0,
+            })(
+              <InputNumber min={0} max={100000} style={{ width: 100 }} />
+            )}
           </FormItem>
         </Col>
 
-        <Col span={12} key={"authorization_years"}>
+        <Col span={12} key={'authorization_years'}>
           <FormItem
             {...formItemLayout}
-              label={<span>
+            label={<span>
               授权年限&nbsp;
             </span>}
           >
-          {getFieldDecorator('authorization_years', {
-            initialValue: authorization_years || 0,
-          })(
-            <InputNumber min={0} max={100000} style={{ width: 60 }} />
-          )}
+            {getFieldDecorator('authorization_years', {
+              initialValue: authorization_years || 0,
+            })(
+              <InputNumber min={0} max={100000} style={{ width: 60 }} />
+            )}
           </FormItem>
         </Col>
 
-        <Col span={12} key={"authorization_date"}>
+        <Col span={12} key={'authorization_date'}>
           <FormItem
             {...formItemLayout}
-              label={<span>
+            label={<span>
               授权截止时间&nbsp;
             </span>}
           >
-          {getFieldDecorator('authorization_date', {
-            initialValue: (authorization_date ?
-            moment(authorization_date, 'YYYY-MM-DD') :
-            moment(new Date(), 'YYYY-MM-DD')),
-          })(
-            <DatePicker style={{ width: 100 }}/>
-          )}
+            {getFieldDecorator('authorization_date', {
+              initialValue: (authorization_date ?
+              moment(authorization_date, 'YYYY-MM-DD') :
+              moment(new Date(), 'YYYY-MM-DD')),
+            })(
+              <DatePicker style={{ width: 100 }} />
+            )}
           </FormItem>
         </Col>
 
-        <Col span={12} key={"length_of_service"}>
+        <Col span={12} key={'length_of_service'}>
           <FormItem
             {...formItemLayout}
-              label={<span>
+            label={<span>
               服务年限&nbsp;
             </span>}
           >
-          {getFieldDecorator('length_of_service', {
-            initialValue:  length_of_service || 0,
-          })(
-            <InputNumber min={0} max={100000} style={{ width: 60 }} />
-          )}
+            {getFieldDecorator('length_of_service', {
+              initialValue: length_of_service || 0,
+            })(
+              <InputNumber min={0} max={100000} style={{ width: 60 }} />
+            )}
           </FormItem>
         </Col>
 
-        <Col span={12} key={"service_date"}>
+        <Col span={12} key={'service_date'}>
           <FormItem
             {...formItemLayout}
-              label={<span>
+            label={<span>
               服务截至时间&nbsp;
             </span>}
           >
-          {getFieldDecorator('service_date', {
-            initialValue:(service_date ?
-            moment(service_date, 'YYYY-MM-DD') :
-            moment(new Date(), 'YYYY-MM-DD')),
-          })(
-            <DatePicker style={{ width: 100 }}/>
-          )}
+            {getFieldDecorator('service_date', {
+              initialValue: (service_date ?
+              moment(service_date, 'YYYY-MM-DD') :
+              moment(new Date(), 'YYYY-MM-DD')),
+            })(
+              <DatePicker style={{ width: 100 }} />
+            )}
           </FormItem>
         </Col>
 
@@ -192,11 +192,11 @@ const OrderFromCreate = ({ currentItem  ,form , modalMode , onOrderFieldsChange 
 };
 const OrderFrom = Form.create({
   onFieldsChange(props, fields) {
-    // TODO　：　input 输入卡顿明显，待解决。
+    // TODO:input 输入卡顿明显，待解决。
     props.onOrderFieldsChange(fields);
   },
   mapPropsToFields(props) {
-    return { "currentItem" : props.currentItem };
+    return { currentItem: props.currentItem };
   },
 })(OrderFromCreate);
 

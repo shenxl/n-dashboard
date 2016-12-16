@@ -11,30 +11,29 @@ const MainLayout = ({
   dispatch,
   location,
   mainLayout,
-  auth
+  auth,
 }) => {
-
   const onCollapseChange = (value) => {
     dispatch({
-      type:'mainLayout/collapseMenu',
-      payload: !mainLayout.collapse
+      type: 'mainLayout/collapseMenu',
+      payload: !mainLayout.collapse,
     })
-    const mode =  !mainLayout.collapse ? 'vertical' : 'inline';
+    const mode = !mainLayout.collapse ? 'vertical' : 'inline';
     dispatch({
-      type:'mainLayout/changeMenu',
-      payload: mode
+      type: 'mainLayout/changeMenu',
+      payload: mode,
     })
   }
 
   const collapseSytle = classnames({
-    [styles.aside]:  true,
-    [styles.aside_collapse]:mainLayout.collapse,
+    [styles.aside]: true,
+    [styles.aside_collapse]: mainLayout.collapse,
   });
 
   const MenuBarProps = {
     location,
     onCollapseChange,
-    mainLayout
+    mainLayout,
   }
 
   const logOut = () => {
@@ -43,7 +42,7 @@ const MainLayout = ({
 
   const HeaderProps = {
     auth,
-    logOut
+    logOut,
   }
 
   return (
@@ -61,7 +60,7 @@ const MainLayout = ({
           版权所有 © 2016 金山办公软件技术部
         </div>
       </div>
-  </div>
+    </div>
   );
 };
 
@@ -69,7 +68,7 @@ MainLayout.propTypes = {
   children: PropTypes.element.isRequired,
 };
 
-function mapStateToProps({ mainLayout , auth}) {
+function mapStateToProps({ mainLayout, auth }) {
   return { mainLayout, auth }
 }
 
