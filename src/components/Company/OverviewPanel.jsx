@@ -33,7 +33,7 @@ const OverviewPanel = ({ baseCompanies }) => {
   }
 
   return (
-    <div>
+    <div className={styles.showpicks}>
       <Row gutter={40}>
         <SearchTags searchInfo={searchInfo} />
         <Col span={9}>

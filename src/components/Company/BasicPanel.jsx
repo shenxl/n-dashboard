@@ -265,7 +265,7 @@ const BasicPanel = ({ dispatch, orders, sns, global, currentType, currentIndustr
         <TabPane tab="序列号信息" key="3">
           <SnTable {...snProps} /></TabPane>
       </Tabs>
-      );
+    );
   }
 
   return (

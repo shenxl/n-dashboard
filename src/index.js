@@ -30,6 +30,10 @@ app.model(require('./models/auth'));
 
 // 全局信息
 app.model(require('./models/global'));
+//数据弹出框信息
+app.model(require('./models/showData'));
+//导入数据信息
+app.model(require('./models/ImportData'));
 
 // 公司信息处理
 app.model(require('./models/companies'));

@@ -8,12 +8,9 @@ import BasicTable from '../../components/Company/BasicTable';
 import ActivityTable from '../../components/Company/ActivityTable';
 
 import OverviewPanel from '../../components/Company/OverviewPanel';
-import ActivityPanel from '../../components/Company/ActivityPanel';
-import BasicPanel from '../../components/Company/BasicPanel';
 import SearchTags from '../../components/Company/SearchTags';
-
+import DataModal from '../../components/ShowData/DataModal';
 import ReportLine from '../../components/Chart/ReportLine';
-import VersionPie from '../../components/Chart/VersionPie';
 
 import { converId, converServer, conver } from '../../utils/reportCommon';
 import styles from './company.less';
@@ -23,7 +20,7 @@ const _ = require('lodash');
 const TabPane = Tabs.TabPane;
 const MonthPicker = DatePicker.MonthPicker;
 
-const Enterprise = ({ dispatch, companies, global, report }) => {
+const Enterprise = ({ dispatch, companies, global, report, showdata }) => {
   // 地区变化的 dispatch
   const { hideSearchPanel, tabState, searchInfo, selectedRowKeys, subSelect } = companies;
   const { versionLoading, version } = report;
@@ -120,12 +117,6 @@ const Enterprise = ({ dispatch, companies, global, report }) => {
     });
   }
 
-  const onSubChangeTab = (key) => {
-    dispatch({
-      type: 'companies/setSubSelect',
-      payload: { subSelect: key },
-    });
-  }
 
   const setAdvancedSearch = (basicSearch) => {
     dispatch({
@@ -149,6 +140,12 @@ const Enterprise = ({ dispatch, companies, global, report }) => {
   }
 
   const onRowClick = (record, index) => {
+    dispatch({
+      type: 'showdata/setModalState',
+      payload: {
+        showDataVisibel: true,
+      },
+    });
     dispatch({
       type: 'companies/getCurrentItem',
       payload: record.id,
@@ -180,7 +177,7 @@ const Enterprise = ({ dispatch, companies, global, report }) => {
       return (<AdvancedSearchForm {...AdvanceSearchProps} />)
     }
     return (
-      <div>
+      <div className={styles.simpleSearch}>
         <Row>
           <Col span={24} style={{ textAlign: 'right' }}>
             <Button icon="down" onClick={setAdvancedSearch}> 高级检索 </Button>
@@ -235,26 +232,31 @@ const Enterprise = ({ dispatch, companies, global, report }) => {
   const overviewPanelProps = {
     baseCompanies: companies,
   }
-
-  const BasicPanelProps = {
-    company: companies.currentItem,
+  const showModalHandleCancle = () => {
+    dispatch({
+      type: 'showdata/clearModalState',
+    });
   }
-
-  const ActivityPanelProps = {
-    company: companies.currentItem,
+  const showModalHandleOk = () => {
+    dispatch({
+      type: 'showdata/clearModalState',
+    });
   }
-
-  const versionPiePanelProps = {
-    report,
+  const orderModalProps = {
+    showModalHandleOk,
+    showdata,
+    showModalHandleCancle,
   }
 
   return (
     <div>
-      <h2>国有企业继往开来</h2>
+      <h1 className={styles.h1}>国有企业继往开来</h1>
       <Row gutter={40}>
-        <Col span={14} key={'data-area'}>
+        {searchShow()}
+        <OverviewPanel {...overviewPanelProps} />
+        <Col span={23} key={'data-area'}>
           <div>
-            {searchShow()}
+
             <div className={styles.datapane}>
               <Tabs defaultActiveKey="basic" tabBarExtraContent={operations()} onChange={onChangeTab}>
                 <TabPane tab={<span><Icon type="solution" />企业明细</span>} key="basic">
@@ -270,21 +272,9 @@ const Enterprise = ({ dispatch, companies, global, report }) => {
             </div>
           </div>
         </Col>
-        <Col span={10} key={'info-area'}>
-          <OverviewPanel {...overviewPanelProps} />
-          <Tabs onChange={onSubChangeTab} activeKey={subSelect}>
-            <TabPane tab={<span><Icon type="solution" />基本信息面板</span>} key="sub-basic">
-              <BasicPanel {...BasicPanelProps} />
-            </TabPane>
-            <TabPane tab={<span><Icon type="line-chart" />报活面板</span>} key="sub-activity">
-              <ActivityPanel {...ActivityPanelProps} />
-            </TabPane>
-            <TabPane tab={<span><Icon type="pie-chart" />版本面板</span>} key="subVersion">
-              <VersionPie {...versionPiePanelProps} />
-            </TabPane>
-          </Tabs>
-        </Col>
+
       </Row>
+      <DataModal {...orderModalProps} />
     </div>
   );
 };
@@ -293,7 +283,7 @@ Enterprise.propTypes = {
 
 };
 
-const mapStateToProps = ({ companies, global, report }) => {
-  return { companies, global, report }
+const mapStateToProps = ({ companies, global, report, showdata }) => {
+  return { companies, global, report, showdata }
 }
 export default connect(mapStateToProps)(Enterprise);

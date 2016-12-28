@@ -42,18 +42,21 @@ const BasicTable = ({ companyList, onTableChange, onRowClick, rowSelection }) =>
       title: '企业名称',
       dataIndex: 'name',
       key: 'name',
+      width: '30%',
       render: renderText,
     },
     {
       title: '采购量',
       dataIndex: 'buy',
       key: 'buy',
+      width: '14%',
       sorter: true,
     },
     {
       title: '本月报活',
       dataIndex: 'activity_sum',
       key: 'activity_sum',
+      width: '14%',
       render: renderItem,
       sorter: true,
     },
@@ -61,6 +64,7 @@ const BasicTable = ({ companyList, onTableChange, onRowClick, rowSelection }) =>
       title: '日活均值',
       dataIndex: 'activity_avg',
       key: 'activity_avg',
+      width: '14%',
       render: renderItem,
       sorter: true,
     },
@@ -68,6 +72,7 @@ const BasicTable = ({ companyList, onTableChange, onRowClick, rowSelection }) =>
       title: '本月安装量',
       dataIndex: 'install_sum',
       key: 'install_sum',
+      width: '14%',
       render: renderItem,
       sorter: true,
     },
@@ -92,6 +97,7 @@ const BasicTable = ({ companyList, onTableChange, onRowClick, rowSelection }) =>
       pageSize: limit,
       showTotal,
       showSizeChanger: true,
+      pageSizeOptions: ['6', '10', '20', '30', '40'],
     };
   }
 
@@ -106,6 +112,7 @@ const BasicTable = ({ companyList, onTableChange, onRowClick, rowSelection }) =>
         rowSelection={rowSelection}
         pagination={pagination()}
         onRowClick={onRowClick}
+        scroll={{ y: 320 }}
       />
     </div>
   );
