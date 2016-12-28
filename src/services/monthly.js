@@ -35,6 +35,7 @@ const monthly = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify(currentItem),
     };
@@ -46,6 +47,7 @@ const monthly = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify(currentItem),
     };

@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Button , Row , Col} from 'antd';
+import { Button, Row, Col } from 'antd';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
 import styles from './test.less';
@@ -8,57 +8,56 @@ import MonthlyTable from '../../components/CompanyMonthly/MonthlyTable';
 import MonthlyFrom from '../../components/CompanyMonthly/MonthlyFrom';
 
 
-function Test( { dispatch , companyMonthly }) {
-
-  const { selectedRowKeys , currentItem , modalMode } = companyMonthly;
+function Test({ dispatch, companyMonthly }) {
+  const { selectedRowKeys, currentItem, modalMode } = companyMonthly;
   const company_id = 7522;
   const server_id = 99;
   const loadMonthly = () => {
-    dispatch({type : "companyMonthly/getInnerData", payload:company_id});
+    dispatch({ type: 'companyMonthly/getInnerData', payload: company_id });
   }
   const onRowClick = (record, index) => {
     dispatch({
       type: 'companyMonthly/getCurrentItem',
-      payload : {
-        company_id : record.company_id,
-        server_id : record.server_id,
-        year : record.year,
-        month : record.month
-      }
+      payload: {
+        company_id: record.company_id,
+        server_id: record.server_id,
+        year: record.year,
+        month: record.month,
+      },
     });
 
     dispatch({
       type: 'companyMonthly/setSelectedRowKeys',
-      payload : { selectedRowKeys : [index] }
+      payload: { selectedRowKeys: [index] },
     });
   }
-  const companyName = "测试企业";
+  const companyName = '测试企业';
   const onCreateInner = () => {
     const date = new Date();
     dispatch({
       type: 'companyMonthly/setCurrentItem',
-      payload : { currentItem : { company_id ,server_id , year :date.getFullYear() , month: date.getMonth() + 1 } }
+      payload: { currentItem: { company_id, server_id, year: date.getFullYear(), month: date.getMonth() + 1 } },
     });
     dispatch({
       type: 'companyMonthly/setModalMode',
-      payload : { modalMode : 'create' }
+      payload: { modalMode: 'create' },
     });
   }
   const onRemoveInner = (record, event) => {
     event.stopPropagation();
     dispatch({
       type: 'companyMonthly/removeCurrentItem',
-      payload : {
-        company_id : record.company_id,
-        server_id : record.server_id,
-        year : record.year,
-        month : record.month
-      }
+      payload: {
+        company_id: record.company_id,
+        server_id: record.server_id,
+        year: record.year,
+        month: record.month,
+      },
     });
 
     dispatch({
       type: 'companyMonthly/setSelectedRowKeys',
-      payload : { selectedRowKeys : [0] }
+      payload: { selectedRowKeys: [0] },
     });
   }
 
@@ -69,60 +68,59 @@ function Test( { dispatch , companyMonthly }) {
       const record = selectedRows[0];
       dispatch({
         type: 'companyMonthly/getCurrentItem',
-        payload : {
-          company_id : record.company_id,
-          server_id : record.server_id,
-          year : record.year,
-          month : record.month
-        }
+        payload: {
+          company_id: record.company_id,
+          server_id: record.server_id,
+          year: record.year,
+          month: record.month,
+        },
       });
 
       dispatch({
         type: 'companyMonthly/setSelectedRowKeys',
-        payload : { selectedRowKeys }
+        payload: { selectedRowKeys },
       });
     },
   };
 
   const monthlyTableProps = {
-    companyMonthly ,
-    companyName ,
-    onRowClick ,
+    companyMonthly,
+    companyName,
+    onRowClick,
     rowSelection,
     onRemoveInner,
-    onCreateInner
+    onCreateInner,
   }
 
   const onMonthlyFieldsChange = (fields) => {
     dispatch({
       type: 'companyMonthly/updateCurrentItem',
-      payload : fields
+      payload: fields,
     });
-
   }
 
   const onSubmitClick = () => {
     dispatch({
-      type: 'companyMonthly/replaceOrCreate'
+      type: 'companyMonthly/replaceOrCreate',
     });
   }
 
   const monthlyFromProps = {
-    currentItem ,
-    modalMode ,
+    currentItem,
+    modalMode,
     onMonthlyFieldsChange,
-    onSubmitClick
+    onSubmitClick,
   }
   return (
     <div>
       <span className={styles.testTitle} >Hello world </span>
-      <Button onClick={ loadMonthly }> 加载数据 </Button>
+      <Button onClick={loadMonthly}> 加载数据 </Button>
       <Row gutter={40}>
         <Col span={15}>
           <MonthlyTable {...monthlyTableProps} />
         </Col>
         <Col span={9}>
-          {  modalMode === ''   ? (<div></div>) : <MonthlyFrom {...monthlyFromProps} />}
+          { modalMode === '' ? (<div />) : <MonthlyFrom {...monthlyFromProps} />}
         </Col>
 
       </Row>
@@ -137,4 +135,4 @@ function mapStateToProps({ companyMonthly }) {
   return { companyMonthly }
 }
 
-export default  connect(mapStateToProps)(Test);
+export default connect(mapStateToProps)(Test);

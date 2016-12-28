@@ -110,6 +110,7 @@ export default {
     * replaceOrCreate({ payload }, { call, put, select }) {
       try {
         const currentItem = yield select(state => state.companyMonthly.currentItem);
+        console.log(currentItem);
         const { jsonResult } = yield call(replaceOrCreate, currentItem);
         if (jsonResult) {
           yield put({

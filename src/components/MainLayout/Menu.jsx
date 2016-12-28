@@ -41,7 +41,7 @@ function MenuBar({ location, mainLayout, onCollapseChange }) {
         theme="dark"
         selectedKeys={[getMenuKeyFromUrl(location.pathname)]}
       >
-        <SubMenu title={settingTitle}>
+        <SubMenu title={analyticalTitle}>
           <Menu.Item key="/company/government">
             <Link to="/company/government">
               <span className={styles.nav_text}>政府管理</span>
@@ -55,6 +55,18 @@ function MenuBar({ location, mainLayout, onCollapseChange }) {
           <Menu.Item key="/company/finance">
             <Link to="/company/finance">
               <span className={styles.nav_text}>金融管理</span>
+            </Link>
+          </Menu.Item>
+        </SubMenu>
+        <SubMenu title={settingTitle}>
+          <Menu.Item key="/setting/import">
+            <Link to="/setting/import">
+              <span className={styles.nav_text}>数据导入</span>
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="/setting/export">
+            <Link to="/setting/export">
+              <span className={styles.nav_text}>数据导出</span>
             </Link>
           </Menu.Item>
         </SubMenu>

@@ -15,6 +15,9 @@ import Company from './routes/Company/Company';
 import Government from './routes/Company/Government';
 import Enterprise from './routes/Company/Enterprise';
 import Finance from './routes/Company/Finance';
+
+import DataProessingImport from './routes/Import/Import';
+
 import Test from './routes/test/Test';
 
 export default function ({ history }) {
@@ -31,6 +34,9 @@ export default function ({ history }) {
           <Route path="government" component={Government} />
           <Route path="enterprise" component={Enterprise} />
           <Route path="finance" component={Finance} />
+        </Route>
+        <Route path="setting/" component={Company} >
+          <Route path="import" component={DataProessingImport} />
         </Route>
         <Route path="*" component={NotFound} />
       </Route>
