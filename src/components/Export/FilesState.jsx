@@ -1,24 +1,24 @@
 import React, { Component, PropTypes } from 'react';
 import { Upload, message, Button, Icon } from 'antd';
 import classnames from 'classnames';
-import styles from './exportDataModal.less';
+import styles from './filesState.less';
 
-const ExportDataModal = (props) => {
-  const { isDownData, onclick } = props;
+const FilesState = (props) => {
+  const { isStateShow, onclick } = props;
   const showStyle = classnames({
-    [styles.sideBoxHide]: !isDownData,
-    [styles.sideBoxShow]: isDownData,
+    [styles.sideBoxHide]: !isStateShow,
+    [styles.sideBoxShow]: isStateShow,
   });
   return (
     <div className={showStyle} >
       <div className={styles.next}>
         <Button onClick={onclick} className={styles.next} type="ghost">
-          <Icon type="arrow-right" /> 下一步
+          <Icon type="arrow-right" /> 完成
       </Button>
       </div>
     </div>
   );
 }
-ExportDataModal.PropTypes = {
+FilesState.PropTypes = {
 }
-export default ExportDataModal
+export default FilesState

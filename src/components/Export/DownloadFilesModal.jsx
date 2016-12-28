@@ -4,10 +4,10 @@ import classnames from 'classnames';
 import styles from './downloadModal.less';
 
 const DownloadFilesModal = (props) => {
-  const { isUpShow, onclick } = props;
+  const { isDownFiles, onclick } = props;
   const showStyle = classnames({
-    [styles.sideBoxHide]: !isUpShow,
-    [styles.sideBoxShow]: isUpShow,
+    [styles.sideBoxHide]: !isDownFiles,
+    [styles.sideBoxShow]: isDownFiles,
   });
   return (
     <div className={showStyle} >

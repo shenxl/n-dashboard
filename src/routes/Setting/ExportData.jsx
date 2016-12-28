@@ -6,20 +6,20 @@ import classnames from 'classnames';
 import FilesButton from '../../components/Import/FilesButton';
 import ExportDataModal from '../../components/Export/ExportDataModal';
 import DownloadFilesModal from '../../components/Export/DownloadFilesModal';
-import FilesState from '../../components/Import/FilesState';
+import FilesState from '../../components/Export/FilesState';
 //import { apiUrl } from '../utils/constant'
 import styles from './exportData.less';
 
 const Step = Steps.Step;
 
-const ExportData = ({ importdata, dispatch }) => {
-  const { isDownShow, isUpShow, current, isStateShow } = importdata;
+const ExportData = ({ exportdata, dispatch }) => {
+  const { isDownData, isDownFiles, current, isStateShow } = exportdata;
   const onChangeDownload = () => {
     dispatch({
-      type: 'importdata/changeDownload',
+      type: 'exportdata/changeDownload',
       payload: {
-        isDownShow: true,
-        isUpShow: false,
+        isDownData: true,
+        isDownFiles: false,
         isStateShow: false,
         current: 0,
       },
@@ -27,19 +27,19 @@ const ExportData = ({ importdata, dispatch }) => {
   }
   const onHideDownload = () => {
     dispatch({
-      type: 'importdata/changeDownload',
+      type: 'exportdata/changeDownload',
       payload: {
-        isDownShow: false,
-        isUpShow: true,
+        isDownData: false,
+        isDownFiles: true,
         current: 1,
       },
     });
   }
   const onHideUpload = () => {
     dispatch({
-      type: 'importdata/changeDownload',
+      type: 'exportdata/changeDownload',
       payload: {
-        isUpShow: false,
+        isDownFiles: false,
         isStateShow: true,
         current: 2,
       },
@@ -47,7 +47,7 @@ const ExportData = ({ importdata, dispatch }) => {
   }
   const onHideFilesState = () => {
     dispatch({
-      type: 'importdata/changeDownload',
+      type: 'exportdata/changeDownload',
       payload: {
         isStateShow: false,
         current: 0,
@@ -66,10 +66,10 @@ const ExportData = ({ importdata, dispatch }) => {
       </div>
 
       <div >
-        <ExportDataModal isDownShow={isDownShow} onclick={onHideDownload} />
+        <ExportDataModal isDownData={isDownData} onclick={onHideDownload} />
       </div>
       <div >
-        <DownloadFilesModal isUpShow={isUpShow} onclick={onHideUpload} />
+        <DownloadFilesModal isDownFiles={isDownFiles} onclick={onHideUpload} />
       </div>
       <div>
         <FilesState isStateShow={isStateShow} onclick={onHideFilesState} />
@@ -81,7 +81,7 @@ const ExportData = ({ importdata, dispatch }) => {
 
 ExportData.PropTypes = {
 }
-const mapStateToProps = ({ importdata }) => {
-  return { importdata }
+const mapStateToProps = ({ exportdata }) => {
+  return { exportdata }
 }
 export default connect(mapStateToProps)(ExportData);
