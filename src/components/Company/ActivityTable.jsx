@@ -112,7 +112,7 @@ const BasicTable = ({ companyList, onTableChange, onRowClick, rowSelection }) =>
         rowSelection={rowSelection}
         pagination={pagination()}
         onRowClick={onRowClick}
-        scroll={{ y: 320 }}
+        scroll={{ y: 340 }}
       />
     </div>
   );

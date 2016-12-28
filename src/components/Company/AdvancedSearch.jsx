@@ -147,7 +147,7 @@ const AdvancedSearch = ({
             </span>}
           >
             { getFieldDecorator('region')(
-              <CustomSelect options={regionList} handleChange={onRegionChange} />
+              <CustomSelect options={regionList} handleChange={onRegionChange} />,
             )}
           </FormItem>
         </Col>
@@ -163,7 +163,7 @@ const AdvancedSearch = ({
                 onChange={onTypeChange}
                 changeOnSelect
                 placeholder="请选择类型 / 行业"
-              />
+              />,
             )}
           </FormItem>
         </Col>
@@ -184,7 +184,7 @@ const AdvancedSearch = ({
                 {...RegionProps}
                 changeOnSelect
                 placeholder="请选择省 / 市 / 区"
-              />
+              />,
             )}
           </FormItem>
         </Col>
@@ -195,7 +195,7 @@ const AdvancedSearch = ({
             wrapperCol={{ span: 5 }}
           >
             {getFieldDecorator('important')(
-              <Switch />
+              <Switch />,
             )}
           </FormItem>
         </Col>
@@ -205,7 +205,7 @@ const AdvancedSearch = ({
             label={'关键字'}
           >
             {getFieldDecorator('keyword')(
-              <Input placeholder="请输入关键字" />
+              <Input placeholder="请输入关键字" />,
             )}
           </FormItem>
         </Col>
