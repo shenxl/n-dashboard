@@ -19,6 +19,9 @@ const ImportData = ({ importdata, dispatch }) => {
       type: 'importdata/changeDownload',
       payload: {
         isDownShow: true,
+        isUpShow: false,
+        isStateShow: false,
+        current: 0,
       },
     });
   }

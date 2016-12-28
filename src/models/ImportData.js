@@ -1,11 +1,13 @@
 export default {
-//定义一个全局名字，唯一
   namespace: 'importdata',
-//初始数据状态
   state: {
+    //控制导入数据的数据面板显示隐藏
     isDownShow: false,
+    //控制导入数据的上传文件面板显示隐藏
     isUpShow: false,
+    //控制导入数据的文件完成状态面板显示隐藏
     isStateShow: false,
+    //控制steps流程的切换
     current: 0,
   },
 
