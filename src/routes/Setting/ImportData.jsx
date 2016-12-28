@@ -55,7 +55,7 @@ const ImportData = ({ importdata, dispatch }) => {
     });
   }
   return (
-    <div>
+    <div className={styles.import}>
       <Steps current={current}>
         <Step title="导入数据" icon={<Icon type="download" />} />
         <Step title="上传文件" icon={<Icon type="addfile" />} />
