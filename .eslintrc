@@ -16,7 +16,8 @@
     "global-require": [0],
     "no-shadow": [0],
     "no-useless-computed-key": [0],
-    "no-underscore-dangle": [0]
+    "no-underscore-dangle": [0],
+    linebreak-style:  [0]
   },
   "ecmaFeatures": {
     "experimentalObjectRestSpread": true
