@@ -11,22 +11,26 @@ import FilesState from '../../components/Import/FilesState';
 import styles from './importData.less';
 
 const Step = Steps.Step;
-const steps = [{
-  title: '数据导入',
-  content: <Button type="primary" icon="download" >开始导入</Button>,
-}, {
-  title: '上传文件',
-  content: <FilesButton />,
-}, {
-  title: '完成状态',
-  content: <Button type="ghost">
-     文件状态显示
-</Button>,
-}];
+
 
 const ImportData = ({ importdata, dispatch }) => {
-  const { current } = importdata;
-
+  const { current, isDownShow } = importdata;
+  const showDownModal = () => {
+    dispatch({
+      type: 'importdata/changeDownload',
+      payload: {
+        isDownShow: true,
+      },
+    });
+  }
+  const handleCancel = () => {
+    dispatch({
+      type: 'importdata/changeDownload',
+      payload: {
+        isDownShow: false,
+      },
+    });
+  }
   const next = () => {
     const add = current + 1;
     dispatch({
@@ -45,6 +49,19 @@ const ImportData = ({ importdata, dispatch }) => {
       },
     });
   }
+
+  const steps = [{
+    title: '数据导入',
+    content: <Button onClick={showDownModal} type="primary" icon="download" >开始导入</Button>,
+  }, {
+    title: '上传文件',
+    content: <FilesButton />,
+  }, {
+    title: '完成状态',
+    content: <Button type="ghost">
+       文件状态显示
+  </Button>,
+  }];
 
   return (
     <div>
@@ -73,6 +90,7 @@ const ImportData = ({ importdata, dispatch }) => {
             </Button>
           }
       </div>
+      <DownloadModal isDownShow={isDownShow} handleCancel={handleCancel} />
     </div>
   );
 }
