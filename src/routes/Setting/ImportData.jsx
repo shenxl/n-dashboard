@@ -24,54 +24,57 @@ const steps = [{
 </Button>,
 }];
 
-class ImportData extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      current: 0,
-    };
+const ImportData = ({ importdata, dispatch }) => {
+  const { current } = importdata;
+
+  const next = () => {
+    const add = current + 1;
+    dispatch({
+      type: 'importdata/changeDownload',
+      payload: {
+        current: add,
+      },
+    });
   }
-  next() {
-    const current = this.state.current + 1;
-    this.setState({ current });
-  }
-  prev() {
-    const current = this.state.current - 1;
-    this.setState({ current });
+  const prev = () => {
+    const reduce = current - 1;
+    dispatch({
+      type: 'importdata/changeDownload',
+      payload: {
+        current: reduce,
+      },
+    });
   }
 
-  render() {
-    const { current } = this.state;
-    return (
-      <div>
-        <Steps current={current}>
-          {steps.map((item, key) =>
-            <Step icon={(key === 0 && <Icon type="download" />) || (key === 1 && <Icon type="addfile" />) || (key === 2 && <Icon type="file" />)} title={item.title} />)}
+  return (
+    <div>
+      <Steps current={current}>
+        {steps.map((item, key) =>
+          <Step key={item.title} icon={(key === 0 && <Icon type="download" />) || (key === 1 && <Icon type="addfile" />) || (key === 2 && <Icon type="file" />)} title={item.title} />)}
 
-        </Steps>
-        <div className={styles.steps_content}>{steps[this.state.current].content}</div>
-        <div className={styles.steps_action}>
-          {
-            this.state.current < steps.length - 1
+      </Steps>
+      <div className={styles.steps_content}>{steps[current].content}</div>
+      <div className={styles.steps_action}>
+        {
+            current < steps.length - 1
             &&
-            <Button type="primary" onClick={() => this.next()}>下一步</Button>
+            <Button type="primary" onClick={next}>下一步</Button>
           }
-          {
-            this.state.current === steps.length - 1
+        {
+            current === steps.length - 1
             &&
             <Button type="primary" onClick={() => message.success('Processing complete!')}>完成</Button>
           }
-          {
-            this.state.current > 0
+        {
+            current > 0
             &&
-            <Button style={{ marginLeft: 8 }} type="ghost" onClick={() => this.prev()}>
+            <Button style={{ marginLeft: 8 }} type="ghost" onClick={prev}>
               上一步
             </Button>
           }
-        </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 ImportData.PropTypes = {
