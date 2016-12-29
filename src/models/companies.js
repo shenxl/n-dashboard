@@ -44,10 +44,10 @@ export default {
     isBasic: false, // 基本查询 or 高级查询
     loading: false, // 控制加载状态
     hideSearchPanel: false,
-    selectedRowKeys: [0],
+    selectedRowKeys: [0], //指定选中项的 key 数组，需要和 onChange 进行配合
 
     catalog: '',
-    tabState: 'basic',
+    tabState: 'basic', //tabs栏中key值
     subSelect: 'sub-basic',
 
     searchInfo: [],
@@ -154,6 +154,7 @@ export default {
     },
 
     * query({ payload }, { call, put, select }) {
+      //相当于发出一个action
       yield put({ type: 'showLoading' });
 
       const companies = yield select(state => state.companies);

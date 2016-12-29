@@ -11,73 +11,68 @@ import FilesState from '../../components/Import/FilesState';
 import styles from './importData.less';
 
 const Step = Steps.Step;
+const steps = [{
+  title: '数据导入',
+  content: <Button type="primary" icon="download" >开始导入</Button>,
+}, {
+  title: '上传文件',
+  content: <FilesButton />,
+}, {
+  title: '完成状态',
+  content: <Button type="ghost">
+     文件状态显示
+</Button>,
+}];
 
-const ImportData = ({ importdata, dispatch }) => {
-  const { isDownShow, isUpShow, current, isStateShow } = importdata;
-  const onChangeDownload = () => {
-    dispatch({
-      type: 'importdata/changeDownload',
-      payload: {
-        isDownShow: true,
-        isUpShow: false,
-        isStateShow: false,
-        current: 0,
-      },
-    });
+class ImportData extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      current: 0,
+    };
   }
-  const onHideDownload = () => {
-    dispatch({
-      type: 'importdata/changeDownload',
-      payload: {
-        isDownShow: false,
-        isUpShow: true,
-        current: 1,
-      },
-    });
+  next() {
+    const current = this.state.current + 1;
+    this.setState({ current });
   }
-  const onHideUpload = () => {
-    dispatch({
-      type: 'importdata/changeDownload',
-      payload: {
-        isUpShow: false,
-        isStateShow: true,
-        current: 2,
-      },
-    });
+  prev() {
+    const current = this.state.current - 1;
+    this.setState({ current });
   }
-  const onHideFilesState = () => {
-    dispatch({
-      type: 'importdata/changeDownload',
-      payload: {
-        isStateShow: false,
-        current: 0,
-      },
-    });
-  }
-  return (
-    <div className={styles.import}>
-      <Steps current={current}>
-        <Step title="导入数据" icon={<Icon type="download" />} />
-        <Step title="上传文件" icon={<Icon type="addfile" />} />
-        <Step title="完成状态" icon={<Icon type="file" />} />
-      </Steps>
-      <div className={styles.downButton}>
-        <Button onClick={onChangeDownload} type="primary" icon="download" >开始导入</Button>
-      </div>
 
-      <div >
-        <DownloadModal isDownShow={isDownShow} onclick={onHideDownload} />
-      </div>
-      <div >
-        <UploadModal isUpShow={isUpShow} onclick={onHideUpload} />
-      </div>
+  render() {
+    const { current } = this.state;
+    return (
       <div>
-        <FilesState isStateShow={isStateShow} onclick={onHideFilesState} />
-      </div>
-    </div>
-  );
-}
+        <Steps current={current}>
+          {steps.map((item, key) =>
+            <Step icon={(key === 0 && <Icon type="download" />) || (key === 1 && <Icon type="addfile" />) || (key === 2 && <Icon type="file" />)} title={item.title} />)}
 
+        </Steps>
+        <div className={styles.steps_content}>{steps[this.state.current].content}</div>
+        <div className={styles.steps_action}>
+          {
+            this.state.current < steps.length - 1
+            &&
+            <Button type="primary" onClick={() => this.next()}>Next</Button>
+          }
+          {
+            this.state.current === steps.length - 1
+            &&
+            <Button type="primary" onClick={() => message.success('Processing complete!')}>Done</Button>
+          }
+          {
+            this.state.current > 0
+            &&
+            <Button style={{ marginLeft: 8 }} type="ghost" onClick={() => this.prev()}>
+              Previous
+            </Button>
+          }
+        </div>
+      </div>
+    );
+  }
+}
 
 ImportData.PropTypes = {
 }

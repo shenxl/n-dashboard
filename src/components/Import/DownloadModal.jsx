@@ -4,18 +4,14 @@ import classnames from 'classnames';
 import styles from './downloadModal.less';
 
 const DownloadModal = (props) => {
-  const { isDownShow, onclick } = props;
+  const { isDownShow } = props;
   const showStyle = classnames({
     [styles.sideBoxHide]: !isDownShow,
     [styles.sideBoxShow]: isDownShow,
   });
   return (
     <div className={showStyle} >
-      <div className={styles.next}>
-        <Button onClick={onclick} className={styles.next} type="ghost">
-          <Icon type="arrow-right" /> 下一步
-      </Button>
-      </div>
+      <Button type="primary" icon="download" >数据导入</Button>
     </div>
   );
 }

@@ -12,70 +12,67 @@ import styles from './exportData.less';
 
 const Step = Steps.Step;
 
-const ExportData = ({ exportdata, dispatch }) => {
-  const { isDownData, isDownFiles, current, isStateShow } = exportdata;
-  const onChangeDownload = () => {
-    dispatch({
-      type: 'exportdata/changeDownload',
-      payload: {
-        isDownData: true,
-        isDownFiles: false,
-        isStateShow: false,
-        current: 0,
-      },
-    });
-  }
-  const onHideDownload = () => {
-    dispatch({
-      type: 'exportdata/changeDownload',
-      payload: {
-        isDownData: false,
-        isDownFiles: true,
-        current: 1,
-      },
-    });
-  }
-  const onHideUpload = () => {
-    dispatch({
-      type: 'exportdata/changeDownload',
-      payload: {
-        isDownFiles: false,
-        isStateShow: true,
-        current: 2,
-      },
-    });
-  }
-  const onHideFilesState = () => {
-    dispatch({
-      type: 'exportdata/changeDownload',
-      payload: {
-        isStateShow: false,
-        current: 0,
-      },
-    });
-  }
-  return (
-    <div>
-      <Steps current={current}>
-        <Step title="导出数据" icon={<Icon type="export" />} />
-        <Step title="下载文件" icon={<Icon type="download" />} />
-        <Step title="完成状态" icon={<Icon type="file" />} />
-      </Steps>
-      <div className={styles.downButton}>
-        <Button onClick={onChangeDownload} type="primary" icon="upload" >开始导出</Button>
-      </div>
+const steps = [{
+  title: '数据导出',
+  content: <Button type="primary" icon="export" >开始导出</Button>,
+}, {
+  title: '下载文件',
+  content: <Button type="primary" icon="download" >文件下载</Button>,
+}, {
+  title: '完成状态',
+  content: <Button type="ghost">
+     文件状态显示
+</Button>,
+}];
 
-      <div >
-        <ExportDataModal isDownData={isDownData} onclick={onHideDownload} />
-      </div>
-      <div >
-        <DownloadFilesModal isDownFiles={isDownFiles} onclick={onHideUpload} />
-      </div>
+class ExportData extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      current: 0,
+    };
+  }
+  next() {
+    const current = this.state.current + 1;
+    this.setState({ current });
+  }
+  prev() {
+    const current = this.state.current - 1;
+    this.setState({ current });
+  }
+
+  render() {
+    const { current } = this.state;
+    return (
       <div>
-        <FilesState isStateShow={isStateShow} onclick={onHideFilesState} />
+        <Steps current={current}>
+          {steps.map((item, key) =>
+            <Step icon={(key === 0 && <Icon type="export" />) || (key === 1 && <Icon type="download" />) || (key === 2 && <Icon type="file" />)} title={item.title} />)}
+
+        </Steps>
+        <div className={styles.steps_content}>{steps[this.state.current].content}</div>
+        <div className={styles.steps_action}>
+          {
+            this.state.current < steps.length - 1
+            &&
+            <Button type="primary" onClick={() => this.next()}>Next</Button>
+          }
+          {
+            this.state.current === steps.length - 1
+            &&
+            <Button type="primary" onClick={() => message.success('Processing complete!')}>Done</Button>
+          }
+          {
+            this.state.current > 0
+            &&
+            <Button style={{ marginLeft: 8 }} type="ghost" onClick={() => this.prev()}>
+              Previous
+            </Button>
+          }
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 
