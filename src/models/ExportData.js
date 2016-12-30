@@ -9,6 +9,8 @@ export default {
     isStateShow: false,
     //控制steps流程的切换
     current: 0,
+    //控制弹出框中steps流程切换
+    selectCurrent: 0,
   },
 
   reducers: {

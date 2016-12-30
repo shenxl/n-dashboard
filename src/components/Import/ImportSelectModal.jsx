@@ -3,12 +3,13 @@ import { Steps, message, Row, Col, Pagination, Input, Button, Icon, Tabs, DatePi
 import moment from 'moment';
 import { connect } from 'dva';
 import classnames from 'classnames';
-import styles from './selectModal.less';
+import SelectData from './SelectInfo/SelectData';
+import styles from './importSelectModal.less';
 
 const Step = Steps.Step;
 
 
-const SelectModal = ({ importdata, dispatch }) => {
+const ImportSelectModal = ({ importdata, dispatch }) => {
   const { selectCurrent } = importdata;
   //const showDownModal = () => {
   //   dispatch({
@@ -47,7 +48,7 @@ const SelectModal = ({ importdata, dispatch }) => {
 
   const steps = [{
     title: '数据选择',
-    content: <div>选择数据范围</div>,
+    content: <SelectData />,
   }, {
     title: '条件查询',
     content: <div>条件查询</div>,
@@ -97,9 +98,9 @@ const SelectModal = ({ importdata, dispatch }) => {
   );
 }
 
-SelectModal.PropTypes = {
+ImportSelectModal.PropTypes = {
 }
 const mapStateToProps = ({ importdata }) => {
   return { importdata }
 }
-export default connect(mapStateToProps)(SelectModal);
+export default connect(mapStateToProps)(ImportSelectModal);

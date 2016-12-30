@@ -1,24 +1,23 @@
 import React, { Component, PropTypes } from 'react';
-import { Upload, message, Button, Icon } from 'antd';
+import { Upload, Modal, message, Button, Icon } from 'antd';
 import classnames from 'classnames';
+import ExportSelectModal from './ExportSelectModal';
 import styles from './exportDataModal.less';
 
-const ExportDataModal = (props) => {
-  const { isDownData, onclick } = props;
-  const showStyle = classnames({
-    [styles.sideBoxHide]: !isDownData,
-    [styles.sideBoxShow]: isDownData,
-  });
+const DownloadModal = (props) => {
+  const { isDownData, handleCancel } = props;
+
   return (
-    <div className={showStyle} >
-      <div className={styles.next}>
-        <Button onClick={onclick} className={styles.next} type="ghost">
-          <Icon type="arrow-right" /> 下一步
-      </Button>
-      </div>
-    </div>
+    <Modal
+      title="开始导出数据" visible={isDownData}
+      onCancel={handleCancel}
+      okText="确认" cancelText="取消"
+      width={900}
+    >
+      <ExportSelectModal />
+    </Modal>
   );
 }
-ExportDataModal.PropTypes = {
+DownloadModal.PropTypes = {
 }
-export default ExportDataModal
+export default DownloadModal

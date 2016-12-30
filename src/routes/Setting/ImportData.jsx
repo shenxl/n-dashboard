@@ -5,8 +5,6 @@ import { connect } from 'dva';
 import classnames from 'classnames';
 import FilesButton from '../../components/Import/FilesButton';
 import DownloadModal from '../../components/Import/DownloadModal';
-import UploadModal from '../../components/Import/UploadModal';
-import FilesState from '../../components/Import/FilesState';
 //import { apiUrl } from '../utils/constant'
 import styles from './importData.less';
 

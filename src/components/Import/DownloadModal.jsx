@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Upload, Modal, message, Button, Icon } from 'antd';
 import classnames from 'classnames';
-import SelectModal from './SelectModal';
+import ImportSelectModal from './ImportSelectModal';
 import styles from './downloadModal.less';
 
 const DownloadModal = (props) => {
@@ -14,7 +14,7 @@ const DownloadModal = (props) => {
       okText="确认" cancelText="取消"
       width={900}
     >
-      <SelectModal />
+      <ImportSelectModal />
     </Modal>
   );
 }

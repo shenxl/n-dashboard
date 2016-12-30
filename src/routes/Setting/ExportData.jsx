@@ -4,28 +4,30 @@ import moment from 'moment';
 import { connect } from 'dva';
 import classnames from 'classnames';
 import ExportDataModal from '../../components/Export/ExportDataModal';
-import DownloadFilesModal from '../../components/Export/DownloadFilesModal';
-import FilesState from '../../components/Export/FilesState';
 //import { apiUrl } from '../utils/constant'
 import styles from './exportData.less';
 
 const Step = Steps.Step;
 
-const steps = [{
-  title: '数据导出',
-  content: <Button type="primary" icon="export" >开始导出</Button>,
-}, {
-  title: '下载文件',
-  content: <Button type="primary" icon="download" >文件下载</Button>,
-}, {
-  title: '完成状态',
-  content: <Button type="ghost">
-     文件状态显示
-</Button>,
-}];
 
 const ExportData = ({ exportdata, dispatch }) => {
-  const { current } = exportdata;
+  const { current, isDownData } = exportdata;
+  const showDownModal = () => {
+    dispatch({
+      type: 'exportdata/changeDownload',
+      payload: {
+        isDownData: true,
+      },
+    });
+  }
+  const handleCancel = () => {
+    dispatch({
+      type: 'exportdata/changeDownload',
+      payload: {
+        isDownData: false,
+      },
+    });
+  }
 
   const next = () => {
     const add = current + 1;
@@ -45,7 +47,18 @@ const ExportData = ({ exportdata, dispatch }) => {
       },
     });
   }
-
+  const steps = [{
+    title: '数据导出',
+    content: <Button onClick={showDownModal} type="primary" icon="export" >开始导出</Button>,
+  }, {
+    title: '下载文件',
+    content: <Button type="primary" icon="download" >文件下载</Button>,
+  }, {
+    title: '完成状态',
+    content: <Button type="ghost">
+       文件状态显示
+  </Button>,
+  }];
   return (
     <div>
       <Steps current={current}>
@@ -73,6 +86,7 @@ const ExportData = ({ exportdata, dispatch }) => {
             </Button>
           }
       </div>
+      <ExportDataModal isDownData={isDownData} handleCancel={handleCancel} />
     </div>
   );
 }
