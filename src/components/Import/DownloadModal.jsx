@@ -1,22 +1,23 @@
 import React, { Component, PropTypes } from 'react';
-import { Upload, message, Button, Icon } from 'antd';
+import { Upload, Modal, message, Button, Icon } from 'antd';
 import classnames from 'classnames';
+import ImportSelectModal from './ImportSelectModal';
 import styles from './downloadModal.less';
 
 const DownloadModal = (props) => {
-  const { isDownShow, onclick } = props;
-  const showStyle = classnames({
-    [styles.sideBoxHide]: !isDownShow,
-    [styles.sideBoxShow]: isDownShow,
-  });
+  const { isDownShow, handleCancel } = props;
+
   return (
-    <div className={showStyle} >
-      <div className={styles.next}>
-        <Button onClick={onclick} className={styles.next} type="ghost">
-          <Icon type="arrow-right" /> 下一步
-        </Button>
-      </div>
-    </div>
+
+    <Modal
+      title="开始导入数据" visible={isDownShow}
+      onCancel={handleCancel}
+      okText="确认" cancelText="取消"
+      width={900}
+    >
+      <ImportSelectModal />
+    </Modal>
+
   );
 }
 DownloadModal.PropTypes = {

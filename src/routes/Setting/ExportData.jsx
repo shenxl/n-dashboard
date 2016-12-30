@@ -3,77 +3,90 @@ import { Steps, message, Row, Col, Pagination, Input, Button, Icon, Tabs, DatePi
 import moment from 'moment';
 import { connect } from 'dva';
 import classnames from 'classnames';
-import FilesButton from '../../components/Import/FilesButton';
 import ExportDataModal from '../../components/Export/ExportDataModal';
-import DownloadFilesModal from '../../components/Export/DownloadFilesModal';
-import FilesState from '../../components/Export/FilesState';
 //import { apiUrl } from '../utils/constant'
 import styles from './exportData.less';
 
 const Step = Steps.Step;
 
+
 const ExportData = ({ exportdata, dispatch }) => {
-  const { isDownData, isDownFiles, current, isStateShow } = exportdata;
-  const onChangeDownload = () => {
+  const { current, isDownData } = exportdata;
+  const showDownModal = () => {
     dispatch({
       type: 'exportdata/changeDownload',
       payload: {
         isDownData: true,
-        isDownFiles: false,
-        isStateShow: false,
-        current: 0,
       },
     });
   }
-  const onHideDownload = () => {
+  const handleCancel = () => {
     dispatch({
       type: 'exportdata/changeDownload',
       payload: {
         isDownData: false,
-        isDownFiles: true,
-        current: 1,
       },
     });
   }
-  const onHideUpload = () => {
+
+  const next = () => {
+    const add = current + 1;
     dispatch({
       type: 'exportdata/changeDownload',
       payload: {
-        isDownFiles: false,
-        isStateShow: true,
-        current: 2,
+        current: add,
       },
     });
   }
-  const onHideFilesState = () => {
+  const prev = () => {
+    const reduce = current - 1;
     dispatch({
       type: 'exportdata/changeDownload',
       payload: {
-        isStateShow: false,
-        current: 0,
+        current: reduce,
       },
     });
   }
+  const steps = [{
+    title: '数据导出',
+    content: <Button onClick={showDownModal} type="primary" icon="export" >开始导出</Button>,
+  }, {
+    title: '下载文件',
+    content: <Button type="primary" icon="download" >文件下载</Button>,
+  }, {
+    title: '完成状态',
+    content: <Button type="ghost">
+       文件状态显示
+  </Button>,
+  }];
   return (
     <div>
       <Steps current={current}>
-        <Step title="导出数据" icon={<Icon type="export" />} />
-        <Step title="下载文件" icon={<Icon type="download" />} />
-        <Step title="完成状态" icon={<Icon type="file" />} />
-      </Steps>
-      <div className={styles.downButton}>
-        <Button onClick={onChangeDownload} type="primary" icon="upload" >开始导出</Button>
-      </div>
+        {steps.map((item, key) =>
+          <Step key={item.title} icon={(key === 0 && <Icon type="export" />) || (key === 1 && <Icon type="download" />) || (key === 2 && <Icon type="file" />)} title={item.title} />)}
 
-      <div >
-        <ExportDataModal isDownData={isDownData} onclick={onHideDownload} />
+      </Steps>
+      <div className={styles.steps_content}>{steps[current].content}</div>
+      <div className={styles.steps_action}>
+        {
+            current < steps.length - 1
+            &&
+            <Button type="primary" onClick={next}>下一步</Button>
+          }
+        {
+            current === steps.length - 1
+            &&
+            <Button type="primary" onClick={() => message.success('Processing complete!')}>完成</Button>
+          }
+        {
+            current > 0
+            &&
+            <Button style={{ marginLeft: 8 }} type="ghost" onClick={prev}>
+              上一步
+            </Button>
+          }
       </div>
-      <div >
-        <DownloadFilesModal isDownFiles={isDownFiles} onclick={onHideUpload} />
-      </div>
-      <div>
-        <FilesState isStateShow={isStateShow} onclick={onHideFilesState} />
-      </div>
+      <ExportDataModal isDownData={isDownData} handleCancel={handleCancel} />
     </div>
   );
 }

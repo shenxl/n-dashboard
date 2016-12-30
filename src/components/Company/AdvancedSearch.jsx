@@ -24,6 +24,7 @@ const AdvancedSearch = ({
   const { addressOptions, regionList, provinceItem, cityItem, countryItem } = global;
   const handleSearch = (e) => {
     e.preventDefault();
+    //校验并获取一组输入域的值与 Error
     form.validateFields((err, values) => {
       if (err) {
         return;
@@ -48,6 +49,7 @@ const AdvancedSearch = ({
             and.push({ city: { like: `%25${cityItem.Name}%25` } });
             and.push({ county: { like: `%25${countryItem.Name}%25` } });
             status.push({ key: 'address', value: `${provinceItem.Name} - ${cityItem.Name} - ${countryItem.Name}` });
+
             break;
           default:
         }
