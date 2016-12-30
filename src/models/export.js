@@ -2,7 +2,7 @@ import { query } from '../services/example';
 
 export default {
 
-  namespace: 'export',
+  namespace: 'exportData',
 
   state: {
     type: '',

@@ -12,22 +12,6 @@ const Step = Steps.Step;
 
 const ExportSelectModal = ({ exportdata, dispatch, global }) => {
   const { selectCurrent } = exportdata;
-  //const showDownModal = () => {
-  //   dispatch({
-  //     type: 'importdata/changeDownload',
-  //     payload: {
-  //       isDownShow: true,
-  //     },
-  //   });
-  // }
-  // const handleCancel = () => {
-  //   dispatch({
-  //     type: 'importdata/changeDownload',
-  //     payload: {
-  //       isDownShow: false,
-  //     },
-  //   });
-  // }
   const next = () => {
     const add = selectCurrent + 1;
     dispatch({
@@ -55,7 +39,7 @@ const ExportSelectModal = ({ exportdata, dispatch, global }) => {
     content: <div>条件查询</div>,
   }, {
     title: '日期查询',
-    content: <div>日期查询<DateQuery /></div>,
+    content: <DateQuery />,
   }, {
     title: '字段查询',
     content: <div>字段查询</div>,
