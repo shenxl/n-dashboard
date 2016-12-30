@@ -64,7 +64,7 @@ const ImportData = ({ importdata, dispatch }) => {
   }];
 
   return (
-    <div>
+    <div className={styles.import}>
       <Steps current={current}>
         {steps.map((item, key) =>
           <Step key={item.title} icon={(key === 0 && <Icon type="download" />) || (key === 1 && <Icon type="addfile" />) || (key === 2 && <Icon type="file" />)} title={item.title} />)}

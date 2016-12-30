@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Upload, Modal, message, Button, Icon } from 'antd';
 import classnames from 'classnames';
+import SelectModal from './SelectModal';
 import styles from './downloadModal.less';
 
 const DownloadModal = (props) => {
@@ -8,14 +9,12 @@ const DownloadModal = (props) => {
 
   return (
     <Modal
-      title="开始数据导入" visible={isDownShow}
+      title="开始导入数据" visible={isDownShow}
       onCancel={handleCancel}
       okText="确认" cancelText="取消"
-      width={800}
+      width={900}
     >
-      <p>Bla bla ...</p>
-      <p>Bla bla ...</p>
-      <p>Bla bla ...</p>
+      <SelectModal />
     </Modal>
   );
 }
