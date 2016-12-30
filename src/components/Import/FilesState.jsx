@@ -14,7 +14,7 @@ const FilesState = (props) => {
       <div className={styles.next}>
         <Button onClick={onclick} className={styles.next} type="ghost">
           <Icon type="arrow-right" /> 完成
-      </Button>
+        </Button>
       </div>
     </div>
   );

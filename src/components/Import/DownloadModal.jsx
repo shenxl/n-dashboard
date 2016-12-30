@@ -14,7 +14,7 @@ const DownloadModal = (props) => {
       <div className={styles.next}>
         <Button onClick={onclick} className={styles.next} type="ghost">
           <Icon type="arrow-right" /> 下一步
-      </Button>
+        </Button>
       </div>
     </div>
   );
