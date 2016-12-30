@@ -8,6 +8,7 @@ const DownloadModal = (props) => {
   const { isDownShow, handleCancel } = props;
 
   return (
+
     <Modal
       title="开始导入数据" visible={isDownShow}
       onCancel={handleCancel}
@@ -16,6 +17,7 @@ const DownloadModal = (props) => {
     >
       <ImportSelectModal />
     </Modal>
+
   );
 }
 DownloadModal.PropTypes = {

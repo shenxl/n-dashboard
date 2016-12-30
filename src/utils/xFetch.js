@@ -47,7 +47,6 @@ function xFetch(url, options) {
     ...opts.headers,
     authorization: localStorage.getItem('n-token') || '',
   };
-
   return fetch(url, opts)
     .then(check401)
     .then(check404)
