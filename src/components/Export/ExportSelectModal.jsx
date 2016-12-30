@@ -4,12 +4,13 @@ import moment from 'moment';
 import { connect } from 'dva';
 import classnames from 'classnames';
 import SelectData from './SelectInfo/SelectData';
+import DateQuery from './SelectInfo/DateQuery';
 import styles from './exportSelectModal.less';
 
 const Step = Steps.Step;
 
 
-const ExportSelectModal = ({ exportdata, dispatch }) => {
+const ExportSelectModal = ({ exportdata, dispatch, global }) => {
   const { selectCurrent } = exportdata;
   //const showDownModal = () => {
   //   dispatch({
@@ -54,7 +55,7 @@ const ExportSelectModal = ({ exportdata, dispatch }) => {
     content: <div>条件查询</div>,
   }, {
     title: '日期查询',
-    content: <div>日期查询</div>,
+    content: <div>日期查询<DateQuery /></div>,
   }, {
     title: '字段查询',
     content: <div>字段查询</div>,
@@ -100,7 +101,7 @@ const ExportSelectModal = ({ exportdata, dispatch }) => {
 
 ExportSelectModal.PropTypes = {
 }
-const mapStateToProps = ({ exportdata }) => {
-  return { exportdata }
+const mapStateToProps = ({ exportdata, global }) => {
+  return { exportdata, global }
 }
 export default connect(mapStateToProps)(ExportSelectModal);
