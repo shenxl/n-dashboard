@@ -66,11 +66,8 @@ const ExportSelectModal = ({ exportdata, dispatch, global, companies, exportData
     title: '日期查询',
     content: <DateQuery />,
   }, {
-    title: '字段查询',
-    content: <div>字段查询</div>,
-  }, {
     title: '完成',
-    content: <div>完成</div>,
+    content: <div />,
   },
   ];
 

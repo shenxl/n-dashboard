@@ -29,8 +29,6 @@ const SelectData = ({ exportData, dispatch }) => {
         checkAll: e.target.checked },
     })
   }
-// onChange={onCheckAllChange}
-// onChange={onChange}
   return (
     <div>
       <div className={styles.btns}>
