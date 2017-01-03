@@ -29,7 +29,6 @@ const SelectData = React.createClass({
       <div>
         <div>
           <Checkbox
-
             onChange={this.onCheckAllChange}
             checked={this.state.checkAll}
           >

@@ -55,9 +55,9 @@ const ExportData = ({ exportdata, dispatch }) => {
     content: <Button type="primary" icon="download" >文件下载</Button>,
   }, {
     title: '完成状态',
-    content: <Button type="ghost">
+    content: (<Button type="ghost">
        文件状态显示
-  </Button>,
+    </Button>),
   }];
   return (
     <div>
@@ -69,22 +69,23 @@ const ExportData = ({ exportdata, dispatch }) => {
       <div className={styles.steps_content}>{steps[current].content}</div>
       <div className={styles.steps_action}>
         {
+            current > 0
+            &&
+              <Button style={{ marginLeft: 8 }} type="ghost" onClick={prev}>
+              上一步
+              </Button>
+          }
+        {
             current < steps.length - 1
             &&
-            <Button type="primary" onClick={next}>下一步</Button>
+              <Button type="primary" onClick={next}>下一步</Button>
           }
         {
             current === steps.length - 1
             &&
-            <Button type="primary" onClick={() => message.success('Processing complete!')}>完成</Button>
+              <Button type="primary" onClick={() => message.success('Processing complete!')}>完成</Button>
           }
-        {
-            current > 0
-            &&
-            <Button style={{ marginLeft: 8 }} type="ghost" onClick={prev}>
-              上一步
-            </Button>
-          }
+
       </div>
       <ExportDataModal isDownData={isDownData} handleCancel={handleCancel} />
     </div>

@@ -59,7 +59,7 @@ const ImportData = ({ importdata, dispatch }) => {
     title: '完成状态',
     content: <Button type="ghost">
        文件状态显示
-  </Button>,
+    </Button>,
   }];
   return (
     <div className={styles.import}>
@@ -73,24 +73,23 @@ const ImportData = ({ importdata, dispatch }) => {
       </div>
       <div className={styles.steps_action}>
         {
+            current > 0
+            &&
+              <Button style={{ marginLeft: 8 }} type="ghost" onClick={prev}>
+              上一步
+              </Button>
+        }
+        {
             current < steps.length - 1
             &&
-            <Button type="primary" onClick={next}>下一步</Button>
+              <Button type="primary" onClick={next}>下一步</Button>
           }
         {
             current === steps.length - 1
             &&
-            <Button type="primary" onClick={() => message.success('Processing complete!')}>完成</Button>
-          }
-        {
-            current > 0
-            &&
-            <Button style={{ marginLeft: 8 }} type="ghost" onClick={prev}>
-              上一步
-            </Button>
+              <Button type="primary" onClick={() => message.success('Processing complete!')}>完成</Button>
           }
       </div>
-
       <DownloadModal isDownShow={isDownShow} handleCancel={handleCancel} />
     </div>
   );

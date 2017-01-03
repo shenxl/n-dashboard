@@ -25,10 +25,8 @@ const ReportLine = ({ company, report, onChartClick }) => {
         serverInfo.push(item.server_id);
         tokenInfo.push(`${item.year}-${item.month}`);
       });
-      console.log(tokenInfo);
       serverInfo = _.uniq(serverInfo);
       tokenInfo = _.uniq(tokenInfo);
-      console.log(tokenInfo);
       seriesActive = _.map(serverInfo, (serverId) => {
         const result = [];
         _.chain(monthly)
