@@ -2,13 +2,35 @@ import React, { Component, PropTypes } from 'react';
 import { Modal, Popover, Row, Col, Input, Button, Checkbox, DatePicker } from 'antd';
 import moment from 'moment';
 import { connect } from 'dva';
+import classnames from 'classnames';
 import MonthRange from './MonthRange'
 import styles from './dateQuery.less'
 
 
 const { MonthPicker, RangePicker } = DatePicker;
 const DateQuery = ({ exportData, dispatch }) => {
-  const { date } = exportData;
+  const { date, isMonthesShow, isRangeMonthShow, isSingleMonthShow } = exportData;
+  const showMonthes = classnames({
+    [styles.monthesHide]: !isMonthesShow,
+    [styles.monthesShow]: isMonthesShow,
+  });
+  const showSingleMonthes = classnames({
+    [styles.singleMonthHide]: !isSingleMonthShow,
+    [styles.singleMonthShow]: isSingleMonthShow,
+  });
+  const showRangeMonthes = classnames({
+    [styles.rangeMonthHide]: !isRangeMonthShow,
+    [styles.rangeMonthShow]: isRangeMonthShow,
+  });
+  const monthesBtn = () => {
+    dispatch({ type: 'exportData/toggleMonthes' })
+  }
+  const monthesSingleBtn = () => {
+    dispatch({ type: 'exportData/toggleSigleMonth' })
+  }
+  const monthesRangeBtn = () => {
+    dispatch({ type: 'exportData/toggleRangeMonth' })
+  }
   const changeOneMonth = () => {
     const now = moment(new Date());
     dispatch({
@@ -61,15 +83,20 @@ const DateQuery = ({ exportData, dispatch }) => {
   }
   return (
     <div>
-      <div className={styles.monthes}>
+      <div className={styles.btns}>
+        <Button type="primary" onClick={monthesBtn}>近期查询</Button>
+        <Button style={{ marginLeft: 10 }}type="primary" onClick={monthesSingleBtn}>单月查询</Button>
+        <Button style={{ marginLeft: 10 }} type="primary" onClick={monthesRangeBtn}>月区间查询</Button>
+      </div>
+      <div className={showMonthes}>
         <Button onClick={changeOneMonth} type="primary">最近一月</Button>
         <Button onClick={changeThreeMonthes} style={{ marginLeft: 6 }} type="primary">最近三月</Button>
         <Button onClick={changeSixMonthes} style={{ marginLeft: 6 }} type="primary">最近半年</Button>
       </div>
-      <div className={styles.singleMonth}>
+      <div className={showSingleMonthes}>
         <MonthPicker onChange={onMontChange} defaultValue={moment(new Date(), 'YYYY-MM')} placeholder="请选择月份" />
       </div>
-      <div className={styles.rangeMonth}>
+      <div className={showRangeMonthes}>
         <RangePicker
           onChange={onRangeChange}
           format="YYYY-MM"
