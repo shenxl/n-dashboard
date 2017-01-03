@@ -5,6 +5,7 @@ import { connect } from 'dva';
 import classnames from 'classnames';
 import FilesButton from '../../components/Import/FilesButton';
 import DownloadModal from '../../components/Import/DownloadModal';
+//import SelectData from './SelectData';
 //import { apiUrl } from '../utils/constant'
 import styles from './importData.less';
 
@@ -60,7 +61,6 @@ const ImportData = ({ importdata, dispatch }) => {
        文件状态显示
   </Button>,
   }];
-
   return (
     <div className={styles.import}>
       <Steps current={current}>
@@ -68,7 +68,9 @@ const ImportData = ({ importdata, dispatch }) => {
           <Step key={item.title} icon={(key === 0 && <Icon type="download" />) || (key === 1 && <Icon type="addfile" />) || (key === 2 && <Icon type="file" />)} title={item.title} />)}
 
       </Steps>
-      <div className={styles.steps_content}>{steps[current].content}</div>
+      <div className={styles.steps_content}>
+        {steps[current].content}
+      </div>
       <div className={styles.steps_action}>
         {
             current < steps.length - 1
@@ -88,6 +90,7 @@ const ImportData = ({ importdata, dispatch }) => {
             </Button>
           }
       </div>
+
       <DownloadModal isDownShow={isDownShow} handleCancel={handleCancel} />
     </div>
   );

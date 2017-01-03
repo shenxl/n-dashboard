@@ -7,7 +7,8 @@ export default {
   state: {
     type: '',
     query: {},
-    date: [{ start: { year: 2016, month: 12 } }],
+    date: { start: { year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1 },
+      end: { year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1 } },
     field: [],
     isDetails: false,
   },

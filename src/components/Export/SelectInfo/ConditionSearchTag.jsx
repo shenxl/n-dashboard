@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Tag } from 'antd';
 
-import styles from './panel.less';
+import styles from '../../Company/panel.less';
 
 const _ = require('lodash');
 

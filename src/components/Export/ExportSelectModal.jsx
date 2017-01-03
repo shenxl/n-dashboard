@@ -5,12 +5,17 @@ import { connect } from 'dva';
 import classnames from 'classnames';
 import SelectData from './SelectInfo/SelectData';
 import DateQuery from './SelectInfo/DateQuery';
+import ConditionQuery from './SelectInfo/ConditionQuery';
+import ConditionSearchTag from './SelectInfo/ConditionSearchTag';
 import styles from './exportSelectModal.less';
 
 const Step = Steps.Step;
 
 
-const ExportSelectModal = ({ exportdata, dispatch, global }) => {
+const ExportSelectModal = ({ exportdata, dispatch, global, companies, exportData }) => {
+  const { searchInfo } = companies;
+  const { date } = exportData;
+  const { currentTypeOptions } = global;
   const { selectCurrent } = exportdata;
   const next = () => {
     const add = selectCurrent + 1;
@@ -30,13 +35,33 @@ const ExportSelectModal = ({ exportdata, dispatch, global }) => {
       },
     });
   }
+  const onRegionChange = (value) => {
+    // console.log(value);
+  }
+  const onTypeChange = (value, selectedOptions) => {
+    // console.log(selectedOptions);
+  }
+  const setBasicSearch = (basicSearch) => {
+    dispatch({
+      type: 'companies/setBasicSearch',
+      payload: true,
+    });
+  }
+  const AdvanceSearchProps = {
+    global,
+    onRegionChange,
+    onTypeChange,
+    dispatch,
+    setBasicSearch,
+    typeOptions: currentTypeOptions,
+  }
 
   const steps = [{
     title: '数据选择',
     content: <SelectData />,
   }, {
     title: '条件查询',
-    content: <div>条件查询</div>,
+    content: <div><ConditionQuery {...AdvanceSearchProps} /></div>,
   }, {
     title: '日期查询',
     content: <DateQuery />,
@@ -58,7 +83,12 @@ const ExportSelectModal = ({ exportdata, dispatch, global }) => {
       </Steps>
       <div className={styles.steps_content}>
         <div className={styles.steps_content_left}>{steps[selectCurrent].content}</div>
-        <div className={styles.steps_content_right}>显示已选条件</div>
+        <div className={styles.steps_content_right}>
+          <h3 className={styles.h3}>查询条件显示</h3>
+        开始日期： {date.end.year}-{date.end.month} <br />
+        结束日期： {date.start.year}-{date.start.month}
+          <ConditionSearchTag searchInfo={searchInfo} />
+        </div>
       </div>
       <div className={styles.steps_action}>
         {
@@ -85,7 +115,7 @@ const ExportSelectModal = ({ exportdata, dispatch, global }) => {
 
 ExportSelectModal.PropTypes = {
 }
-const mapStateToProps = ({ exportdata, global }) => {
-  return { exportdata, global }
+const mapStateToProps = ({ exportdata, global, companies, exportData }) => {
+  return { exportdata, global, companies, exportData }
 }
 export default connect(mapStateToProps)(ExportSelectModal);

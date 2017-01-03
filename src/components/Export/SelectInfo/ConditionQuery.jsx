@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { Form, Row, Col, Input, Button,
     Icon, Tooltip, Cascader, Select, Switch } from 'antd';
-import RegionGlobal from '../Global/RegionGlobal';
-import CustomSelect from '../Global/CustomSelect';
-import styles from './search.less';
+import RegionGlobal from '../../Global/RegionGlobal';
+import CustomSelect from '../../Global/CustomSelect';
+import styles from './conditionQuery.less';
 
 const _ = require('lodash');
 
@@ -17,7 +17,6 @@ const AdvancedSearch = ({
   onTypeChange,
   global,
   dispatch,
-  hideSearch,
   setBasicSearch,
   typeOptions,
 }) => {
@@ -26,7 +25,6 @@ const AdvancedSearch = ({
     e.preventDefault();
     //校验并获取一组输入域的值与 Error
     form.validateFields((err, values) => {
-      console.log(values)
       if (err) {
         return;
       }
@@ -59,10 +57,6 @@ const AdvancedSearch = ({
         status.push({ key: 'address', value: _.join(values.region, '、') });
       }
 
-      if (values.keyword) {
-        status.push({ key: 'keyword', value: values.keyword });
-        and.push({ name: { like: `%25${values.keyword}%25` } });
-      }
 
       if (values.type && values.type[0]) {
         if (values.type.length === 1 || (values.type.length === 2 && values.type[1] === '所有')) {
@@ -75,10 +69,6 @@ const AdvancedSearch = ({
         }
       }
 
-      if (values.important) {
-        and.push({ important: 1 });
-        status.push({ key: 'important', value: 1 });
-      }
 
       dispatch({
         type: 'companies/updateFilter',
@@ -123,8 +113,8 @@ const AdvancedSearch = ({
   const { getFieldDecorator } = form;
 
   const formItemLayout = {
-    labelCol: { span: 6 },
-    wrapperCol: { span: 18 },
+    labelCol: { span: 10 },
+    wrapperCol: { span: 14 },
   };
 
   const RegionProps = {
@@ -154,10 +144,9 @@ const AdvancedSearch = ({
             )}
           </FormItem>
         </Col>
-        <Col span={8} key={'type'}>
+        <Col span={16} key={'type'}>
           <FormItem
-            labelCol={{ span: 10 }}
-            wrapperCol={{ span: 14 }}
+            {...formItemLayout}
             label={'企业类型'}
           >
             { getFieldDecorator('type')(
@@ -191,48 +180,23 @@ const AdvancedSearch = ({
             )}
           </FormItem>
         </Col>
-        <Col span={6} key={'important'}>
-          <FormItem
-            label="显示重点用户"
-            labelCol={{ span: 19 }}
-            wrapperCol={{ span: 5 }}
-          >
-            {getFieldDecorator('important')(
-              <Switch />,
-            )}
-          </FormItem>
-        </Col>
-        <Col span={16} key={'keyword'}>
-          <FormItem
-            {...formItemLayout}
-            label={'关键字'}
-          >
-            {getFieldDecorator('keyword')(
-              <Input placeholder="请输入关键字" />,
-            )}
-          </FormItem>
-        </Col>
       </Row>
       <Row>
         <Col span={24} style={{ textAlign: 'right' }}>
-          <Button type="primary" htmlType="submit">搜索</Button>
+          <Button type="primary" htmlType="submit">确定</Button>
           <Button onClick={handleReset}>清空</Button>
-          <Button icon="up" onClick={hideSearch}>精简模式</Button>
         </Col>
       </Row>
     </Form>
   );
 };
-const AdvancedSearchForm = Form.create()(AdvancedSearch);
+const ConditionQuery = Form.create()(AdvancedSearch);
 
-AdvancedSearchForm.propTypes = {
+ConditionQuery.propTypes = {
   onRegionChange: PropTypes.func.isRequired,
   onTypeChange: PropTypes.func.isRequired,
   setBasicSearch: PropTypes.func.isRequired,
-  //global: PropTypes.object.isRequired,
-  //typeOptions: PropTypes.array.isRequired,
-  hideSearch: PropTypes.func.isRequired,
 };
 
 
-export default AdvancedSearchForm
+export default ConditionQuery

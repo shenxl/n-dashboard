@@ -6,13 +6,19 @@ const plainOptions = ['政府', '企业', '金融'];
 const defaultCheckedList = ['政府'];
 
 const SelectData = React.createClass({
+
   getInitialState() {
     return {
       checkedList: defaultCheckedList,
       checkAll: false,
     };
   },
+//   function onChange(checkedValues) {
+//
+// }
   onChange(checkedList) {
+    console.log(checkedList)
+    console.log('checked = ', checkedValues);
     this.setState({
       checkedList,
       checkAll: checkedList.length === plainOptions.length,
