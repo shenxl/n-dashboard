@@ -84,11 +84,13 @@ const ExportSelectModal = ({ exportdata, dispatch, global, companies, exportData
       <div className={styles.steps_content}>
         <div className={styles.steps_content_left}>{steps[selectCurrent].content}</div>
         <div className={styles.steps_content_right}>
-          <h3 className={styles.h3}>查询条件显示</h3>
-          <div className={styles.selectdatas}>{defaultCheckedList.join('-')}</div>
+          <h3 className={styles.h3}>查询信息显示</h3>
+          <div className={styles.selectdatas}>
+            数据类别：{defaultCheckedList.join('-')}
+          </div>
         开始日期： {date.end.year}-{date.end.month} <br />
         结束日期： {date.start.year}-{date.start.month}
-
+          <div className={styles.conditionQuery}>查询条件：</div>
           <ConditionSearchTag searchInfo={searchInfo} />
         </div>
       </div>
