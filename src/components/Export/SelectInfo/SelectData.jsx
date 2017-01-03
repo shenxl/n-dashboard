@@ -1,53 +1,50 @@
 import React, { Component, PropTypes } from 'react';
 import { Modal, Popover, Row, Col, Input, Button, Checkbox } from 'antd';
+import { connect } from 'dva';
 
 const CheckboxGroup = Checkbox.Group;
-const plainOptions = ['政府', '企业', '金融'];
-const defaultCheckedList = ['政府'];
 
-const SelectData = React.createClass({
-  getInitialState() {
-    return {
-      checkedList: defaultCheckedList,
-      checkAll: false,
-    };
-  },
-  onChange(checkedList) {
-    this.setState({
-      checkedList,
-      checkAll: checkedList.length === plainOptions.length,
-    });
-  },
-  onCheckAllChange(e) {
-    this.setState({
-      checkedList: e.target.checked ? plainOptions : [],
-      checkAll: e.target.checked,
-    });
-  },
-  render() {
-    return (
+const SelectData = ({ exportData, dispatch }) => {
+  const { plainOptions, defaultCheckedList, checkAll } = exportData;
+  console.log(defaultCheckedList)
+  const onChange = (checkedList) => {
+    dispatch({
+      type: 'exportData/changeChecked',
+      payload: { defaultCheckedList: checkedList,
+        checkAll: checkedList.length === plainOptions.length },
+    })
+  }
+  const onCheckAllChange = (e) => {
+    dispatch({
+      type: 'exportData/changeChecked',
+      payload: { defaultCheckedList: (e.target.checked ? plainOptions : []),
+        checkAll: e.target.checked },
+    })
+  }
+// onChange={onCheckAllChange}
+// onChange={onChange}
+  return (
+    <div>
       <div>
-        <div>
-          <Checkbox
-
-            onChange={this.onCheckAllChange}
-            checked={this.state.checkAll}
-          >
+        <Checkbox
+          checked={checkAll}
+          onChange={onCheckAllChange}
+        >
             全部
           </Checkbox>
-        </div>
-        <br />
-        <CheckboxGroup
-          options={plainOptions}
-          value={this.state.checkedList}
-          onChange={this.onChange}
-        />
       </div>
-    );
-  },
-
-});
+      <br />
+      <CheckboxGroup
+        options={plainOptions}
+        value={defaultCheckedList}
+        onChange={onChange}
+      />
+    </div>
+  );
+}
 SelectData.propTypes = {
 };
-
-export default SelectData;
+const mapStateToProps = ({ exportData }) => {
+  return { exportData }
+}
+export default connect(mapStateToProps)(SelectData);

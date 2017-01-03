@@ -5,6 +5,9 @@ export default {
   namespace: 'exportData',
 
   state: {
+    checkAll: false,
+    plainOptions: ['政府', '企业', '金融'],
+    defaultCheckedList: ['政府'],
     isMonthesShow: false,
     isSingleMonthShow: false,
     isRangeMonthShow: false,
@@ -51,6 +54,9 @@ export default {
     toggleRangeMonth(state) {
       const isRangeMonthShow = state.isRangeMonthShow;
       return { ...state, isRangeMonthShow: !isRangeMonthShow };
+    },
+    changeChecked(state, action) {
+      return { ...state, ...action.payload };
     },
 
   },
