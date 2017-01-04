@@ -13,15 +13,14 @@ import styles from './exportSelectModal.less';
 const Step = Steps.Step;
 
 
-const ExportSelectModal = ({ exportdata, dispatch, global, companies, exportData }) => {
+const ExportSelectModal = ({ dispatch, global, companies, exportData }) => {
   const { searchInfo } = companies;
-  const { date, defaultCheckedList } = exportData;
+  const { date, defaultCheckedList, selectCurrent } = exportData;
   const { currentTypeOptions } = global;
-  const { selectCurrent } = exportdata;
   const next = () => {
     const add = selectCurrent + 1;
     dispatch({
-      type: 'exportdata/changeDownload',
+      type: 'exportData/changeDownload',
       payload: {
         selectCurrent: add,
       },
@@ -30,7 +29,7 @@ const ExportSelectModal = ({ exportdata, dispatch, global, companies, exportData
   const prev = () => {
     const reduce = selectCurrent - 1;
     dispatch({
-      type: 'exportdata/changeDownload',
+      type: 'exportData/changeDownload',
       payload: {
         selectCurrent: reduce,
       },
@@ -117,7 +116,7 @@ const ExportSelectModal = ({ exportdata, dispatch, global, companies, exportData
 
 ExportSelectModal.PropTypes = {
 }
-const mapStateToProps = ({ exportdata, global, companies, exportData }) => {
-  return { exportdata, global, companies, exportData }
+const mapStateToProps = ({ global, companies, exportData }) => {
+  return { global, companies, exportData }
 }
 export default connect(mapStateToProps)(ExportSelectModal);

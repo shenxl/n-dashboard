@@ -5,6 +5,9 @@ export default {
   namespace: 'exportData',
 
   state: {
+    selectCurrent: 0,
+    current: 0,
+    isDownData: false,
     isSelectDataShow: false,
     checkAll: false,
     plainOptions: ['政府', '企业', '金融'],
@@ -39,6 +42,9 @@ export default {
   },
 
   reducers: {
+    changeDownload(state, action) {
+      return { ...state, ...action.payload };
+    },
     changeDate(state, action) {
       const date = action.payload;
       return { ...state, date };

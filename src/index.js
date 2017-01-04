@@ -36,7 +36,6 @@ app.model(require('./models/showData'));
 app.model(require('./models/ImportData'));
 //导出数据信息
 app.model(require('./models/export'));
-app.model(require('./models/ExportData'));
 // 公司信息处理
 app.model(require('./models/companies'));
 app.model(require('./models/report'));

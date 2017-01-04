@@ -10,11 +10,11 @@ import styles from './exportData.less';
 const Step = Steps.Step;
 
 
-const ExportData = ({ exportdata, dispatch }) => {
-  const { current, isDownData } = exportdata;
+const ExportData = ({ exportData, dispatch }) => {
+  const { current, isDownData } = exportData;
   const showDownModal = () => {
     dispatch({
-      type: 'exportdata/changeDownload',
+      type: 'exportData/changeDownload',
       payload: {
         isDownData: true,
       },
@@ -22,7 +22,7 @@ const ExportData = ({ exportdata, dispatch }) => {
   }
   const handleCancel = () => {
     dispatch({
-      type: 'exportdata/changeDownload',
+      type: 'exportData/changeDownload',
       payload: {
         isDownData: false,
       },
@@ -32,7 +32,7 @@ const ExportData = ({ exportdata, dispatch }) => {
   const next = () => {
     const add = current + 1;
     dispatch({
-      type: 'exportdata/changeDownload',
+      type: 'exportData/changeDownload',
       payload: {
         current: add,
       },
@@ -41,7 +41,7 @@ const ExportData = ({ exportdata, dispatch }) => {
   const prev = () => {
     const reduce = current - 1;
     dispatch({
-      type: 'exportdata/changeDownload',
+      type: 'exportData/changeDownload',
       payload: {
         current: reduce,
       },
@@ -95,7 +95,7 @@ const ExportData = ({ exportdata, dispatch }) => {
 
 ExportData.PropTypes = {
 }
-const mapStateToProps = ({ exportdata }) => {
-  return { exportdata }
+const mapStateToProps = ({ exportData }) => {
+  return { exportData }
 }
 export default connect(mapStateToProps)(ExportData);
