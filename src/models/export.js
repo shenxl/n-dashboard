@@ -18,7 +18,6 @@ export default {
       end: { year: '', month: '' } },
     field: [],
     isDetails: false,
-
   },
 
   subscriptions: {
@@ -44,17 +43,17 @@ export default {
       const date = action.payload;
       return { ...state, date };
     },
-    toggleMonthes(state) {
+    toggleMonthes(state, action) {
       const isMonthesShow = state.isMonthesShow;
-      return { ...state, isMonthesShow: !isMonthesShow };
+      return { ...state, ...action.payload };
     },
-    toggleSigleMonth(state) {
+    toggleSigleMonth(state, action) {
       const isSingleMonthShow = state.isSingleMonthShow;
-      return { ...state, isSingleMonthShow: !isSingleMonthShow };
+      return { ...state, ...action.payload };
     },
-    toggleRangeMonth(state) {
+    toggleRangeMonth(state, action) {
       const isRangeMonthShow = state.isRangeMonthShow;
-      return { ...state, isRangeMonthShow: !isRangeMonthShow };
+      return { ...state, ...action.payload };
     },
     toggleSelectData(state) {
       const isSelectDataShow = state.isSelectDataShow;
