@@ -19,7 +19,7 @@ const _ = require('lodash');
 const TabPane = Tabs.TabPane;
 const MonthPicker = DatePicker.MonthPicker;
 
-const Government = ({ dispatch, companies, global, report, showdata, exportdata }) => {
+const Government = ({ dispatch, companies, global, report, showdata, exportData }) => {
   // 地区变化的 dispatch
   const { hideSearchPanel, tabState, searchInfo, selectedRowKeys,
       subSelect, currentType, currentIndustry } = companies;
@@ -211,7 +211,7 @@ const Government = ({ dispatch, companies, global, report, showdata, exportdata 
 
   const AdvanceSearchProps = {
     global,
-    exportdata,
+    exportData,
     onRegionChange,
     onTypeChange,
     dispatch,
@@ -284,7 +284,7 @@ Government.propTypes = {
 
 };
 
-const mapStateToProps = ({ companies, global, report, showdata, exportdata }) => {
-  return { companies, global, report, showdata, exportdata }
+const mapStateToProps = ({ companies, global, report, showdata, exportData }) => {
+  return { companies, global, report, showdata, exportData }
 }
 export default connect(mapStateToProps)(Government);

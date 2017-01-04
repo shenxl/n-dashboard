@@ -13,7 +13,7 @@ const Option = Select.Option;
 const usualShowedChildren = 2 * 5; // row * col
 const AdvancedSearch = ({
   form,
-  exportdata,
+  exportData,
   onRegionChange,
   onAddressChange,
   onTypeChange,
@@ -23,7 +23,7 @@ const AdvancedSearch = ({
   setBasicSearch,
   typeOptions,
 }) => {
-  const { current, isDownData } = exportdata;
+  const { current, isDownData } = exportData;
   const { addressOptions, regionList, provinceItem, cityItem, countryItem } = global;
   const handleSearch = (e) => {
     e.preventDefault();
@@ -52,7 +52,6 @@ const AdvancedSearch = ({
             and.push({ city: { like: `%25${cityItem.Name}%25` } });
             and.push({ county: { like: `%25${countryItem.Name}%25` } });
             status.push({ key: 'address', value: `${provinceItem.Name} - ${cityItem.Name} - ${countryItem.Name}` });
-
             break;
           default:
         }
@@ -107,7 +106,7 @@ const AdvancedSearch = ({
 
   const showExportModal = () => {
     dispatch({
-      type: 'exportdata/changeDownload',
+      type: 'exportData/changeDownload',
       payload: {
         isDownData: true,
       },
@@ -116,7 +115,7 @@ const AdvancedSearch = ({
 
   const hideExportModal = () => {
     dispatch({
-      type: 'exportdata/changeDownload',
+      type: 'exportData/changeDownload',
       payload: {
         isDownData: false,
       },
@@ -242,7 +241,7 @@ const AdvancedSearch = ({
       </Row>
       <Row gutter={40} style={{ marginTop: 8 }}>
         <Col span={24} style={{ textAlign: 'right' }}>
-          <Button onClick={showExportModal} type="primary" icon="export" >开始导出</Button>
+          <Button onClick={showExportModal} type="primary" icon="export" >数据导出</Button>
         </Col>
       </Row>
       <ExportDataModal isDownData={isDownData} handleCancel={hideExportModal} />

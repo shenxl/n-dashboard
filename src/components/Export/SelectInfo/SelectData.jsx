@@ -7,36 +7,37 @@ import styles from './selectData.less'
 const CheckboxGroup = Checkbox.Group;
 
 const SelectData = ({ exportData, dispatch }) => {
-  const { plainOptions, defaultCheckedList, checkAll, isSelectDataShow } = exportData;
+  const { plainOptions, defaultCheckedList, checkAll,
+    isSelectDataShow, indeterminate } = exportData;
   const showSelectData = classnames({
-    [styles.selectHide]: !isSelectDataShow,
-    [styles.selectShow]: isSelectDataShow,
+    [styles.selectShow]: true,
   });
-  const selectDataBtn = () => {
-    dispatch({ type: 'exportData/toggleSelectData' })
-  }
+
   const onChange = (checkedList) => {
     dispatch({
       type: 'exportData/changeChecked',
-      payload: { defaultCheckedList: checkedList,
+      payload: {
+        defaultCheckedList: checkedList,
+        indeterminate: !!checkedList.length && (checkedList.length < plainOptions.length),
         checkAll: checkedList.length === plainOptions.length },
     })
   }
   const onCheckAllChange = (e) => {
     dispatch({
       type: 'exportData/changeChecked',
-      payload: { defaultCheckedList: (e.target.checked ? plainOptions : []),
+      payload: {
+        defaultCheckedList: (e.target.checked ? plainOptions : []),
+        indeterminate: false,
         checkAll: e.target.checked },
     })
   }
   return (
     <div>
-      <div className={styles.btns}>
-        <Button type="primary" onClick={selectDataBtn}>数据类别查询</Button>
-      </div>
+      <div className={styles.btns} />
       <div className={showSelectData}>
         <div className={styles.checkall}>
           <Checkbox
+            indeterminate={indeterminate}
             checked={checkAll}
             onChange={onCheckAllChange}
           >
