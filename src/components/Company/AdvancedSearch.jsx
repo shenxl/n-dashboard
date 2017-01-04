@@ -26,7 +26,6 @@ const AdvancedSearch = ({
     e.preventDefault();
     //校验并获取一组输入域的值与 Error
     form.validateFields((err, values) => {
-      console.log(values)
       if (err) {
         return;
       }
@@ -163,8 +162,8 @@ const AdvancedSearch = ({
             { getFieldDecorator('type')(
               <Cascader
                 options={typeOptions}
-                onChange={onTypeChange}
                 changeOnSelect
+                onChange={onTypeChange}
                 placeholder="请选择类型 / 行业"
               />,
             )}
