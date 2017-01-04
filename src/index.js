@@ -33,7 +33,7 @@ app.model(require('./models/global'));
 //数据弹出框信息
 app.model(require('./models/showData'));
 //导入数据信息
-app.model(require('./models/ImportData'));
+app.model(require('./models/import'));
 //导出数据信息
 app.model(require('./models/export'));
 // 公司信息处理

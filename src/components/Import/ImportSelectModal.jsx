@@ -9,28 +9,13 @@ import styles from './importSelectModal.less';
 const Step = Steps.Step;
 
 
-const ImportSelectModal = ({ importdata, dispatch }) => {
-  const { selectCurrent } = importdata;
-  //const showDownModal = () => {
-  //   dispatch({
-  //     type: 'importdata/changeDownload',
-  //     payload: {
-  //       isDownShow: true,
-  //     },
-  //   });
-  // }
-  // const handleCancel = () => {
-  //   dispatch({
-  //     type: 'importdata/changeDownload',
-  //     payload: {
-  //       isDownShow: false,
-  //     },
-  //   });
-  // }
+const ImportSelectModal = ({ importData, dispatch }) => {
+  const { selectCurrent } = importData;
+
   const next = () => {
     const add = selectCurrent + 1;
     dispatch({
-      type: 'importdata/changeDownload',
+      type: 'importData/changeDownload',
       payload: {
         selectCurrent: add,
       },
@@ -39,7 +24,7 @@ const ImportSelectModal = ({ importdata, dispatch }) => {
   const prev = () => {
     const reduce = selectCurrent - 1;
     dispatch({
-      type: 'importdata/changeDownload',
+      type: 'importData/changeDownload',
       payload: {
         selectCurrent: reduce,
       },
@@ -55,9 +40,6 @@ const ImportSelectModal = ({ importdata, dispatch }) => {
   }, {
     title: '日期查询',
     content: <div>日期查询</div>,
-  }, {
-    title: '字段查询',
-    content: <div>字段查询</div>,
   }, {
     title: '完成',
     content: <div>完成</div>,
@@ -100,7 +82,7 @@ const ImportSelectModal = ({ importdata, dispatch }) => {
 
 ImportSelectModal.PropTypes = {
 }
-const mapStateToProps = ({ importdata }) => {
-  return { importdata }
+const mapStateToProps = ({ importData }) => {
+  return { importData }
 }
 export default connect(mapStateToProps)(ImportSelectModal);
