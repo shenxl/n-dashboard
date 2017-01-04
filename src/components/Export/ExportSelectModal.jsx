@@ -82,8 +82,8 @@ const ExportSelectModal = ({ dispatch, global, companies, exportData }) => {
           <div className={styles.selectdatas}>
             数据类别：{selectedCustomerType.join('-')}
           </div>
-          开始日期： {date.end.year}-{date.end.month} <br />
-          结束日期： {date.start.year}-{date.start.month}
+          开始日期： {date.start.year}-{date.start.month} <br />
+        结束日期： {date.end.year}-{date.end.month}
         </div>
       </div>
       <div className={styles.steps_action}>
