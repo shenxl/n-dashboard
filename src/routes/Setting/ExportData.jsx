@@ -68,23 +68,24 @@ const ExportData = ({ exportdata, dispatch }) => {
       <div className={styles.steps_content}>{steps[current].content}</div>
       <div className={styles.steps_action}>
         {
-            current > 0
-            &&
-              <Button style={{ marginLeft: 8 }} type="ghost" onClick={prev}>
-              上一步
-              </Button>
-          }
-        {
             current < steps.length - 1
             &&
               <Button type="primary" onClick={next}>下一步</Button>
           }
+
+
         {
             current === steps.length - 1
             &&
               <Button type="primary" onClick={() => message.success('Processing complete!')}>完成</Button>
           }
-
+        {
+              current > 0
+              &&
+                <Button style={{ marginLeft: 8 }} type="ghost" onClick={prev}>
+                上一步
+                </Button>
+            }
       </div>
       <ExportDataModal isDownData={isDownData} handleCancel={handleCancel} />
     </div>
