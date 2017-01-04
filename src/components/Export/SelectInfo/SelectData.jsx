@@ -7,12 +7,8 @@ import styles from './selectData.less'
 const CheckboxGroup = Checkbox.Group;
 
 const SelectData = ({ exportData, dispatch }) => {
-<<<<<<< HEAD
-  const { customerType, selectedCustomerType, checkAll, isSelectDataShow } = exportData;
-=======
-  const { plainOptions, defaultCheckedList, checkAll,
+  const { customerType, selectedCustomerType, checkAll,
     isSelectDataShow, indeterminate } = exportData;
->>>>>>> 2f453609f0122efbc208592fc2247fe866cc7932
   const showSelectData = classnames({
     [styles.selectShow]: true,
   });
@@ -20,27 +16,19 @@ const SelectData = ({ exportData, dispatch }) => {
   const onChange = (checkedList) => {
     dispatch({
       type: 'exportData/changeChecked',
-<<<<<<< HEAD
-      payload: { selectedCustomerType: checkedList,
-        checkAll: checkedList.length === customerType.length },
-=======
       payload: {
-        defaultCheckedList: checkedList,
-        indeterminate: !!checkedList.length && (checkedList.length < plainOptions.length),
-        checkAll: checkedList.length === plainOptions.length },
->>>>>>> 2f453609f0122efbc208592fc2247fe866cc7932
+        selectedCustomerType: checkedList,
+        indeterminate: !!checkedList.length && (checkedList.length < customerType.length),
+        checkAll: checkedList.length === customerType.length },
     })
   }
   const onCheckAllChange = (e) => {
     dispatch({
       type: 'exportData/changeChecked',
-<<<<<<< HEAD
-      payload: { selectedCustomerType: (e.target.checked ? customerType : []),
-=======
+
       payload: {
-        defaultCheckedList: (e.target.checked ? plainOptions : []),
+        selectedCustomerType: (e.target.checked ? customerType : []),
         indeterminate: false,
->>>>>>> 2f453609f0122efbc208592fc2247fe866cc7932
         checkAll: e.target.checked },
     })
   }

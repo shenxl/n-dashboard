@@ -81,14 +81,16 @@ const Government = ({ dispatch, companies, global, report, showdata, exportData 
     const title = `${query.year}年${query.month}月${param.seriesName} 版本分布图`;
     dispatch({
       type: 'companies/setSubSelect',
-      payload: { subSelect: 'subVersion' },
+      payload: {
+        subSelect: 'subVersion',
+      },
     });
-    // dispatch({
-    //   type: 'showdata/setModalState',
-    //   payload: {
-    //     showDataVisibel: true,
-    //   },
-    // });
+    dispatch({
+      type: 'showdata/setModalState',
+      payload: {
+        showDataVisibel: true,
+      },
+    });
     dispatch({
       type: 'report/setVersionTitle',
       payload: { versionTitle: title },

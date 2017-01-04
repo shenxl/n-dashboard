@@ -84,6 +84,12 @@ const Finance = ({ dispatch, companies, global, report, showdata, exportData }) 
       type: 'companies/setSubSelect',
       payload: { subSelect: 'subVersion' },
     });
+    dispatch({
+      type: 'showdata/setModalState',
+      payload: {
+        showDataVisibel: true,
+      },
+    });
 
     dispatch({
       type: 'report/setVersionTitle',
