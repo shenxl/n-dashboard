@@ -50,6 +50,7 @@ export default {
       FINANCE: ['金融'],
       NORMALIZATION: ['常态化'],
     },
+    catalogInfo: [],
     catalogData: [],
     currentTypeOptions: [],
     addressOptions: [],
@@ -228,7 +229,6 @@ export default {
     loadCatalog(state, action) {
       const catalogEntity = action.payload;
       const catalogName = state.catalogName;
-
       const info = _.chain(catalogEntity)
         .groupBy('catalog')
         .map((item, ckey) => {
@@ -255,7 +255,7 @@ export default {
       }, {});
 
       const currentTypeOptions = filterCatalog(info, _.toUpper(catalogName));
-      return { ...state, catalog, catalogInfo: info, currentTypeOptions };
+      return { ...state, catalogInfo: info, catalog, currentTypeOptions };
     },
 
     setCurrentType(state, action) {

@@ -85,30 +85,31 @@ const ExportSelectModal = ({ exportdata, dispatch, global, companies, exportData
           <div className={styles.selectdatas}>
             数据类别：{defaultCheckedList.join('-')}
           </div>
-        开始日期： {date.end.year}-{date.end.month} <br />
-        结束日期： {date.start.year}-{date.start.month}
+          开始日期： {date.end.year}-{date.end.month} <br />
+          结束日期： {date.start.year}-{date.start.month}
           <div className={styles.conditionQuery}>查询条件：</div>
           <ConditionSearchTag searchInfo={searchInfo} />
         </div>
       </div>
       <div className={styles.steps_action}>
-        {
-            selectCurrent < steps.length - 1
-            &&
-            <Button type="primary" onClick={next}>下一步</Button>
-          }
+
         {
             selectCurrent === steps.length - 1
             &&
-            <Button type="primary" onClick={() => message.success('Processing complete!')}>完成</Button>
+              <Button type="primary" onClick={() => message.success('Processing complete!')}>完成</Button>
           }
         {
             selectCurrent > 0
             &&
-            <Button style={{ marginLeft: 8 }} type="ghost" onClick={prev}>
+              <Button style={{ marginLeft: 8 }} type="ghost" onClick={prev}>
               上一步
-            </Button>
+              </Button>
           }
+        {
+              selectCurrent < steps.length - 1
+              &&
+                <Button type="primary" onClick={next}>下一步</Button>
+            }
       </div>
     </div>
   );

@@ -41,7 +41,7 @@ const SelectData = ({ exportData, dispatch }) => {
             onChange={onCheckAllChange}
           >
               全部
-            </Checkbox>
+          </Checkbox>
         </div>
         <div>
           <CheckboxGroup

@@ -3,6 +3,7 @@ import { Form, Row, Col, Input, Button,
     Icon, Tooltip, Cascader, Select, Switch } from 'antd';
 import RegionGlobal from '../Global/RegionGlobal';
 import CustomSelect from '../Global/CustomSelect';
+import ExportDataModal from '../Export/ExportDataModal';
 import styles from './search.less';
 
 const _ = require('lodash');
@@ -12,6 +13,7 @@ const Option = Select.Option;
 const usualShowedChildren = 2 * 5; // row * col
 const AdvancedSearch = ({
   form,
+  exportdata,
   onRegionChange,
   onAddressChange,
   onTypeChange,
@@ -21,12 +23,12 @@ const AdvancedSearch = ({
   setBasicSearch,
   typeOptions,
 }) => {
+  const { current, isDownData } = exportdata;
   const { addressOptions, regionList, provinceItem, cityItem, countryItem } = global;
   const handleSearch = (e) => {
     e.preventDefault();
     //校验并获取一组输入域的值与 Error
     form.validateFields((err, values) => {
-      console.log(values)
       if (err) {
         return;
       }
@@ -102,6 +104,24 @@ const AdvancedSearch = ({
       });
     });
   };
+
+  const showExportModal = () => {
+    dispatch({
+      type: 'exportdata/changeDownload',
+      payload: {
+        isDownData: true,
+      },
+    });
+  }
+
+  const hideExportModal = () => {
+    dispatch({
+      type: 'exportdata/changeDownload',
+      payload: {
+        isDownData: false,
+      },
+    });
+  }
 
   const handleReset = () => {
     dispatch({
@@ -213,13 +233,19 @@ const AdvancedSearch = ({
           </FormItem>
         </Col>
       </Row>
-      <Row>
+      <Row gutter={40}>
         <Col span={24} style={{ textAlign: 'right' }}>
           <Button type="primary" htmlType="submit">搜索</Button>
           <Button onClick={handleReset}>清空</Button>
           <Button icon="up" onClick={hideSearch}>精简模式</Button>
         </Col>
       </Row>
+      <Row gutter={40} style={{ marginTop: 8 }}>
+        <Col span={24} style={{ textAlign: 'right' }}>
+          <Button onClick={showExportModal} type="primary" icon="export" >开始导出</Button>
+        </Col>
+      </Row>
+      <ExportDataModal isDownData={isDownData} handleCancel={hideExportModal} />
     </Form>
   );
 };

@@ -7,7 +7,7 @@ export default {
   state: {
     isSelectDataShow: false,
     checkAll: false,
-    plainOptions: ['政府', '企业', '金融'],
+    plainOptions: ['政府', '企业', '金融', '常态化'],
     defaultCheckedList: [],
     isMonthesShow: false,
     isSingleMonthShow: false,
@@ -18,7 +18,6 @@ export default {
       end: { year: '', month: '' } },
     field: [],
     isDetails: false,
-
   },
 
   subscriptions: {

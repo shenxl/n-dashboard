@@ -117,7 +117,6 @@ const BasicTable = ({ companyList, onTableChange, onRowClick, rowSelection }) =>
       </h4>
       <Table
         style={{ cursor: 'pointer' }}
-        rowSelection={rowSelection}
         loading={loading}
         onChange={onTableChange}
         columns={columns}

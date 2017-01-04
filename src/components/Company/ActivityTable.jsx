@@ -109,7 +109,6 @@ const BasicTable = ({ companyList, onTableChange, onRowClick, rowSelection }) =>
         onChange={onTableChange}
         columns={columns}
         dataSource={list}
-        rowSelection={rowSelection}
         pagination={pagination()}
         onRowClick={onRowClick}
         scroll={{ y: 340 }}
