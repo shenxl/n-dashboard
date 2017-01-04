@@ -57,16 +57,13 @@ const ExportSelectModal = ({ dispatch, global, companies, exportData }) => {
   }
 
   const steps = [{
-    title: '数据选择',
+    title: '用户类型选择',
     content: <SelectData />,
   }, {
-    title: '条件查询',
-    content: <div><ConditionQuery {...AdvanceSearchProps} /></div>,
-  }, {
-    title: '日期查询',
+    title: '日期范围设置',
     content: <DateQuery />,
   }, {
-    title: '完成',
+    title: '导出类别',
     content: <CompletePage />,
   },
   ];
@@ -85,30 +82,30 @@ const ExportSelectModal = ({ dispatch, global, companies, exportData }) => {
           <div className={styles.selectdatas}>
             数据类别：{selectedCustomerType.join('-')}
           </div>
-        开始日期： {date.end.year}-{date.end.month} <br />
-        结束日期： {date.start.year}-{date.start.month}
-          <div className={styles.conditionQuery}>查询条件：</div>
-          <ConditionSearchTag searchInfo={searchInfo} />
+          开始日期： {date.end.year}-{date.end.month} <br />
+          结束日期： {date.start.year}-{date.start.month}
         </div>
       </div>
       <div className={styles.steps_action}>
-        {
-            selectCurrent < steps.length - 1
-            &&
-            <Button type="primary" onClick={next}>下一步</Button>
-          }
-        {
+
+        {/*
             selectCurrent === steps.length - 1
             &&
-            <Button type="primary" onClick={() => message.success('Processing complete!')}>完成</Button>
-          }
+            <Button type="primary" onClick={() => message.success('Processing complete!')}>
+            完成</Button>
+        */}
         {
             selectCurrent > 0
             &&
-            <Button style={{ marginLeft: 8 }} type="ghost" onClick={prev}>
+              <Button style={{ marginLeft: 8 }} type="ghost" onClick={prev}>
               上一步
-            </Button>
+              </Button>
           }
+        {
+              selectCurrent < steps.length - 1
+              &&
+                <Button type="primary" onClick={next}>下一步</Button>
+            }
       </div>
     </div>
   );

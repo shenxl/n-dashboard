@@ -11,6 +11,7 @@ const DownloadModal = (props) => {
     <Modal
       title="开始导出数据" visible={isDownData}
       onCancel={handleCancel}
+      onOk={handleCancel}
       okText="确认" cancelText="取消"
       width={900}
     >

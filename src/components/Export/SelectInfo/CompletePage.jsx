@@ -9,8 +9,8 @@ const CheckboxGroup = Checkbox.Group;
 const CompletePage = ({ exportData, dispatch }) => {
   return (
     <div>
-      <div className={styles.leftBtn}><input type="button" value="导出明细" /></div>
-      <div className={styles.rightBtn}><input type="button" value="导出汇总" /></div>
+      <div className={styles.leftBtn}><Button type="primary" icon="tags" >导出明细表</Button></div>
+      <div className={styles.rightBtn}><Button type="primary" icon="tag" >导出汇总表</Button></div>
     </div>
   );
 }

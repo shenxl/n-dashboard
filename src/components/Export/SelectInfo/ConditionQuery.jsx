@@ -69,7 +69,6 @@ const AdvancedSearch = ({
         }
       }
 
-
       dispatch({
         type: 'companies/updateFilter',
         payload: {
@@ -82,14 +81,6 @@ const AdvancedSearch = ({
         type: 'companies/setSearchInfo',
         payload: status,
       });
-
-      dispatch({
-        type: 'companies/query',
-      });
-
-      dispatch({
-        type: 'report/queryMonthly',
-      });
     });
   };
 
@@ -97,16 +88,6 @@ const AdvancedSearch = ({
     dispatch({
       type: 'companies/clearQuery',
     });
-
-    dispatch({
-      type: 'companies/query',
-    });
-
-    dispatch({
-      type: 'companies/setSelectedRowKeys',
-      payload: { selectedRowKeys: [0] },
-    });
-
     form.resetFields();
   };
 

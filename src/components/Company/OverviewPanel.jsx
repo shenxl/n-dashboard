@@ -43,7 +43,6 @@ const OverviewPanel = ({ baseCompanies }) => {
         <Col span={15}>
           <GaugeReport gaugeData={gaugeData} style={{ height: 200 }} title="报活占比" />
         </Col>
-
       </Row>
     </div>
   );

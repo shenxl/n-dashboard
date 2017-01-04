@@ -7,41 +7,55 @@ import styles from './selectData.less'
 const CheckboxGroup = Checkbox.Group;
 
 const SelectData = ({ exportData, dispatch }) => {
+<<<<<<< HEAD
   const { customerType, selectedCustomerType, checkAll, isSelectDataShow } = exportData;
+=======
+  const { plainOptions, defaultCheckedList, checkAll,
+    isSelectDataShow, indeterminate } = exportData;
+>>>>>>> 2f453609f0122efbc208592fc2247fe866cc7932
   const showSelectData = classnames({
-    [styles.selectHide]: !isSelectDataShow,
-    [styles.selectShow]: isSelectDataShow,
+    [styles.selectShow]: true,
   });
-  const selectDataBtn = () => {
-    dispatch({ type: 'exportData/toggleSelectData' })
-  }
+
   const onChange = (checkedList) => {
     dispatch({
       type: 'exportData/changeChecked',
+<<<<<<< HEAD
       payload: { selectedCustomerType: checkedList,
         checkAll: checkedList.length === customerType.length },
+=======
+      payload: {
+        defaultCheckedList: checkedList,
+        indeterminate: !!checkedList.length && (checkedList.length < plainOptions.length),
+        checkAll: checkedList.length === plainOptions.length },
+>>>>>>> 2f453609f0122efbc208592fc2247fe866cc7932
     })
   }
   const onCheckAllChange = (e) => {
     dispatch({
       type: 'exportData/changeChecked',
+<<<<<<< HEAD
       payload: { selectedCustomerType: (e.target.checked ? customerType : []),
+=======
+      payload: {
+        defaultCheckedList: (e.target.checked ? plainOptions : []),
+        indeterminate: false,
+>>>>>>> 2f453609f0122efbc208592fc2247fe866cc7932
         checkAll: e.target.checked },
     })
   }
   return (
     <div>
-      <div className={styles.btns}>
-        <Button type="primary" onClick={selectDataBtn}>数据类别查询</Button>
-      </div>
+      <div className={styles.btns} />
       <div className={showSelectData}>
         <div className={styles.checkall}>
           <Checkbox
+            indeterminate={indeterminate}
             checked={checkAll}
             onChange={onCheckAllChange}
           >
               全部
-            </Checkbox>
+          </Checkbox>
         </div>
         <div>
           <CheckboxGroup
