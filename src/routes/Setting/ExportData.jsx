@@ -64,7 +64,6 @@ const ExportData = ({ exportdata, dispatch }) => {
       <Steps current={current}>
         {steps.map((item, key) =>
           <Step key={item.title} icon={(key === 0 && <Icon type="export" />) || (key === 1 && <Icon type="download" />) || (key === 2 && <Icon type="file" />)} title={item.title} />)}
-
       </Steps>
       <div className={styles.steps_content}>{steps[current].content}</div>
       <div className={styles.steps_action}>

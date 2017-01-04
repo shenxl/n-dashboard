@@ -7,6 +7,7 @@ import SelectData from './SelectInfo/SelectData';
 import DateQuery from './SelectInfo/DateQuery';
 import ConditionQuery from './SelectInfo/ConditionQuery';
 import ConditionSearchTag from './SelectInfo/ConditionSearchTag';
+import CompletePage from './SelectInfo/CompletePage';
 import styles from './exportSelectModal.less';
 
 const Step = Steps.Step;
@@ -67,7 +68,7 @@ const ExportSelectModal = ({ exportdata, dispatch, global, companies, exportData
     content: <DateQuery />,
   }, {
     title: '完成',
-    content: <div />,
+    content: <CompletePage />,
   },
   ];
 
