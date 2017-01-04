@@ -5,6 +5,9 @@ export default {
   namespace: 'exportData',
 
   state: {
+    selectCurrent: 0,
+    current: 0,
+    isDownData: false,
     isSelectDataShow: false,
     checkAll: false,
     plainOptions: ['政府', '企业', '金融', '常态化'],
@@ -39,21 +42,24 @@ export default {
   },
 
   reducers: {
+    changeDownload(state, action) {
+      return { ...state, ...action.payload };
+    },
     changeDate(state, action) {
       const date = action.payload;
       return { ...state, date };
     },
-    toggleMonthes(state) {
+    toggleMonthes(state, action) {
       const isMonthesShow = state.isMonthesShow;
-      return { ...state, isMonthesShow: !isMonthesShow };
+      return { ...state, ...action.payload };
     },
-    toggleSigleMonth(state) {
+    toggleSigleMonth(state, action) {
       const isSingleMonthShow = state.isSingleMonthShow;
-      return { ...state, isSingleMonthShow: !isSingleMonthShow };
+      return { ...state, ...action.payload };
     },
-    toggleRangeMonth(state) {
+    toggleRangeMonth(state, action) {
       const isRangeMonthShow = state.isRangeMonthShow;
-      return { ...state, isRangeMonthShow: !isRangeMonthShow };
+      return { ...state, ...action.payload };
     },
     toggleSelectData(state) {
       const isSelectDataShow = state.isSelectDataShow;

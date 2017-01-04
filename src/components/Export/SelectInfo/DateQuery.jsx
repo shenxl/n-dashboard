@@ -23,13 +23,26 @@ const DateQuery = ({ exportData, dispatch }) => {
     [styles.rangeMonthShow]: isRangeMonthShow,
   });
   const monthesBtn = () => {
-    dispatch({ type: 'exportData/toggleMonthes' })
+    dispatch({ type: 'exportData/toggleMonthes',
+      payload: { isMonthesShow: true,
+        isSingleMonthShow: false,
+        isRangeMonthShow: false,
+      },
+    })
   }
   const monthesSingleBtn = () => {
-    dispatch({ type: 'exportData/toggleSigleMonth' })
+    dispatch({ type: 'exportData/toggleSigleMonth',
+      payload: { isMonthesShow: false,
+        isSingleMonthShow: true,
+        isRangeMonthShow: false },
+    })
   }
   const monthesRangeBtn = () => {
-    dispatch({ type: 'exportData/toggleRangeMonth' })
+    dispatch({ type: 'exportData/toggleRangeMonth',
+      payload: { isMonthesShow: false,
+        isSingleMonthShow: false,
+        isRangeMonthShow: true },
+    })
   }
   const changeOneMonth = () => {
     const now = moment(new Date());

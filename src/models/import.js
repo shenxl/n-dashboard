@@ -1,13 +1,10 @@
 export default {
-  namespace: 'exportdata',
+  namespace: 'importData',
   state: {
-    //控制查询条件模板显示和隐藏
-    isDownData: false,
-    //isDownFiles: false,
-    //isStateShow: false,
+    //控制导入数据的数据面板显示隐藏
+    isDownShow: false,
     //控制steps流程的切换
     current: 0,
-    //控制弹出框中steps流程切换
     selectCurrent: 0,
   },
 

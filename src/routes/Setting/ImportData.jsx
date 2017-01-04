@@ -12,11 +12,11 @@ import styles from './importData.less';
 const Step = Steps.Step;
 
 
-const ImportData = ({ importdata, dispatch }) => {
-  const { current, isDownShow } = importdata;
+const ImportData = ({ importData, dispatch }) => {
+  const { current, isDownShow } = importData;
   const showDownModal = () => {
     dispatch({
-      type: 'importdata/changeDownload',
+      type: 'importData/changeDownload',
       payload: {
         isDownShow: true,
       },
@@ -24,7 +24,7 @@ const ImportData = ({ importdata, dispatch }) => {
   }
   const handleCancel = () => {
     dispatch({
-      type: 'importdata/changeDownload',
+      type: 'importData/changeDownload',
       payload: {
         isDownShow: false,
       },
@@ -33,7 +33,7 @@ const ImportData = ({ importdata, dispatch }) => {
   const next = () => {
     const add = current + 1;
     dispatch({
-      type: 'importdata/changeDownload',
+      type: 'importData/changeDownload',
       payload: {
         current: add,
       },
@@ -42,7 +42,7 @@ const ImportData = ({ importdata, dispatch }) => {
   const prev = () => {
     const reduce = current - 1;
     dispatch({
-      type: 'importdata/changeDownload',
+      type: 'importData/changeDownload',
       payload: {
         current: reduce,
       },
@@ -72,13 +72,7 @@ const ImportData = ({ importdata, dispatch }) => {
         {steps[current].content}
       </div>
       <div className={styles.steps_action}>
-        {
-            current > 0
-            &&
-              <Button style={{ marginLeft: 8 }} type="ghost" onClick={prev}>
-              上一步
-              </Button>
-        }
+
         {
             current < steps.length - 1
             &&
@@ -89,6 +83,13 @@ const ImportData = ({ importdata, dispatch }) => {
             &&
               <Button type="primary" onClick={() => message.success('Processing complete!')}>完成</Button>
           }
+        {
+              current > 0
+              &&
+                <Button style={{ marginLeft: 8 }} type="ghost" onClick={prev}>
+                上一步
+                </Button>
+          }
       </div>
       <DownloadModal isDownShow={isDownShow} handleCancel={handleCancel} />
     </div>
@@ -97,7 +98,7 @@ const ImportData = ({ importdata, dispatch }) => {
 
 ImportData.PropTypes = {
 }
-const mapStateToProps = ({ importdata }) => {
-  return { importdata }
+const mapStateToProps = ({ importData }) => {
+  return { importData }
 }
 export default connect(mapStateToProps)(ImportData);
