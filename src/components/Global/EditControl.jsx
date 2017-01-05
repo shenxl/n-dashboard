@@ -41,12 +41,12 @@ class EditControl extends React.Component {
 
   renderControl() {
     const props = {
-      onClick: this.handleEditClick,
+      onClick: this.handleEditClick.bind(this),
     }
     if (this.state.isEdit) {
       return (
         <div>
-          <Input type="textarea" value={this.state.value} onChange={this.handleChange} onBlur={this.handleBlur} autosize={{ minRows: 2, maxRows: 6 }} />
+          <Input type="textarea" value={this.state.value} onChange={this.handleChange.bind(this)} onBlur={this.handleBlur.bind(this)} autosize={{ minRows: 2, maxRows: 6 }} />
         </div>)
     }
     return (

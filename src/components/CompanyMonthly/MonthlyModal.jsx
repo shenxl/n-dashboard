@@ -63,7 +63,7 @@ const MonthlyModal = ({ companyMonthly, dispatch, company, width }) => {
       payload: {
         currentItem: {
           company_id,
-          serverId,
+          server_id: serverId,
           year: date.getFullYear(),
           month: date.getMonth() + 1,
         },
@@ -127,7 +127,7 @@ const MonthlyModal = ({ companyMonthly, dispatch, company, width }) => {
           type: 'companyMonthly/addInstallSum',
           payload: {
             company_id,
-            server_id: 99,
+            server_id: serverId,
             sum: value,
           },
         });
@@ -136,9 +136,8 @@ const MonthlyModal = ({ companyMonthly, dispatch, company, width }) => {
     });
   }
 
-  const onInstallSumAddBlur = (e) => {
-    e.preventDefault();
-    showAddConfirm(e.target.value)
+  const onInstallSumAddBlur = (value) => {
+    showAddConfirm(value)
   }
 
   const monthlyTableProps = {

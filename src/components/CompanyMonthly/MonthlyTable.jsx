@@ -11,7 +11,6 @@ const MonthlyTable = ({
   onInstallSumAddBlur,
 }) => {
   const { innerList, loading, installSum } = companyMonthly;
-
   const renderCompanyName = () => {
     let result = '';
     if (companyName.length > 15) {
@@ -74,7 +73,7 @@ const MonthlyTable = ({
     },
   ];
   const addContent =
-    <InputNumber defaultValue={installSum} onBlur={onInstallSumAddBlur.bind(this)} />;
+    <InputNumber defaultValue={installSum} onChange={onInstallSumAddBlur.bind(this)} />;
   return (
     <div>
       <Row>

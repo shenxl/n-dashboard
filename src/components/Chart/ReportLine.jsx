@@ -21,14 +21,12 @@ const ReportLine = ({ company, report, onChartClick }) => {
       let seriesActive = [];
       let seriesInstall = [];
 
-      _.forEach(_.chain(monthly).orderBy(['server_id', 'year', 'month'], ['asc', 'asc', 'asc']).value(), (item) => {
+      _.forEach(_.chain(monthly).orderBy(['year', 'month', 'server_id'], ['asc', 'asc', 'asc']).value(), (item) => {
         serverInfo.push(item.server_id);
         tokenInfo.push(`${item.year}-${item.month}`);
       });
-
       serverInfo = _.uniq(serverInfo);
       tokenInfo = _.uniq(tokenInfo);
-
       seriesActive = _.map(serverInfo, (serverId) => {
         const result = [];
         _.chain(monthly)

@@ -32,7 +32,7 @@ const SearchTags = ({ searchInfo }) => {
 };
 
 SearchTags.propTypes = {
-  searchInfo: PropTypes.array.isRequired,
+  //searchInfo: PropTypes.array.isRequired,
 };
 
 export default SearchTags;

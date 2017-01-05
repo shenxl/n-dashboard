@@ -3,6 +3,7 @@ import { Form, Row, Col, Input, Button,
     Icon, Tooltip, Cascader, Select, Switch } from 'antd';
 import RegionGlobal from '../Global/RegionGlobal';
 import CustomSelect from '../Global/CustomSelect';
+import ExportDataModal from '../Export/ExportDataModal';
 import styles from './search.less';
 
 const _ = require('lodash');
@@ -12,6 +13,7 @@ const Option = Select.Option;
 const usualShowedChildren = 2 * 5; // row * col
 const AdvancedSearch = ({
   form,
+  exportData,
   onRegionChange,
   onAddressChange,
   onTypeChange,
@@ -21,9 +23,11 @@ const AdvancedSearch = ({
   setBasicSearch,
   typeOptions,
 }) => {
+  const { current, isDownData } = exportData;
   const { addressOptions, regionList, provinceItem, cityItem, countryItem } = global;
   const handleSearch = (e) => {
     e.preventDefault();
+    //校验并获取一组输入域的值与 Error
     form.validateFields((err, values) => {
       if (err) {
         return;
@@ -100,6 +104,24 @@ const AdvancedSearch = ({
     });
   };
 
+  const showExportModal = () => {
+    dispatch({
+      type: 'exportData/changeDownload',
+      payload: {
+        isDownData: true,
+      },
+    });
+  }
+
+  const hideExportModal = () => {
+    dispatch({
+      type: 'exportData/changeDownload',
+      payload: {
+        isDownData: false,
+      },
+    });
+  }
+
   const handleReset = () => {
     dispatch({
       type: 'companies/clearQuery',
@@ -147,7 +169,7 @@ const AdvancedSearch = ({
             </span>}
           >
             { getFieldDecorator('region')(
-              <CustomSelect options={regionList} handleChange={onRegionChange} />
+              <CustomSelect options={regionList} handleChange={onRegionChange} />,
             )}
           </FormItem>
         </Col>
@@ -160,10 +182,10 @@ const AdvancedSearch = ({
             { getFieldDecorator('type')(
               <Cascader
                 options={typeOptions}
-                onChange={onTypeChange}
                 changeOnSelect
+                onChange={onTypeChange}
                 placeholder="请选择类型 / 行业"
-              />
+              />,
             )}
           </FormItem>
         </Col>
@@ -184,7 +206,7 @@ const AdvancedSearch = ({
                 {...RegionProps}
                 changeOnSelect
                 placeholder="请选择省 / 市 / 区"
-              />
+              />,
             )}
           </FormItem>
         </Col>
@@ -195,7 +217,7 @@ const AdvancedSearch = ({
             wrapperCol={{ span: 5 }}
           >
             {getFieldDecorator('important')(
-              <Switch />
+              <Switch />,
             )}
           </FormItem>
         </Col>
@@ -205,18 +227,24 @@ const AdvancedSearch = ({
             label={'关键字'}
           >
             {getFieldDecorator('keyword')(
-              <Input placeholder="请输入关键字" />
+              <Input placeholder="请输入关键字" />,
             )}
           </FormItem>
         </Col>
       </Row>
-      <Row>
+      <Row gutter={40}>
         <Col span={24} style={{ textAlign: 'right' }}>
           <Button type="primary" htmlType="submit">搜索</Button>
           <Button onClick={handleReset}>清空</Button>
           <Button icon="up" onClick={hideSearch}>精简模式</Button>
         </Col>
       </Row>
+      <Row gutter={40} style={{ marginTop: 8 }}>
+        <Col span={24} style={{ textAlign: 'right' }}>
+          <Button onClick={showExportModal} type="primary" icon="export" >数据导出</Button>
+        </Col>
+      </Row>
+      <ExportDataModal isDownData={isDownData} handleCancel={hideExportModal} />
     </Form>
   );
 };
@@ -226,8 +254,8 @@ AdvancedSearchForm.propTypes = {
   onRegionChange: PropTypes.func.isRequired,
   onTypeChange: PropTypes.func.isRequired,
   setBasicSearch: PropTypes.func.isRequired,
-  global: PropTypes.object.isRequired,
-  typeOptions: PropTypes.array.isRequired,
+  //global: PropTypes.object.isRequired,
+  //typeOptions: PropTypes.array.isRequired,
   hideSearch: PropTypes.func.isRequired,
 };
 

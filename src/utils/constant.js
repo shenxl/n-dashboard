@@ -11,5 +11,9 @@ const Constant = {
   signSuccessUrl: '/pass/signsuccess',
   UserInfoUrl: '/user/info',
   emailAddonAfter: 'kingsoft.com',
+
+  importFolder: 'importContainers',
+  exportFolder: 'exportContainers',
+
 }
 export default Constant;//

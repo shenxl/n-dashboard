@@ -33,7 +33,7 @@ const OverviewPanel = ({ baseCompanies }) => {
   }
 
   return (
-    <div>
+    <div className={styles.showpicks}>
       <Row gutter={40}>
         <SearchTags searchInfo={searchInfo} />
         <Col span={9}>
@@ -43,7 +43,6 @@ const OverviewPanel = ({ baseCompanies }) => {
         <Col span={15}>
           <GaugeReport gaugeData={gaugeData} style={{ height: 200 }} title="报活占比" />
         </Col>
-
       </Row>
     </div>
   );

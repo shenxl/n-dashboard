@@ -35,45 +35,52 @@ const BasicTable = ({ companyList, onTableChange, onRowClick, rowSelection }) =>
       title: '企业名称',
       dataIndex: 'name',
       key: 'name',
+      width: '25%',
       render: renderText,
     },
     {
       title: '重点关注',
       dataIndex: 'important',
       key: 'important',
-      width: 65,
+      width: '9%',
       render: renderImportant,
     },
     {
       title: '采购量',
       dataIndex: 'buy',
       key: 'buy',
+      width: '9%',
       sorter: true,
     },
     {
       title: '区域',
       dataIndex: 'region',
       key: 'region',
+      width: '9%',
     },
     {
       title: '省',
       dataIndex: 'province',
       key: 'province',
+      width: '9%',
     },
     {
       title: '市',
       dataIndex: 'city',
       key: 'city',
+      width: '9%',
     },
     {
       title: '区/县',
       dataIndex: 'county',
       key: 'county',
+      width: '9%',
     },
     {
       title: '类型',
       dataIndex: 'type',
       key: 'type',
+      width: '9%',
     },
     {
       title: '行业',
@@ -96,6 +103,7 @@ const BasicTable = ({ companyList, onTableChange, onRowClick, rowSelection }) =>
       pageSize: limit,
       showTotal,
       showSizeChanger: true,
+      pageSizeOptions: ['6', '10', '20', '30', '40'],
     };
   }
 
@@ -109,13 +117,13 @@ const BasicTable = ({ companyList, onTableChange, onRowClick, rowSelection }) =>
       </h4>
       <Table
         style={{ cursor: 'pointer' }}
-        rowSelection={rowSelection}
         loading={loading}
         onChange={onTableChange}
         columns={columns}
         dataSource={list}
         pagination={pagination()}
         onRowClick={onRowClick}
+        scroll={{ y: 340 }}
       />
     </div>
   );

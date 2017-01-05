@@ -3,8 +3,8 @@ import { Select } from 'antd';
 
 const Option = Select.Option;
 class CustomSelect extends React.Component {
-  constructor(...args) {
-    super(...args);
+  constructor(props) {
+    super(props);
     this.state = {
       value: this.props.value || [],
     };

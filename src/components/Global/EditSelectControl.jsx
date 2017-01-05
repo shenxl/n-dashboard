@@ -41,7 +41,7 @@ class EditSelectControl extends React.Component {
 
   renderControl() {
     const props = {
-      onClick: this.handleEditClick,
+      onClick: this.handleEditClick.bind(this),
     }
     if (this.state.isEdit) {
       const children = this.props.options.map((item) => {
@@ -51,8 +51,8 @@ class EditSelectControl extends React.Component {
         <Select
           defaultValue={this.state.value}
           style={{ width: 200 }}
-          onBlur={this.handleBlur}
-          onChange={this.handleChange}
+          onBlur={this.handleBlur.bind(this)}
+          onChange={this.handleChange.bind(this)}
         >
           { children }
         </Select>

@@ -15,6 +15,11 @@ import Company from './routes/Company/Company';
 import Government from './routes/Company/Government';
 import Enterprise from './routes/Company/Enterprise';
 import Finance from './routes/Company/Finance';
+
+import Setting from './routes/Setting/Setting';
+import ImportData from './routes/Setting/ImportData';
+import ExportData from './routes/Setting/ExportData';
+
 import Test from './routes/test/Test';
 
 export default function ({ history }) {
@@ -32,6 +37,14 @@ export default function ({ history }) {
           <Route path="enterprise" component={Enterprise} />
           <Route path="finance" component={Finance} />
         </Route>
+
+
+        <Route path="setting/" component={Setting} >
+          <Route path="import" component={ImportData} />
+          <Route path="export" component={ExportData} />
+        </Route>
+
+
         <Route path="*" component={NotFound} />
       </Route>
     </Router>
