@@ -52,7 +52,7 @@ class CustomSelect extends React.Component {
 
 
 CustomSelect.propTypes = {
-  options: PropTypes.array.isRequired,
+  //options: PropTypes.array.isRequired,
 };
 
 export default CustomSelect;

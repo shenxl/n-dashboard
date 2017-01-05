@@ -28,6 +28,7 @@ export default {
       end: { year: new Date().getFullYear(), month: new Date().getMonth() + 1 } },
     field: [],
     isDetails: false,
+    exportSearchInfo: [],
   },
 
   subscriptions: {
@@ -49,6 +50,12 @@ export default {
   },
 
   reducers: {
+    exportSetSearchInfo(state, action) {
+      return { ...state, exportSearchInfo: action.payload };
+    },
+    exportClearQuery(state) {
+      return { ...state, exportSearchInfo: [] }
+    },
     changeDownload(state, action) {
       return { ...state, ...action.payload };
     },
