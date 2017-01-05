@@ -198,16 +198,6 @@ const convert4JSONToCSV = (JSONData, queryFields, isDetails) => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    // const uri = `data:text/csv;charset=utf-8,\uFEFF${encodeURI(csv)}`;
-    // console.log('load data ', uri);
-    // const link = document.createElement('a');
-    // link.style = 'visibility:hidden';
-    // link.download = `${queryFields}.csv`;
-    // link.href = uri;
-    // console.log('click link ');
-    // document.body.appendChild(link);
-    // link.click();
-    // document.body.removeChild(link);
   });
 }
 
