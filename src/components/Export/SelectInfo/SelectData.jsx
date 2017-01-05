@@ -7,7 +7,7 @@ import styles from './selectData.less'
 const CheckboxGroup = Checkbox.Group;
 
 const SelectData = ({ exportData, dispatch }) => {
-  const { plainOptions, defaultCheckedList, checkAll,
+  const { customerType, selectedCustomerType, checkAll,
     isSelectDataShow, indeterminate } = exportData;
   const showSelectData = classnames({
     [styles.selectShow]: true,
@@ -17,16 +17,17 @@ const SelectData = ({ exportData, dispatch }) => {
     dispatch({
       type: 'exportData/changeChecked',
       payload: {
-        defaultCheckedList: checkedList,
-        indeterminate: !!checkedList.length && (checkedList.length < plainOptions.length),
-        checkAll: checkedList.length === plainOptions.length },
+        selectedCustomerType: checkedList,
+        indeterminate: !!checkedList.length && (checkedList.length < customerType.length),
+        checkAll: checkedList.length === customerType.length },
     })
   }
   const onCheckAllChange = (e) => {
     dispatch({
       type: 'exportData/changeChecked',
+
       payload: {
-        defaultCheckedList: (e.target.checked ? plainOptions : []),
+        selectedCustomerType: (e.target.checked ? customerType : []),
         indeterminate: false,
         checkAll: e.target.checked },
     })
@@ -46,8 +47,8 @@ const SelectData = ({ exportData, dispatch }) => {
         </div>
         <div>
           <CheckboxGroup
-            options={plainOptions}
-            value={defaultCheckedList}
+            options={customerType}
+            value={selectedCustomerType}
             onChange={onChange}
           />
         </div>

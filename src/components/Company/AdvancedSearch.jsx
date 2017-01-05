@@ -182,8 +182,8 @@ const AdvancedSearch = ({
             { getFieldDecorator('type')(
               <Cascader
                 options={typeOptions}
-                onChange={onTypeChange}
                 changeOnSelect
+                onChange={onTypeChange}
                 placeholder="请选择类型 / 行业"
               />,
             )}

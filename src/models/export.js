@@ -4,13 +4,13 @@ const _ = require('lodash');
 const json2csv = require('json2csv');
 /*global document URL Blob*/
 const convertName = (exportData, isDetails) => {
-  const { defaultCheckedList, checkAll, date } = exportData;
-  const { start: end, end: start } = date;
+  const { selectedCustomerType, checkAll, date } = exportData;
+  const { start, end } = date;
   let result;
   if (checkAll) {
     result = '所有用户'
   } else {
-    result = `${defaultCheckedList.join('_')}用户`;
+    result = `${selectedCustomerType.join('_')}用户`;
   }
   if (start.year === end.year && start.month === end.month) {
     result += `(${start.year}年${start.month})`
@@ -25,13 +25,13 @@ const convertName = (exportData, isDetails) => {
   return result;
 }
 const assignFilter = (exportData) => {
-  const { defaultCheckedList, catalogList, checkAll, date, isDetails } = exportData;
+  const { selectedCustomerType, catalogList, checkAll, date, isDetails } = exportData;
   let typeFilter;
   let dateFilter;
   if (!checkAll) {
     typeFilter = {
       type: {
-        inq: _.flattenDeep(defaultCheckedList.map((item) => {
+        inq: _.flattenDeep(selectedCustomerType.map((item) => {
           return _.flattenDeep(catalogList.map((catalog) => {
             if (catalog.key === item) {
               return catalog.value
@@ -42,7 +42,7 @@ const assignFilter = (exportData) => {
       },
     }
   }
-  const { start: end, end: start } = date;
+  const { start, end } = date;
   if (start.year === end.year && start.month === end.month) {
     dateFilter = { and: [
       { year: start.year },
@@ -222,8 +222,8 @@ export default {
     isSelectDataShow: false,
     indeterminate: true,
     checkAll: true,
-    plainOptions: ['政府', '企业', '金融', '常态化'],
-    defaultCheckedList: ['政府', '企业', '金融', '常态化'],
+    customerType: ['政府', '企业', '金融', '常态化'],
+    selectedCustomerType: ['政府', '企业', '金融', '常态化'],
     catalogList: [{
       key: '政府',
       value: ['政府', '政府行业', '部委'],

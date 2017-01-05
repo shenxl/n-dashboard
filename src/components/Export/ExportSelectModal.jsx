@@ -15,7 +15,7 @@ const Step = Steps.Step;
 
 const ExportSelectModal = ({ dispatch, global, companies, exportData }) => {
   const { searchInfo } = companies;
-  const { date, defaultCheckedList, selectCurrent } = exportData;
+  const { date, selectedCustomerType, selectCurrent } = exportData;
   const { currentTypeOptions } = global;
   const next = () => {
     const add = selectCurrent + 1;
@@ -80,10 +80,10 @@ const ExportSelectModal = ({ dispatch, global, companies, exportData }) => {
         <div className={styles.steps_content_right}>
           <h3 className={styles.h3}>查询信息显示</h3>
           <div className={styles.selectdatas}>
-            数据类别：{defaultCheckedList.join('-')}
+            数据类别：{selectedCustomerType.join('-')}
           </div>
-          开始日期： {date.end.year}-{date.end.month} <br />
-          结束日期： {date.start.year}-{date.start.month}
+          开始日期： {date.start.year}-{date.start.month} <br />
+        结束日期： {date.end.year}-{date.end.month}
         </div>
       </div>
       <div className={styles.steps_action}>

@@ -3,7 +3,6 @@ import { Steps, message, Row, Col, Pagination, Input, Button, Icon, Tabs, DatePi
 import moment from 'moment';
 import { connect } from 'dva';
 import classnames from 'classnames';
-import SelectData from './SelectInfo/SelectData';
 import styles from './importSelectModal.less';
 
 const Step = Steps.Step;
@@ -33,7 +32,7 @@ const ImportSelectModal = ({ importData, dispatch }) => {
 
   const steps = [{
     title: '数据选择',
-    content: <SelectData />,
+    content: <div>数据选择</div>,
   }, {
     title: '条件查询',
     content: <div>条件查询</div>,

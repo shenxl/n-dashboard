@@ -1,8 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import { Upload, message, Button, Icon } from 'antd';
+import { Upload, message, Button, Icon, Spin } from 'antd';
+import { connect } from 'dva';
 import { apiUrl, importFolder } from '../../utils/constant';
 /*global localStorage*/
-const FilesButton = () => {
+const UpFilesButton = ({ importData, dispatch }) => {
+  const { loading } = importData;
+
   const beforeUpload = (file) => {
     const isExcel = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
     if (!isExcel) {
@@ -40,12 +43,16 @@ const FilesButton = () => {
   }
   return (
     <Upload {...UpFiles}>
+      <Spin spinning={loading} />
       <Button type="ghost">
         <Icon type="upload" /> 上传文件
       </Button>
     </Upload>
   );
 }
-FilesButton.PropTypes = {
+UpFilesButton.PropTypes = {
 }
-export default FilesButton
+const mapStateToProps = ({ importData }) => {
+  return { importData }
+}
+export default connect(mapStateToProps)(UpFilesButton);

@@ -3,7 +3,7 @@ import { Steps, message, Row, Col, Pagination, Input, Button, Icon, Tabs, DatePi
 import moment from 'moment';
 import { connect } from 'dva';
 import classnames from 'classnames';
-import FilesButton from '../../components/Import/FilesButton';
+import UpFilesButton from '../../components/Import/UpFilesButton';
 import DownloadModal from '../../components/Import/DownloadModal';
 //import SelectData from './SelectData';
 //import { apiUrl } from '../utils/constant'
@@ -50,11 +50,11 @@ const ImportData = ({ importData, dispatch }) => {
   }
 
   const steps = [{
-    title: '数据导入',
-    content: <Button onClick={showDownModal} type="primary" icon="download" >开始导入</Button>,
+    title: '模板下载',
+    content: <Button onClick={showDownModal} type="primary" icon="download" >开始下载模板</Button>,
   }, {
     title: '上传文件',
-    content: <FilesButton />,
+    content: <UpFilesButton />,
   }, {
     title: '完成状态',
     content: <Button type="ghost">
