@@ -3,21 +3,16 @@ import { Form, Row, Col, Input, Button,
     Icon, Tooltip, Cascader, Select, Switch } from 'antd';
 import RegionGlobal from '../../Global/RegionGlobal';
 import CustomSelect from '../../Global/CustomSelect';
-import styles from './conditionQuery.less';
+import styles from './areaQuery.less';
 
 const _ = require('lodash');
 
 const FormItem = Form.Item;
 const Option = Select.Option;
-const usualShowedChildren = 2 * 5; // row * col
 const AdvancedSearch = ({
   form,
-  onRegionChange,
-  onAddressChange,
-  onTypeChange,
   global,
   dispatch,
-  setBasicSearch,
   typeOptions,
 }) => {
   const { addressOptions, regionList, provinceItem, cityItem, countryItem } = global;
@@ -30,63 +25,55 @@ const AdvancedSearch = ({
       }
       const and = [];
       const or = [];
-      const status = [];
+      const areaStatus = [];
       // make query
       if (values.address && values.address.length !== 0) {
         switch (values.address.length) {
           case 1:
             and.push({ province: { like: `%25${provinceItem.Name}%25` } })
-            status.push({ key: 'address', value: provinceItem.Name });
+            areaStatus.push({ key: 'address', value: provinceItem.Name });
             break;
           case 2:
             and.push({ province: { like: `%25${provinceItem.Name}%25` } });
             and.push({ city: { like: `%25${cityItem.Name}%25` } });
-            status.push({ key: 'address', value: `${provinceItem.Name} - ${cityItem.Name}` });
+            areaStatus.push({ key: 'address', value: `${provinceItem.Name} - ${cityItem.Name}` });
             break;
           case 3:
             and.push({ province: { like: `%25${provinceItem.Name}%25` } });
             and.push({ city: { like: `%25${cityItem.Name}%25` } });
             and.push({ county: { like: `%25${countryItem.Name}%25` } });
-            status.push({ key: 'address', value: `${provinceItem.Name} - ${cityItem.Name} - ${countryItem.Name}` });
-
+            areaStatus.push({ key: 'address', value: `${provinceItem.Name} - ${cityItem.Name} - ${countryItem.Name}` });
             break;
           default:
         }
       } else if (values.region) {
         and.push({ region: { inq: values.region } })
-        status.push({ key: 'address', value: _.join(values.region, '、') });
+        areaStatus.push({ key: 'address', value: _.join(values.region, '、') });
       }
 
 
       if (values.type && values.type[0]) {
         if (values.type.length === 1 || (values.type.length === 2 && values.type[1] === '所有')) {
           and.push({ type: values.type[0] });
-          status.push({ key: 'type', value: values.type[0] });
+          areaStatus.push({ key: 'type', value: values.type[0] });
         } else {
           and.push({ type: values.type[0] });
           and.push({ industry: values.type[1] });
-          status.push({ key: 'type', value: `${values.type[0]}/${values.type[1]}` });
+          areaStatus.push({ key: 'type', value: `${values.type[0]}/${values.type[1]}` });
         }
       }
 
-      dispatch({
-        type: 'companies/updateFilter',
-        payload: {
-          and,
-          skip: 0,
-        },
-      });
 
       dispatch({
-        type: 'companies/setSearchInfo',
-        payload: status,
+        type: 'exportData/exportSetSearchInfo',
+        payload: areaStatus,
       });
     });
   };
 
-  const handleReset = () => {
+  const exportHandleReset = () => {
     dispatch({
-      type: 'companies/clearQuery',
+      type: 'exportData/exportClearQuery',
     });
     form.resetFields();
   };
@@ -121,7 +108,7 @@ const AdvancedSearch = ({
             </span>}
           >
             { getFieldDecorator('region')(
-              <CustomSelect options={regionList} handleChange={onRegionChange} />,
+              <CustomSelect options={regionList} />,
             )}
           </FormItem>
         </Col>
@@ -133,7 +120,7 @@ const AdvancedSearch = ({
             { getFieldDecorator('type')(
               <Cascader
                 options={typeOptions}
-                onChange={onTypeChange}
+
                 changeOnSelect
                 placeholder="请选择类型 / 行业"
               />,
@@ -165,19 +152,16 @@ const AdvancedSearch = ({
       <Row>
         <Col span={24} style={{ textAlign: 'right' }}>
           <Button type="primary" htmlType="submit">确定</Button>
-          <Button onClick={handleReset}>清空</Button>
+          <Button onClick={exportHandleReset}>清空</Button>
         </Col>
       </Row>
     </Form>
   );
 };
-const ConditionQuery = Form.create()(AdvancedSearch);
+const AreaQuery = Form.create()(AdvancedSearch);
 
-ConditionQuery.propTypes = {
-  onRegionChange: PropTypes.func.isRequired,
-  onTypeChange: PropTypes.func.isRequired,
-  setBasicSearch: PropTypes.func.isRequired,
+AreaQuery.propTypes = {
 };
 
 
-export default ConditionQuery
+export default AreaQuery

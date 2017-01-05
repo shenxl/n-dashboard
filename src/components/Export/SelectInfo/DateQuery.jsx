@@ -59,8 +59,8 @@ const DateQuery = ({ exportData, dispatch }) => {
     dispatch({
       type: 'exportData/changeDate',
       payload: {
-        end: { year: now.year(), month: now.month() + 1 },
         start: { year: beforeThreeMonth.year(), month: beforeThreeMonth.month() + 1 },
+        end: { year: now.year(), month: now.month() + 1 },
       },
     });
   }
@@ -71,8 +71,8 @@ const DateQuery = ({ exportData, dispatch }) => {
     dispatch({
       type: 'exportData/changeDate',
       payload: {
-        end: { year: now.year(), month: now.month() + 1 },
         start: { year: beforeSixMonth.year(), month: beforeSixMonth.month() + 1 },
+        end: { year: now.year(), month: now.month() + 1 },
       },
     });
   }
