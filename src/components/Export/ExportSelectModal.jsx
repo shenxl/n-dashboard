@@ -18,19 +18,19 @@ const ExportSelectModal = ({ dispatch, global, exportData }) => {
   const { date, selectedCustomerType, selectCurrent, exportSearchInfo } = exportData;
   const { currentTypeOptions } = global;
 
-  const buildTags = () => {
-    const result = _.map(exportSearchInfo, (item, index) => {
-      switch (item.key) {
-        case 'address':
-          return (<Tag key={index} color="#2db7f5"> {item.value} </Tag>)
-        case 'type':
-          return (<Tag key={index} color="#87d068"> {item.value} </Tag>)
-        default:
-          return undefined
-      }
-    });
-    return result;
-  }
+  // const buildTags = () => {
+  //   const result = _.map(exportSearchInfo, (item, index) => {
+  //     switch (item.key) {
+  //       case 'address':
+  //         return (<Tag key={index} color="#2db7f5"> {item.value} </Tag>)
+  //       case 'type':
+  //         return (<Tag key={index} color="#87d068"> {item.value} </Tag>)
+  //       default:
+  //         return undefined
+  //     }
+  //   });
+  //   return result;
+  // }
 
   const next = () => {
     const add = selectCurrent + 1;
@@ -64,10 +64,11 @@ const ExportSelectModal = ({ dispatch, global, exportData }) => {
     title: '日期范围设置',
     content: <DateQuery />,
   },
+  // {
+  //   title: '区域范围选择',
+  //   content: <AreaQuery {...AdvanceSearchProps} />,
+  // },
   {
-    title: '区域范围选择',
-    content: <AreaQuery {...AdvanceSearchProps} />,
-  }, {
     title: '导出类别',
     content: <CompletePage />,
   },
@@ -89,9 +90,11 @@ const ExportSelectModal = ({ dispatch, global, exportData }) => {
           </div>
           开始日期： {date.start.year}-{date.start.month} <br />
         结束日期： {date.end.year}-{date.end.month}
-          <div>
-          区域条件：{buildTags()}
-          </div>
+          {
+          // <div>
+          //  区域条件：{buildTags()}
+          //  </div>
+        }
         </div>
 
       </div>
