@@ -6,7 +6,6 @@ import styles from './AuthLayout.less';
 const AuthLayout = ({ children, authLayout }) => {
   return (
     <div className={styles.normal}>
-
       <div className={styles.container}>
         <h1 className={styles.title}>{authLayout.title}</h1>
         {children}
