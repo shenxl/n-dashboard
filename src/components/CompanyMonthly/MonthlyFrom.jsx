@@ -65,11 +65,11 @@ const MonthlyFromCreate = ({
             </span>}
           >
             {getFieldDecorator('activity_sum', {
-              initialValue: activitySum || '',
+              initialValue: activitySum || 0,
             })(
               <InputNumber
                 min={0}
-                max={99999}
+                max={9999999}
               />
             )}
           </FormItem>
@@ -83,11 +83,11 @@ const MonthlyFromCreate = ({
             </span>}
           >
             {getFieldDecorator('activity_avg', {
-              initialValue: activityAvg || '',
+              initialValue: activityAvg || 0,
             })(
               <InputNumber
                 min={0}
-                max={99999}
+                max={9999999}
               />
             )}
           </FormItem>
@@ -101,11 +101,11 @@ const MonthlyFromCreate = ({
             </span>}
           >
             {getFieldDecorator('install_sum', {
-              initialValue: installSum || '',
+              initialValue: installSum || 0,
             })(
               <InputNumber
                 min={0}
-                max={99999}
+                max={9999999}
               />
             )}
           </FormItem>

@@ -5,7 +5,6 @@ const MonthlyTable = ({
   companyMonthly,
   companyName,
   onRowClick,
-  rowSelection,
   onRemoveInner,
   onCreateInner,
   onInstallSumAddBlur,
@@ -78,7 +77,7 @@ const MonthlyTable = ({
     <div>
       <Row>
         <Col span={9}>
-          <span>安装总量 : { installSum }</span>
+          <span>安装总量 : { installSum || 0 }</span>
         </Col>
         <Col span={15} style={{ textAlign: 'right' }}>
           <Popover
@@ -92,7 +91,6 @@ const MonthlyTable = ({
         </Col>
       </Row>
       <Table
-        rowSelection={rowSelection}
         loading={loading}
         columns={columns}
         dataSource={innerList}

@@ -54,21 +54,14 @@ const monthly = {
     return xFetch(`${apiUrl}/companyInstalls/replaceOrCreate`, options)
   },
 
-  deleteItem: async (query) => {
-    const andopt = [];
-    const { company_id, server_id, year, month } = query;
-    andopt.push({ company_id });
-    andopt.push({ server_id: 99 });
-    andopt.push({ year });
-    andopt.push({ month });
-    const filter = { and: andopt };
+  deleteItem: async (hashkey) => {
     const options = {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
     };
-    return xFetch(`${apiUrl}/companyMonthlies?where=${JSON.stringify(filter)}`, options)
+    return xFetch(`${apiUrl}/companyMonthlies/${hashkey}`, options)
   },
 }
 export default monthly;

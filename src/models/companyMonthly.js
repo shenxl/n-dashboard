@@ -11,7 +11,7 @@ export default {
     innerList: [],
     emptyItem:
     {
-      id: undefined,
+      hashkey: undefined,
       company_id: undefined,
       server_id: undefined,
       year: undefined,
@@ -92,13 +92,14 @@ export default {
         return false
       }
     },
-    * removeCurrentItem({ payload: query }, { call, put }) {
+    * removeCurrentItem({ payload }, { call, put }) {
       try {
-        const { jsonResult } = yield call(deleteItem, query);
+        const hashkey = payload.hashkey;
+        const { jsonResult } = yield call(deleteItem, hashkey);
         if (jsonResult) {
           yield put({
             type: 'getInnerData',
-            payload: query.company_id,
+            payload: payload.company_id,
           });
         }
         return false
@@ -110,7 +111,6 @@ export default {
     * replaceOrCreate({ payload }, { call, put, select }) {
       try {
         const currentItem = yield select(state => state.companyMonthly.currentItem);
-        console.log(currentItem);
         const { jsonResult } = yield call(replaceOrCreate, currentItem);
         if (jsonResult) {
           yield put({
@@ -147,10 +147,11 @@ export default {
       try {
         const { jsonResult: installData } = yield call(queryInstallSum, companyid);
         if (installData) {
+          const installSum = (installData[0] && installData[0].sum) || 0;
           yield put({
             type: 'getInstallSumSuccess',
             payload: {
-              installSum: installData[0].sum,
+              installSum,
             },
           });
         }

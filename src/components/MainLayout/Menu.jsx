@@ -58,6 +58,7 @@ function MenuBar({ location, mainLayout, onCollapseChange }) {
             </Link>
           </Menu.Item>
         </SubMenu>
+        { /*
         <SubMenu title={settingTitle}>
           <Menu.Item key="/setting/import">
             <Link to="/setting/import">
@@ -70,6 +71,7 @@ function MenuBar({ location, mainLayout, onCollapseChange }) {
             </Link>
           </Menu.Item>
         </SubMenu>
+        */}
       </Menu>)
     }
     return undefined;

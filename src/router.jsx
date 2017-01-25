@@ -38,11 +38,12 @@ export default function ({ history }) {
           <Route path="finance" component={Finance} />
         </Route>
 
-
+        { /*
         <Route path="setting/" component={Setting} >
           <Route path="import" component={ImportData} />
           <Route path="export" component={ExportData} />
         </Route>
+        */}
 
 
         <Route path="*" component={NotFound} />

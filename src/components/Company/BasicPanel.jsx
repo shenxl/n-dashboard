@@ -124,6 +124,7 @@ const BasicPanel = ({ dispatch, orders, sns, global, currentType, currentIndustr
       },
     });
   }
+
   const onCreateOrder = () => {
     dispatch({
       type: 'orders/setCurrentItem',

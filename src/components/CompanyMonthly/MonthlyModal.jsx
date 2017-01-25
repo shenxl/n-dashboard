@@ -4,6 +4,8 @@ import { connect } from 'dva';
 import MonthlyTable from './MonthlyTable';
 import MonthlyFrom from './MonthlyFrom';
 
+const crypto = require('crypto');
+
 const confirm = Modal.confirm;
 const MonthlyModal = ({ companyMonthly, dispatch, company, width }) => {
   const { selectedRowKeys, currentItem, modalMode, modalVisibel } = companyMonthly;
@@ -43,6 +45,7 @@ const MonthlyModal = ({ companyMonthly, dispatch, company, width }) => {
     dispatch({
       type: 'companyMonthly/getCurrentItem',
       payload: {
+        hashkey: record.hashkey,
         company_id: record.company_id,
         server_id: record.server_id,
         year: record.year,
@@ -80,10 +83,8 @@ const MonthlyModal = ({ companyMonthly, dispatch, company, width }) => {
     dispatch({
       type: 'companyMonthly/removeCurrentItem',
       payload: {
+        hashkey: record.hashkey,
         company_id: record.company_id,
-        server_id: record.server_id,
-        year: record.year,
-        month: record.month,
       },
     });
 
@@ -93,27 +94,6 @@ const MonthlyModal = ({ companyMonthly, dispatch, company, width }) => {
     });
   }
 
-  const rowSelection = {
-    type: 'radio',
-    selectedRowKeys,
-    onChange: (selectedRowKeys, selectedRows) => {
-      const record = selectedRows[0];
-      dispatch({
-        type: 'companyMonthly/getCurrentItem',
-        payload: {
-          company_id: record.company_id,
-          server_id: record.server_id,
-          year: record.year,
-          month: record.month,
-        },
-      });
-
-      dispatch({
-        type: 'companyMonthly/setSelectedRowKeys',
-        payload: { selectedRowKeys },
-      });
-    },
-  };
 
   const showAddConfirm = (value) => {
     const content = `
@@ -123,9 +103,11 @@ const MonthlyModal = ({ companyMonthly, dispatch, company, width }) => {
       title: `请确认录入${name} 内网安装量的操作!`,
       content,
       onOk() {
+        const hashkey = crypto.createHash('md5').update(`${company_id};${serverId};${'windows'}`).digest('hex');
         dispatch({
           type: 'companyMonthly/addInstallSum',
           payload: {
+            hashkey,
             company_id,
             server_id: serverId,
             sum: value,
@@ -144,7 +126,6 @@ const MonthlyModal = ({ companyMonthly, dispatch, company, width }) => {
     companyMonthly,
     companyName,
     onRowClick,
-    rowSelection,
     onRemoveInner,
     onCreateInner,
     onInstallSumAddBlur,
